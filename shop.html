@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Hearts & Threads</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link active">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="story.html" class="nav-link">Our Story</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate.html" class="nav-link">Donate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="impact.html" class="nav-link">Impact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="cart.html" class="nav-link cart-icon">
+                                🛒
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 40px 0;">
+        <div class="container">
+            <div class="text-center">
+                <h1>Shop Our Collection</h1>
+                <p>Quality clothing at affordable prices, helping our community one item at a time</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Content -->
+    <section class="section">
+        <div class="container">
+            <!-- Filters -->
+            <div class="shop-filters">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search-bar">
+                            <input type="text" id="search-input" placeholder="Search for items...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="filter-group">
+                            <h4>Category</h4>
+                            <div class="filter-options">
+                                <button class="filter-option active" data-filter="category" data-value="">All</button>
+                                <button class="filter-option" data-filter="category" data-value="Women">Women</button>
+                                <button class="filter-option" data-filter="category" data-value="Men">Men</button>
+                                <button class="filter-option" data-filter="category" data-value="Kids">Kids</button>
+                                <button class="filter-option" data-filter="category" data-value="Accessories">Accessories</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="filter-group">
+                            <h4>Condition</h4>
+                            <div class="filter-options">
+                                <button class="filter-option active" data-filter="condition" data-value="">All</button>
+                                <button class="filter-option" data-filter="condition" data-value="New">New</button>
+                                <button class="filter-option" data-filter="condition" data-value="Like New">Like New</button>
+                                <button class="filter-option" data-filter="condition" data-value="Good">Good</button>
+                                <button class="filter-option" data-filter="condition" data-value="Fair">Fair</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="filter-group">
+                            <h4>Price Range</h4>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" id="min-price" placeholder="Min $" min="0" step="0.01">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" id="max-price" placeholder="Max $" min="0" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="filter-group">
+                            <h4>Sort By</h4>
+                            <select id="sort-select">
+                                <option value="newest">Newest First</option>
+                                <option value="price_asc">Price: Low to High</option>
+                                <option value="price_desc">Price: High to Low</option>
+                                <option value="name">Name A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button id="clear-filters" class="btn btn-secondary btn-sm">Clear All Filters</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Summary -->
+            <div class="row mb-3">
+                <div class="col-6">
+                    <p id="results-count">Loading products...</p>
+                </div>
+                <div class="col-6 text-right">
+                    <label for="items-per-page">Items per page:</label>
+                    <select id="items-per-page" style="width: auto; margin-left: 10px;">
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="product-grid" id="products-container">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="text-center" style="display: none;">
+                <p>Loading products...</p>
+            </div>
+
+            <!-- No Results -->
+            <div id="no-results" class="text-center" style="display: none;">
+                <h3>No products found</h3>
+                <p>Try adjusting your filters or search terms</p>
+                <button onclick="clearAllFilters()" class="btn btn-primary">Clear Filters</button>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-container" class="text-center mt-4">
+                <!-- Pagination will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Quick View Modal -->
+    <div id="quick-view-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Product Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="quick-view-content">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>Hearts & Threads</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="shop.html">Shop</a></p>
+                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="story.html">Our Story</a></p>
+                    <p><a href="impact.html">Impact</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p>123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p>(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Instagram</a> |
+                        <a href="#">Twitter</a>
+                    </p>
+                    <p>Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Hearts & Threads. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        let currentFilters = {
+            search: '',
+            category: '',
+            condition: '',
+            minPrice: null,
+            maxPrice: null,
+            sortBy: 'newest'
+        };
+        let currentPage = 1;
+        let itemsPerPage = 12;
+        let allProducts = [];
+
+        // Initialize shop page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            setupEventListeners();
+        });
+
+        function loadProducts() {
+            showLoading();
+            allProducts = dataManager.searchProducts('');
+            applyFiltersAndRender();
+        }
+
+        function setupEventListeners() {
+            // Search input
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', utils.debounce(function() {
+                currentFilters.search = this.value;
+                currentPage = 1;
+                applyFiltersAndRender();
+            }, 300));
+
+            // Filter buttons
+            document.querySelectorAll('.filter-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    const filterType = this.getAttribute('data-filter');
+                    const filterValue = this.getAttribute('data-value');
+
+                    // Update active state
+                    const group = this.parentNode;
+                    group.querySelectorAll('.filter-option').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update filter
+                    currentFilters[filterType] = filterValue;
+                    currentPage = 1;
+                    applyFiltersAndRender();
+                });
+            });
+
+            // Price range inputs
+            const minPriceInput = document.getElementById('min-price');
+            const maxPriceInput = document.getElementById('max-price');
+
+            minPriceInput.addEventListener('input', utils.debounce(function() {
+                currentFilters.minPrice = this.value ? parseFloat(this.value) : null;
+                currentPage = 1;
+                applyFiltersAndRender();
+            }, 500));
+
+            maxPriceInput.addEventListener('input', utils.debounce(function() {
+                currentFilters.maxPrice = this.value ? parseFloat(this.value) : null;
+                currentPage = 1;
+                applyFiltersAndRender();
+            }, 500));
+
+            // Sort select
+            document.getElementById('sort-select').addEventListener('change', function() {
+                currentFilters.sortBy = this.value;
+                currentPage = 1;
+                applyFiltersAndRender();
+            });
+
+            // Items per page
+            document.getElementById('items-per-page').addEventListener('change', function() {
+                itemsPerPage = parseInt(this.value);
+                currentPage = 1;
+                applyFiltersAndRender();
+            });
+
+            // Clear filters button
+            document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+        }
+
+        function applyFiltersAndRender() {
+            showLoading();
+
+            // Apply filters
+            let filteredProducts = dataManager.searchProducts(currentFilters.search, {
+                category: currentFilters.category,
+                condition: currentFilters.condition,
+                minPrice: currentFilters.minPrice,
+                maxPrice: currentFilters.maxPrice,
+                sortBy: currentFilters.sortBy
+            });
+
+            // Pagination
+            const paginatedData = utils.paginate(filteredProducts, currentPage, itemsPerPage);
+
+            // Render products
+            renderProducts(paginatedData.items);
+
+            // Update results count
+            updateResultsCount(paginatedData.totalItems, filteredProducts.length);
+
+            // Render pagination
+            renderPagination(paginatedData);
+
+            hideLoading();
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            const noResults = document.getElementById('no-results');
+
+            if (products.length === 0) {
+                container.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.images[0]}" alt="${product.name}"
+                             onerror="this.src='${utils.getPlaceholderUrl(product.name, 400, 300)}'">
+                        ${product.condition === 'New' ? '<span class="product-badge">New</span>' : ''}
+                        ${product.stock <= 0 ? '<span class="product-badge" style="background: #95a5a6;">Out of Stock</span>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-title">
+                            <a href="product.html?id=${product.id}" style="color: inherit;">${product.name}</a>
+                        </h3>
+                        <div class="product-condition">${product.condition}</div>
+                        <div class="product-price">${utils.formatCurrency(product.price)}</div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn btn-sm btn-outline" onclick="showQuickView('${product.id}')" style="flex: 1;">
+                                Quick View
+                            </button>
+                            <button class="add-to-cart-btn btn btn-sm" onclick="addToCart('${product.id}')"
+                                    ${product.stock <= 0 ? 'disabled' : ''} style="flex: 1;">
+                                ${product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateResultsCount(totalItems, filteredItems) {
+            const resultsCount = document.getElementById('results-count');
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, filteredItems);
+
+            if (filteredItems === 0) {
+                resultsCount.textContent = 'No products found';
+            } else {
+                resultsCount.textContent = `Showing ${startItem}-${endItem} of ${filteredItems} products`;
+            }
+        }
+
+        function renderPagination(paginatedData) {
+            const container = document.getElementById('pagination-container');
+
+            if (paginatedData.totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = utils.createPaginationHTML(paginatedData, changePage);
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            applyFiltersAndRender();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function clearAllFilters() {
+            // Reset filters
+            currentFilters = {
+                search: '',
+                category: '',
+                condition: '',
+                minPrice: null,
+                maxPrice: null,
+                sortBy: 'newest'
+            };
+            currentPage = 1;
+
+            // Reset UI
+            document.getElementById('search-input').value = '';
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            document.getElementById('sort-select').value = 'newest';
+
+            // Reset filter buttons
+            document.querySelectorAll('.filter-option').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-value') === '') {
+                    btn.classList.add('active');
+                }
+            });
+
+            applyFiltersAndRender();
+        }
+
+        function addToCart(productId) {
+            const product = dataManager.getProductById(productId);
+            if (!product) return;
+
+            if (product.stock <= 0) {
+                utils.showNotification('Sorry, this item is out of stock', 'error');
+                return;
+            }
+
+            dataManager.addToCart(productId, 1);
+            utils.updateCartCount();
+            utils.showNotification(`${product.name} added to cart!`, 'success');
+
+            // Animate the button
+            const button = event.target;
+            utils.addToCartAnimation(button);
+        }
+
+        function showQuickView(productId) {
+            const product = dataManager.getProductById(productId);
+            if (!product) return;
+
+            const content = document.getElementById('quick-view-content');
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-6">
+                        <div class="main-image">
+                            <img src="${product.images[0]}" alt="${product.name}"
+                                 onerror="this.src='${utils.getPlaceholderUrl(product.name, 500, 400)}'"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h2>${product.name}</h2>
+                        <p class="text-muted">${product.category}</p>
+                        <div class="price" style="font-size: 1.5rem; color: #e74c3c; font-weight: 700; margin: 15px 0;">
+                            ${utils.formatCurrency(product.price)}
+                        </div>
+                        <div style="margin: 15px 0;">
+                            <span class="product-condition">${product.condition}</span>
+                        </div>
+                        <p style="margin-bottom: 20px;">${product.description}</p>
+
+                        ${product.sizes && product.sizes.length > 1 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h4>Available Sizes</h4>
+                                <div style="display: flex; gap: 10px;">
+                                    ${product.sizes.map(size => `<span style="padding: 5px 10px; border: 1px solid #ddd; border-radius: 3px;">${size}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <p style="margin-bottom: 20px; color: ${product.stock > 5 ? '#2ecc71' : product.stock > 0 ? '#f39c12' : '#e74c3c'};">
+                            ${product.stock > 5 ? 'In Stock' : product.stock > 0 ? `Only ${product.stock} left!` : 'Out of Stock'}
+                        </p>
+
+                        ${product.story ? `
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                                <h5>Item Story</h5>
+                                <p style="margin: 0;">${product.story}</p>
+                            </div>
+                        ` : ''}
+
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="addToCart('${product.id}'); closeModal('#quick-view-modal');"
+                                    class="btn btn-primary" ${product.stock <= 0 ? 'disabled' : ''} style="flex: 1;">
+                                ${product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                            </button>
+                            <a href="product.html?id=${product.id}" class="btn btn-outline" style="flex: 1;">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            utils.openModal('#quick-view-modal');
+        }
+
+        // Close modal function (needed for quick view)
+        function closeModal(modalId) {
+            utils.closeModal(modalId);
+        }
+    </script>
+</body>
+</html>

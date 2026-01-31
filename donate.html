@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate - Hearts & Threads</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="story.html" class="nav-link">Our Story</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate.html" class="nav-link active">Donate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="impact.html" class="nav-link">Impact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="cart.html" class="nav-link cart-icon">
+                                🛒
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center">
+                <h1>Make a Difference</h1>
+                <p>Support our mission through monetary donations or clothing contributions</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Types -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <!-- Monetary Donations -->
+                <div class="col-6">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-header text-center">
+                            <h3 style="color: #e74c3c;">💰 Monetary Donation</h3>
+                            <p>Support our programs with a financial contribution</p>
+                        </div>
+                        <div class="card-body">
+                            <form id="monetary-donation-form">
+                                <div class="form-group">
+                                    <label>Donation Amount</label>
+                                    <div class="donation-amounts" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                                        <button type="button" class="btn btn-outline amount-btn" data-amount="10">$10</button>
+                                        <button type="button" class="btn btn-outline amount-btn" data-amount="25">$25</button>
+                                        <button type="button" class="btn btn-outline amount-btn" data-amount="50">$50</button>
+                                        <button type="button" class="btn btn-outline amount-btn" data-amount="100">$100</button>
+                                    </div>
+                                    <input type="number" id="custom-amount" placeholder="Custom amount" min="1" step="0.01">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Donation Frequency</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <label style="display: flex; align-items: center; gap: 5px;">
+                                            <input type="radio" name="frequency" value="one-time" checked>
+                                            One-time
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 5px;">
+                                            <input type="radio" name="frequency" value="monthly">
+                                            Monthly
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="donor-name">Your Name *</label>
+                                    <input type="text" id="donor-name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="donor-email">Email Address *</label>
+                                    <input type="email" id="donor-email" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="donor-phone">Phone Number</label>
+                                    <input type="tel" id="donor-phone">
+                                </div>
+
+                                <div id="impact-display" style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                                    <h5 style="color: #2ecc71; margin-bottom: 10px;">Your Impact</h5>
+                                    <p id="impact-text" style="margin: 0;">Enter an amount to see your impact!</p>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                                    Donate Now
+                                </button>
+
+                                <div class="text-center mt-3">
+                                    <small class="text-muted">
+                                        This is a demonstration. No real payment will be processed.
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clothing Donations -->
+                <div class="col-6">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-header text-center">
+                            <h3 style="color: #e74c3c;">👕 Clothing Donation</h3>
+                            <p>Donate gently used clothing and accessories</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Accepted Items -->
+                            <div class="mb-4">
+                                <h4>We Accept:</h4>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <ul style="list-style: none; padding: 0;">
+                                            <li>✅ Clean, gently used clothing</li>
+                                            <li>✅ Shoes in good condition</li>
+                                            <li>✅ Accessories (bags, belts, jewelry)</li>
+                                            <li>✅ Winter coats and jackets</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <ul style="list-style: none; padding: 0;">
+                                            <li>✅ Professional wear</li>
+                                            <li>✅ Children's clothing</li>
+                                            <li>✅ Sports and activewear</li>
+                                            <li>✅ Formal and special occasion wear</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- What We Don't Accept -->
+                            <div class="mb-4">
+                                <h4>Please Don't Bring:</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li>❌ Heavily worn or damaged items</li>
+                                    <li>❌ Stained or dirty clothing</li>
+                                    <li>❌ Underwear or swimwear</li>
+                                    <li>❌ Items with strong odors</li>
+                                </ul>
+                            </div>
+
+                            <!-- Drop-off Information -->
+                            <div class="mb-4">
+                                <h4>Drop-off Locations:</h4>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <strong>Hearts & Threads Main Location</strong><br>
+                                        123 Charity Lane<br>
+                                        Helping City, HC 12345<br>
+                                        <strong>Hours:</strong> Mon-Fri 9AM-6PM, Sat 10AM-4PM
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pickup Request Form -->
+                            <div class="mb-4">
+                                <h4>Request Pickup Service</h4>
+                                <form id="pickup-request-form">
+                                    <div class="form-group">
+                                        <label for="pickup-name">Your Name *</label>
+                                        <input type="text" id="pickup-name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pickup-email">Email *</label>
+                                        <input type="email" id="pickup-email" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pickup-phone">Phone *</label>
+                                        <input type="tel" id="pickup-phone" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="pickup-address">Pickup Address *</label>
+                                        <textarea id="pickup-address" required placeholder="Full address including apartment/unit number"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="item-description">Items Description</label>
+                                        <textarea id="item-description" placeholder="Briefly describe the items you're donating (e.g., 2 bags of women's clothing, shoes, accessories)"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                        Request Pickup
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tax Information -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="text-center">
+                <h2>Tax Deduction Information</h2>
+                <p>Hearts & Threads is a 501(c)(3) nonprofit organization. Your donations are tax-deductible to the full extent allowed by law.</p>
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>📄 Receipt</h4>
+                                <p>You'll receive a tax-deductible receipt for all donations via email.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>🏛️ Tax ID</h4>
+                                <p>Our EIN: 12-3456789<br>Use this for your tax records.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h4>💡 Valuation</h4>
+                                <p>For clothing donations, you determine fair market value for tax purposes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Stories -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Donations at Work</h2>
+                <p>See how your contributions make a real difference</p>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Maria's Story</h4>
+                            <p>"Thanks to Hearts & Threads, I was able to get professional attire for job interviews. I got the job and now I'm giving back by volunteering here!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>The Johnson Family</h4>
+                            <p>"When we lost our home in a fire, Hearts & Threads provided clothing for our whole family. Their kindness meant everything to us during that difficult time."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Local School Program</h4>
+                            <p>"Our partnership with Hearts & Threads helps ensure students have appropriate clothing for school, boosting their confidence and attendance."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>Hearts & Threads</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="shop.html">Shop</a></p>
+                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="story.html">Our Story</a></p>
+                    <p><a href="impact.html">Impact</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p>123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p>(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Instagram</a> |
+                        <a href="#">Twitter</a>
+                    </p>
+                    <p>Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Hearts & Threads. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        let selectedAmount = 0;
+
+        // Initialize donate page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDonationForms();
+        });
+
+        function setupDonationForms() {
+            // Amount button selection
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const amount = parseFloat(this.getAttribute('data-amount'));
+                    selectAmount(amount);
+                });
+            });
+
+            // Custom amount input
+            document.getElementById('custom-amount').addEventListener('input', function() {
+                const amount = parseFloat(this.value) || 0;
+                selectAmount(amount);
+            });
+
+            // Monetary donation form
+            document.getElementById('monetary-donation-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                processDonation();
+            });
+
+            // Pickup request form
+            document.getElementById('pickup-request-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                processPickupRequest();
+            });
+        }
+
+        function selectAmount(amount) {
+            selectedAmount = amount;
+
+            // Update button states
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            });
+
+            // Update custom amount input
+            document.getElementById('custom-amount').value = amount > 0 ? amount : '';
+
+            // Update impact display
+            updateImpactDisplay(amount);
+        }
+
+        function updateImpactDisplay(amount) {
+            const impactText = document.getElementById('impact-text');
+
+            if (amount <= 0) {
+                impactText.textContent = 'Enter an amount to see your impact!';
+                return;
+            }
+
+            const impacts = [];
+
+            if (amount >= 10) {
+                impacts.push('Provides clothing essentials for 1 person');
+            }
+            if (amount >= 25) {
+                impacts.push('Helps cover processing costs for donated items');
+            }
+            if (amount >= 50) {
+                impacts.push('Supports our community outreach programs');
+            }
+            if (amount >= 100) {
+                impacts.push('Helps fund pickup services for clothing donations');
+            }
+
+            if (impacts.length > 0) {
+                impactText.innerHTML = impacts.map(impact => `• ${impact}`).join('<br>');
+            } else {
+                impactText.textContent = 'Every donation helps support our mission!';
+            }
+        }
+
+        function processDonation() {
+            const form = document.getElementById('monetary-donation-form');
+            const formData = new FormData(form);
+
+            // Validate form
+            const errors = utils.validateForm(form);
+            if (errors.length > 0) {
+                utils.showNotification(errors[0], 'error');
+                return;
+            }
+
+            // Validate amount
+            const amount = selectedAmount || parseFloat(document.getElementById('custom-amount').value);
+            if (!amount || amount <= 0) {
+                utils.showNotification('Please select or enter a donation amount', 'error');
+                return;
+            }
+
+            // Create donation object
+            const donation = {
+                type: 'monetary',
+                donorName: formData.get('donor-name') || document.getElementById('donor-name').value,
+                donorEmail: formData.get('donor-email') || document.getElementById('donor-email').value,
+                donorPhone: formData.get('donor-phone') || document.getElementById('donor-phone').value,
+                amount: amount,
+                frequency: formData.get('frequency'),
+                status: 'received'
+            };
+
+            // Save donation
+            if (dataManager.addDonation(donation)) {
+                utils.showNotification('Thank you for your generous donation!', 'success');
+                form.reset();
+                selectAmount(0);
+
+                // Show confirmation
+                setTimeout(() => {
+                    alert(`Donation Confirmation\n\nAmount: ${utils.formatCurrency(amount)}\nDonor: ${donation.donorName}\n\nThank you for supporting Hearts & Threads! You will receive a tax-deductible receipt via email.`);
+                }, 1000);
+            } else {
+                utils.showNotification('Donation failed. Please try again.', 'error');
+            }
+        }
+
+        function processPickupRequest() {
+            const form = document.getElementById('pickup-request-form');
+            const formData = new FormData(form);
+
+            // Validate form
+            const errors = utils.validateForm(form);
+            if (errors.length > 0) {
+                utils.showNotification(errors[0], 'error');
+                return;
+            }
+
+            // Create clothing donation object
+            const donation = {
+                type: 'clothing',
+                donorName: formData.get('pickup-name') || document.getElementById('pickup-name').value,
+                donorEmail: formData.get('pickup-email') || document.getElementById('pickup-email').value,
+                donorPhone: formData.get('pickup-phone') || document.getElementById('pickup-phone').value,
+                pickupAddress: formData.get('pickup-address') || document.getElementById('pickup-address').value,
+                items: formData.get('item-description') || document.getElementById('item-description').value,
+                status: 'pickup_requested'
+            };
+
+            // Save donation
+            if (dataManager.addDonation(donation)) {
+                utils.showNotification('Pickup request submitted successfully!', 'success');
+                form.reset();
+
+                // Show confirmation
+                setTimeout(() => {
+                    alert(`Pickup Request Confirmed\n\nWe'll contact you within 2 business days to schedule your pickup.\n\nName: ${donation.donorName}\nPhone: ${donation.donorPhone}\n\nThank you for your donation!`);
+                }, 1000);
+            } else {
+                utils.showNotification('Pickup request failed. Please try again.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

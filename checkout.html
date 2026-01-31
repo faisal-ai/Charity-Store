@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Hearts & Threads</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="story.html" class="nav-link">Our Story</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate.html" class="nav-link">Donate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="impact.html" class="nav-link">Impact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="cart.html" class="nav-link cart-icon">
+                                🛒
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: 40px 0;">
+        <div class="container">
+            <div class="text-center">
+                <h1>Checkout</h1>
+                <p>Complete your purchase and help make a difference</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Content -->
+    <section class="section">
+        <div class="container">
+            <!-- Empty Cart Redirect -->
+            <div id="empty-cart" class="text-center" style="display: none;">
+                <div class="card" style="max-width: 500px; margin: 0 auto;">
+                    <div class="card-body" style="padding: 40px;">
+                        <h3>No items to checkout</h3>
+                        <p>Your cart is empty. Add some items first!</p>
+                        <a href="shop.html" class="btn btn-primary btn-lg">Start Shopping</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Confirmation -->
+            <div id="order-confirmation" class="text-center" style="display: none;">
+                <div class="card" style="max-width: 600px; margin: 0 auto;">
+                    <div class="card-body" style="padding: 40px;">
+                        <h2 style="color: #2ecc71; margin-bottom: 20px;">✅ Order Confirmed!</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                            Thank you for your purchase! Your order has been received and is being processed.
+                        </p>
+                        <div id="order-details" class="text-left" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <!-- Order details will be loaded here -->
+                        </div>
+                        <p style="color: #2ecc71; font-weight: 500;">
+                            Your purchase helps provide clothing to families in need. Thank you for making a difference!
+                        </p>
+                        <div style="margin-top: 30px;">
+                            <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+                            <a href="index.html" class="btn btn-outline">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Form -->
+            <div id="checkout-form">
+                <form id="order-form">
+                    <div class="row">
+                        <div class="col-8">
+                            <!-- Customer Information -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3>Contact Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name *</label>
+                                            <input type="text" id="firstName" name="firstName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name *</label>
+                                            <input type="text" id="lastName" name="lastName" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email Address *</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number *</label>
+                                        <input type="tel" id="phone" name="phone" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shipping Address -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3>Shipping Address</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="address">Street Address *</label>
+                                        <input type="text" id="address" name="address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address2">Apartment, Suite, etc.</label>
+                                        <input type="text" id="address2" name="address2">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="city">City *</label>
+                                            <input type="text" id="city" name="city" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="state">State *</label>
+                                            <select id="state" name="state" required>
+                                                <option value="">Select State</option>
+                                                <option value="AL">Alabama</option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="AZ">Arizona</option>
+                                                <option value="AR">Arkansas</option>
+                                                <option value="CA">California</option>
+                                                <option value="CO">Colorado</option>
+                                                <option value="CT">Connecticut</option>
+                                                <option value="DE">Delaware</option>
+                                                <option value="FL">Florida</option>
+                                                <option value="GA">Georgia</option>
+                                                <!-- Add more states as needed -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip">ZIP Code *</label>
+                                        <input type="text" id="zip" name="zip" required pattern="[0-9]{5}(-[0-9]{4})?">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Information -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3>Payment Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                                        <strong>Note:</strong> This is a demonstration. No real payment will be processed.
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cardNumber">Card Number *</label>
+                                        <input type="text" id="cardNumber" name="cardNumber"
+                                               placeholder="1234 5678 9012 3456"
+                                               pattern="[0-9\s]{13,19}"
+                                               required>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="expiryMonth">Expiry Month *</label>
+                                            <select id="expiryMonth" name="expiryMonth" required>
+                                                <option value="">Month</option>
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="expiryYear">Expiry Year *</label>
+                                            <select id="expiryYear" name="expiryYear" required>
+                                                <option value="">Year</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2029">2029</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv"
+                                               placeholder="123"
+                                               pattern="[0-9]{3,4}"
+                                               maxlength="4"
+                                               required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cardName">Name on Card *</label>
+                                        <input type="text" id="cardName" name="cardName" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <!-- Order Summary -->
+                            <div class="cart-summary">
+                                <h3>Order Summary</h3>
+
+                                <div class="order-items" id="order-items">
+                                    <!-- Order items will be loaded here -->
+                                </div>
+
+                                <hr style="margin: 20px 0;">
+
+                                <div class="summary-line">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">$0.00</span>
+                                </div>
+
+                                <div class="summary-line">
+                                    <span>Tax:</span>
+                                    <span id="tax">$0.00</span>
+                                </div>
+
+                                <div class="summary-line">
+                                    <span>Shipping:</span>
+                                    <span id="shipping">$0.00</span>
+                                </div>
+
+                                <div class="summary-line summary-total">
+                                    <span>Total:</span>
+                                    <span id="total">$0.00</span>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 20px;">
+                                    Place Order
+                                </button>
+
+                                <div class="card mt-3" style="background: #e8f5e8;">
+                                    <div class="card-body">
+                                        <h5 style="color: #2ecc71; margin-bottom: 10px;">💚 Your Impact</h5>
+                                        <p style="margin: 0; font-size: 0.9rem;">
+                                            With this purchase, you're helping provide clothing to <strong id="people-helped">0</strong> people in need!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>Hearts & Threads</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="shop.html">Shop</a></p>
+                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="story.html">Our Story</a></p>
+                    <p><a href="impact.html">Impact</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p>123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p>(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Instagram</a> |
+                        <a href="#">Twitter</a>
+                    </p>
+                    <p>Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Hearts & Threads. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        let cartItems = [];
+        let settings = {};
+
+        // Initialize checkout page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCheckoutData();
+        });
+
+        function loadCheckoutData() {
+            cartItems = utils.getSession('checkout_cart') || dataManager.getCartWithProducts();
+            settings = dataManager.getSettings() || {};
+
+            if (cartItems.length === 0) {
+                showEmptyCart();
+                return;
+            }
+
+            renderOrderSummary();
+            setupFormHandlers();
+            utils.updateCartCount();
+        }
+
+        function showEmptyCart() {
+            document.getElementById('empty-cart').style.display = 'block';
+            document.getElementById('checkout-form').style.display = 'none';
+        }
+
+        function renderOrderSummary() {
+            // Render order items
+            const itemsContainer = document.getElementById('order-items');
+            itemsContainer.innerHTML = cartItems.map(item => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">${item.product.name}</div>
+                        <div style="font-size: 0.9rem; color: #666;">
+                            ${item.product.category} ${item.size ? `• ${item.size}` : ''}
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666;">Qty: ${item.quantity}</div>
+                    </div>
+                    <div style="font-weight: 500;">
+                        ${utils.formatCurrency(item.product.price * item.quantity)}
+                    </div>
+                </div>
+            `).join('');
+
+            // Calculate totals
+            const subtotal = cartItems.reduce((total, item) => {
+                return total + (item.product.price * item.quantity);
+            }, 0);
+
+            const taxRate = settings.taxRate || 0.08;
+            const tax = subtotal * taxRate;
+            const freeShippingThreshold = settings.freeShippingThreshold || 50;
+            const shipping = subtotal >= freeShippingThreshold ? 0 : 5.99;
+            const total = subtotal + tax + shipping;
+
+            // Update summary
+            document.getElementById('subtotal').textContent = utils.formatCurrency(subtotal);
+            document.getElementById('tax').textContent = utils.formatCurrency(tax);
+            document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : utils.formatCurrency(shipping);
+            document.getElementById('total').textContent = utils.formatCurrency(total);
+
+            // Calculate impact (roughly 1 person helped per $15 spent)
+            const peopleHelped = Math.floor(total / 15);
+            document.getElementById('people-helped').textContent = peopleHelped || 1;
+        }
+
+        function setupFormHandlers() {
+            const form = document.getElementById('order-form');
+
+            // Card number formatting
+            document.getElementById('cardNumber').addEventListener('input', function() {
+                let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                this.value = formattedValue;
+            });
+
+            // CVV input restriction
+            document.getElementById('cvv').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            // ZIP code formatting
+            document.getElementById('zip').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9-]/g, '');
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                processOrder();
+            });
+        }
+
+        function processOrder() {
+            const form = document.getElementById('order-form');
+            const formData = new FormData(form);
+
+            // Validate form
+            const errors = utils.validateForm(form);
+            if (errors.length > 0) {
+                utils.showNotification(errors[0], 'error');
+                return;
+            }
+
+            // Show loading
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                // Calculate totals
+                const subtotal = cartItems.reduce((total, item) => {
+                    return total + (item.product.price * item.quantity);
+                }, 0);
+
+                const taxRate = settings.taxRate || 0.08;
+                const tax = subtotal * taxRate;
+                const freeShippingThreshold = settings.freeShippingThreshold || 50;
+                const shipping = subtotal >= freeShippingThreshold ? 0 : 5.99;
+                const total = subtotal + tax + shipping;
+
+                // Create order object
+                const order = {
+                    customerName: `${formData.get('firstName')} ${formData.get('lastName')}`,
+                    customerEmail: formData.get('email'),
+                    phone: formData.get('phone'),
+                    shippingAddress: {
+                        street: formData.get('address'),
+                        street2: formData.get('address2'),
+                        city: formData.get('city'),
+                        state: formData.get('state'),
+                        zip: formData.get('zip')
+                    },
+                    items: cartItems.map(item => ({
+                        productId: item.product.id,
+                        productName: item.product.name,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        size: item.size
+                    })),
+                    subtotal: subtotal,
+                    tax: tax,
+                    shipping: shipping,
+                    total: total,
+                    paymentMethod: 'Credit Card',
+                    status: 'pending'
+                };
+
+                // Save order
+                if (dataManager.addOrder(order)) {
+                    // Update product stock
+                    cartItems.forEach(item => {
+                        const currentStock = item.product.stock - item.quantity;
+                        dataManager.updateProduct(item.product.id, { stock: Math.max(0, currentStock) });
+                    });
+
+                    // Clear cart
+                    dataManager.clearCart();
+                    utils.clearSession('checkout_cart');
+
+                    // Show confirmation
+                    showOrderConfirmation(order);
+                } else {
+                    utils.showNotification('Order failed. Please try again.', 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 2000);
+        }
+
+        function showOrderConfirmation(order) {
+            document.getElementById('checkout-form').style.display = 'none';
+            document.getElementById('order-confirmation').style.display = 'block';
+
+            // Generate order details
+            const orderDetailsHtml = `
+                <div><strong>Order ID:</strong> ${order.id}</div>
+                <div><strong>Customer:</strong> ${order.customerName}</div>
+                <div><strong>Email:</strong> ${order.customerEmail}</div>
+                <div style="margin-top: 15px;">
+                    <strong>Items:</strong>
+                    ${order.items.map(item => `
+                        <div style="margin-left: 20px;">• ${item.productName} ${item.size ? `(${item.size})` : ''} × ${item.quantity}</div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 15px;"><strong>Total:</strong> ${utils.formatCurrency(order.total)}</div>
+            `;
+
+            document.getElementById('order-details').innerHTML = orderDetailsHtml;
+
+            // Update cart count
+            utils.updateCartCount();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

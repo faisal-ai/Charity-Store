@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Hearts & Threads</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="story.html" class="nav-link">Our Story</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate.html" class="nav-link">Donate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="impact.html" class="nav-link">Impact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link active">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="cart.html" class="nav-link cart-icon">
+                                🛒
+                                <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center">
+                <h1>Contact Us</h1>
+                <p>Get in touch - we'd love to hear from you!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Send us a Message</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="contact-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="first-name">First Name *</label>
+                                        <input type="text" id="first-name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last-name">Last Name *</label>
+                                        <input type="text" id="last-name" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject">Subject *</label>
+                                    <select id="subject" required>
+                                        <option value="">Select a subject</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="volunteer">Volunteer Opportunities</option>
+                                        <option value="donations">Donations</option>
+                                        <option value="pickup">Pickup Request</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Message *</label>
+                                    <textarea id="message" required rows="6" placeholder="Tell us how we can help you..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="checkbox" id="newsletter" style="width: auto;">
+                                        Subscribe to our newsletter for updates and impact stories
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Contact Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 25px;">
+                                <h5>📍 Address</h5>
+                                <p id="contact-address">123 Charity Lane<br>Helping City, HC 12345</p>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h5>📞 Phone</h5>
+                                <p id="contact-phone">(555) 123-4567</p>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h5>📧 Email</h5>
+                                <p><a href="mailto:info@heartsandthreads.org" id="contact-email">info@heartsandthreads.org</a></p>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h5>🕒 Hours</h5>
+                                <p id="contact-hours">
+                                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                    Saturday: 10:00 AM - 4:00 PM<br>
+                                    Sunday: Closed
+                                </p>
+                            </div>
+
+                            <div>
+                                <h5>🌐 Follow Us</h5>
+                                <p>
+                                    <a href="#" id="social-facebook">Facebook</a> |
+                                    <a href="#" id="social-instagram">Instagram</a> |
+                                    <a href="#" id="social-twitter">Twitter</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" style="background: #e8f5e8;">
+                        <div class="card-body">
+                            <h5 style="color: #2ecc71;">🤝 Get Involved</h5>
+                            <p>Interested in volunteering or partnerships? We're always looking for community support!</p>
+                            <a href="story.html" class="btn btn-primary btn-sm">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Find Us</h2>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div style="background: #f8f9fa; height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7f8c8d;">
+                        📍 Interactive Map Placeholder<br>
+                        <small>123 Charity Lane, Helping City, HC 12345</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="faq-item">
+                        <h4>What types of clothing do you accept?</h4>
+                        <p>We accept clean, gently used clothing for all ages, shoes, accessories, and special occasion wear. Items should be in good condition without stains or damage.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Do you offer pickup services?</h4>
+                        <p>Yes! We offer free pickup services for large donations. Simply fill out our pickup request form on the donate page, and we'll contact you to schedule.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Can I get a tax receipt for my donations?</h4>
+                        <p>Absolutely! We provide tax receipts for all monetary donations and can provide documentation for clothing donations. We're a registered 501(c)(3) nonprofit.</p>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="faq-item">
+                        <h4>How can I volunteer?</h4>
+                        <p>We have many volunteer opportunities! Contact us using the form above with "Volunteer Opportunities" as the subject, and we'll get back to you with current openings.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Do you have a wishlist of needed items?</h4>
+                        <p>Yes! We particularly need professional clothing, winter coats, children's clothing, and shoes. Check our social media for current specific needs.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>How do you help people in the community?</h4>
+                        <p>We partner with local shelters, job centers, and schools to identify families in need. We also have a dignified shopping experience where people can choose items that fit their needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>Hearts & Threads</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="shop.html">Shop</a></p>
+                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="story.html">Our Story</a></p>
+                    <p><a href="impact.html">Impact</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p>123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p>(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Instagram</a> |
+                        <a href="#">Twitter</a>
+                    </p>
+                    <p>Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Hearts & Threads. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/dataManager.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+        // Initialize contact page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContactInfo();
+            setupContactForm();
+        });
+
+        function loadContactInfo() {
+            const contactInfo = dataManager.getContent('contact');
+
+            if (contactInfo) {
+                if (contactInfo.address) {
+                    document.getElementById('contact-address').innerHTML = contactInfo.address.replace(', ', '<br>');
+                }
+                if (contactInfo.phone) {
+                    document.getElementById('contact-phone').textContent = contactInfo.phone;
+                }
+                if (contactInfo.email) {
+                    const emailElement = document.getElementById('contact-email');
+                    emailElement.textContent = contactInfo.email;
+                    emailElement.href = `mailto:${contactInfo.email}`;
+                }
+                if (contactInfo.hours) {
+                    document.getElementById('contact-hours').innerHTML = contactInfo.hours.replace(/,\s*/g, '<br>');
+                }
+                if (contactInfo.social) {
+                    document.getElementById('social-facebook').href = contactInfo.social.facebook;
+                    document.getElementById('social-instagram').href = contactInfo.social.instagram;
+                    document.getElementById('social-twitter').href = contactInfo.social.twitter;
+                }
+            }
+        }
+
+        function setupContactForm() {
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                processContactForm();
+            });
+        }
+
+        function processContactForm() {
+            const form = document.getElementById('contact-form');
+
+            // Validate form
+            const errors = utils.validateForm(form);
+            if (errors.length > 0) {
+                utils.showNotification(errors[0], 'error');
+                return;
+            }
+
+            // Get form data
+            const formData = {
+                firstName: document.getElementById('first-name').value,
+                lastName: document.getElementById('last-name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                newsletter: document.getElementById('newsletter').checked,
+                timestamp: new Date().toISOString()
+            };
+
+            // Simulate sending message
+            utils.showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
+
+            // Reset form
+            form.reset();
+
+            // Show confirmation
+            setTimeout(() => {
+                alert(`Message Sent Successfully!\n\nName: ${formData.firstName} ${formData.lastName}\nSubject: ${formData.subject}\n\nWe appreciate your interest in Hearts & Threads and will respond soon!`);
+            }, 1500);
+        }
+    </script>
+
+    <style>
+        .faq-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .faq-item h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .faq-item p {
+            margin: 0;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+    </style>
+</body>
+</html>
