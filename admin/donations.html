@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
+                <li><a href="orders.html"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donations.html" class="active"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html"><span class="icon">📝</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Donation Management</h1>
+                <div class="admin-user">
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 id="monetary-total">$0</h3>
+                            <p>Monetary Donations</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 id="clothing-total">0</h3>
+                            <p>Clothing Donations</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 id="pickup-requests">0</h3>
+                            <p>Pending Pickups</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations Table -->
+            <div class="admin-table">
+                <div class="table-header">
+                    <h3>All Donations</h3>
+                    <div class="table-actions">
+                        <select id="filter-type">
+                            <option value="">All Types</option>
+                            <option value="monetary">Monetary</option>
+                            <option value="clothing">Clothing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Donor</th>
+                                <th>Type</th>
+                                <th>Amount/Items</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donations-table">
+                            <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+            loadDonations();
+        });
+
+        function loadDonations() {
+            const donations = dataManager.getDonations();
+
+            // Update summary
+            const monetary = donations.filter(d => d.type === 'monetary');
+            const clothing = donations.filter(d => d.type === 'clothing');
+            const pickups = donations.filter(d => d.status === 'pickup_requested');
+
+            const monetaryTotal = monetary.reduce((sum, d) => sum + (d.amount || 0), 0);
+            document.getElementById('monetary-total').textContent = utils.formatCurrency(monetaryTotal);
+            document.getElementById('clothing-total').textContent = clothing.length;
+            document.getElementById('pickup-requests').textContent = pickups.length;
+
+            // Render table
+            const tableBody = document.getElementById('donations-table');
+            if (donations.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No donations yet</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = donations.map(donation => `
+                <tr>
+                    <td>${utils.formatDate(donation.date)}</td>
+                    <td>
+                        <strong>${donation.donorName}</strong><br>
+                        <small>${donation.donorEmail}</small>
+                    </td>
+                    <td>${donation.type === 'monetary' ? '💰 Monetary' : '👕 Clothing'}</td>
+                    <td>${donation.type === 'monetary' ? utils.formatCurrency(donation.amount) : (donation.items || 'Items')}</td>
+                    <td><span class="status-badge">${donation.status}</span></td>
+                    <td>
+                        ${donation.status === 'pickup_requested' ?
+                            `<button class="btn btn-sm btn-primary" onclick="schedulePickup('${donation.id}')">Schedule</button>` :
+                            '<span class="text-muted">-</span>'
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function schedulePickup(donationId) {
+            // Simplified pickup scheduling
+            utils.showNotification('Pickup scheduled! Donor will be contacted.', 'success');
+        }
+    </script>
+</body>
+</html>

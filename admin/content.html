@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
+                <li><a href="orders.html"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html" class="active"><span class="icon">📝</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Content Management</h1>
+                <div class="admin-user">
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body text-center" style="padding: 60px;">
+                    <h3>Content Management System</h3>
+                    <p>This feature allows editing of homepage content, story page content, and site settings.</p>
+                    <p class="text-muted">Full implementation would include form fields for editing hero sections, mission statements, team members, and contact information.</p>
+                    <a href="dashboard.html" class="btn btn-primary">Back to Dashboard</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        if (!utils.requireAuth()) utils.logout();
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
+                <li><a href="orders.html"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html"><span class="icon">📝</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Dashboard</h1>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card products">
+                    <div class="card-number" id="total-products">0</div>
+                    <div class="card-label">Total Products</div>
+                    <div class="card-change positive" id="active-products">0 active</div>
+                </div>
+
+                <div class="dashboard-card orders">
+                    <div class="card-number" id="total-orders">0</div>
+                    <div class="card-label">Total Orders</div>
+                    <div class="card-change positive" id="today-orders">0 today</div>
+                </div>
+
+                <div class="dashboard-card revenue">
+                    <div class="card-number" id="total-revenue">$0</div>
+                    <div class="card-label">Total Revenue</div>
+                    <div class="card-change positive" id="month-revenue">$0 this month</div>
+                </div>
+
+                <div class="dashboard-card customers">
+                    <div class="card-number" id="total-donations">0</div>
+                    <div class="card-label">Total Donations</div>
+                    <div class="card-change positive" id="recent-donations">0 recent</div>
+                </div>
+            </div>
+
+            <!-- Charts and Tables Row -->
+            <div class="row">
+                <div class="col-8">
+                    <!-- Recent Orders -->
+                    <div class="admin-table">
+                        <div class="table-header">
+                            <h3>Recent Orders</h3>
+                            <div class="table-actions">
+                                <a href="orders.html" class="btn btn-primary btn-sm">View All</a>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-orders-table">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <a href="products.html" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
+                                Add New Product
+                            </a>
+                            <a href="orders.html" class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">
+                                View Orders
+                            </a>
+                            <a href="donations.html" class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">
+                                Manage Donations
+                            </a>
+                            <a href="content.html" class="btn btn-outline" style="width: 100%;">
+                                Edit Content
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Low Stock Alerts -->
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h3>Low Stock Alerts</h3>
+                        </div>
+                        <div class="card-body" id="low-stock-alerts">
+                            <p class="text-center">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Chart -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Sales Overview</h3>
+                            <div>
+                                <select id="chart-period" style="width: auto;">
+                                    <option value="7">Last 7 Days</option>
+                                    <option value="30" selected>Last 30 Days</option>
+                                    <option value="90">Last 90 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-placeholder">
+                            📊 Sales chart would go here (Chart.js or similar could be integrated)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!utils.requireAuth()) return;
+
+            loadDashboard();
+        });
+
+        function loadDashboard() {
+            const user = utils.getSession('admin_user');
+            if (user) {
+                document.getElementById('admin-name').textContent = user.username;
+            }
+
+            const stats = dataManager.getDashboardStats();
+            updateDashboardStats(stats);
+            loadRecentOrders();
+            loadLowStockAlerts();
+        }
+
+        function updateDashboardStats(stats) {
+            document.getElementById('total-products').textContent = stats.totalProducts;
+            document.getElementById('active-products').textContent = `${stats.activeProducts} active`;
+
+            document.getElementById('total-orders').textContent = stats.totalOrders;
+            document.getElementById('today-orders').textContent = `${stats.todayOrders} today`;
+
+            document.getElementById('total-revenue').textContent = utils.formatCurrency(stats.totalRevenue);
+            document.getElementById('month-revenue').textContent = `${utils.formatCurrency(stats.monthRevenue)} this month`;
+
+            document.getElementById('total-donations').textContent = stats.totalDonations;
+            document.getElementById('recent-donations').textContent = `${stats.monetaryDonations + stats.clothingDonations} recent`;
+        }
+
+        function loadRecentOrders() {
+            const orders = dataManager.getOrders()
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .slice(0, 10);
+
+            const tableBody = document.getElementById('recent-orders-table');
+
+            if (orders.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No orders yet</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>#${order.id.slice(-6)}</td>
+                    <td>${order.customerName}</td>
+                    <td>${utils.formatDate(order.createdAt)}</td>
+                    <td>${order.items.length} items</td>
+                    <td>${utils.formatCurrency(order.total)}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function loadLowStockAlerts() {
+            const products = dataManager.getProducts();
+            const lowStockProducts = products.filter(p => p.stock < 5 && p.active !== false);
+
+            const container = document.getElementById('low-stock-alerts');
+
+            if (lowStockProducts.length === 0) {
+                container.innerHTML = '<p class="text-center">All products are well stocked!</p>';
+                return;
+            }
+
+            container.innerHTML = lowStockProducts.map(product => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <div>
+                        <strong>${product.name}</strong><br>
+                        <small>Stock: ${product.stock}</small>
+                    </div>
+                    <a href="products.html" class="btn btn-sm btn-outline">Edit</a>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
+                <li><a href="orders.html" class="active"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html"><span class="icon">📝</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Order Management</h1>
+                <div class="admin-user">
+                    <button class="btn btn-secondary" onclick="exportOrders()">Export Orders</button>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="admin-table">
+                <div class="table-header">
+                    <h3>All Orders</h3>
+                    <div class="table-actions">
+                        <select id="filter-status" style="width: 120px; margin-right: 10px;">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                        <input type="text" id="search-orders" placeholder="Search orders..." style="width: 200px;">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table">
+                            <tr>
+                                <td colspan="7" class="text-center">Loading orders...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-container" class="text-center mt-4"></div>
+        </main>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="order-details">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        let allOrders = [];
+        let filteredOrders = [];
+        let currentPage = 1;
+        let itemsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+            loadOrders();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('filter-status').addEventListener('change', applyFilters);
+            document.getElementById('search-orders').addEventListener('input', utils.debounce(applyFilters, 300));
+        }
+
+        function loadOrders() {
+            allOrders = dataManager.getOrders().sort((a, b) => b.createdAt - a.createdAt);
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const status = document.getElementById('filter-status').value;
+            const search = document.getElementById('search-orders').value.toLowerCase();
+
+            filteredOrders = allOrders.filter(order => {
+                const matchesStatus = !status || order.status === status;
+                const matchesSearch = !search ||
+                    order.customerName.toLowerCase().includes(search) ||
+                    order.customerEmail.toLowerCase().includes(search) ||
+                    order.id.includes(search);
+
+                return matchesStatus && matchesSearch;
+            });
+
+            currentPage = 1;
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const paginatedData = utils.paginate(filteredOrders, currentPage, itemsPerPage);
+            const tableBody = document.getElementById('orders-table');
+
+            if (paginatedData.items.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No orders found</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = paginatedData.items.map(order => `
+                <tr>
+                    <td>#${order.id.slice(-6)}</td>
+                    <td>
+                        <strong>${order.customerName}</strong><br>
+                        <small class="text-muted">${order.customerEmail}</small>
+                    </td>
+                    <td>${utils.formatDate(order.createdAt)}</td>
+                    <td>${order.items.length} items</td>
+                    <td>${utils.formatCurrency(order.total)}</td>
+                    <td>
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" class="status-badge">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-icon btn-view" onclick="viewOrder('${order.id}')" title="View Details">👁️</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            renderPagination(paginatedData);
+        }
+
+        function renderPagination(paginatedData) {
+            const container = document.getElementById('pagination-container');
+            if (paginatedData.totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = utils.createPaginationHTML(paginatedData, changePage);
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderOrders();
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            if (dataManager.updateOrderStatus(orderId, newStatus)) {
+                utils.showNotification('Order status updated!', 'success');
+                loadOrders();
+            } else {
+                utils.showNotification('Failed to update order status', 'error');
+            }
+        }
+
+        function viewOrder(orderId) {
+            const order = dataManager.getOrderById(orderId);
+            if (!order) {
+                utils.showNotification('Order not found', 'error');
+                return;
+            }
+
+            const detailsHTML = `
+                <div class="row">
+                    <div class="col-6">
+                        <h4>Customer Information</h4>
+                        <p><strong>Name:</strong> ${order.customerName}</p>
+                        <p><strong>Email:</strong> ${order.customerEmail}</p>
+                        <p><strong>Phone:</strong> ${order.phone}</p>
+
+                        <h4 class="mt-4">Shipping Address</h4>
+                        <p>
+                            ${order.shippingAddress.street}<br>
+                            ${order.shippingAddress.street2 ? order.shippingAddress.street2 + '<br>' : ''}
+                            ${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zip}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <h4>Order Summary</h4>
+                        <p><strong>Order ID:</strong> ${order.id}</p>
+                        <p><strong>Date:</strong> ${utils.formatDate(order.createdAt)}</p>
+                        <p><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status}</span></p>
+
+                        <div class="mt-3">
+                            <p>Subtotal: ${utils.formatCurrency(order.subtotal)}</p>
+                            <p>Tax: ${utils.formatCurrency(order.tax)}</p>
+                            <p>Shipping: ${utils.formatCurrency(order.shipping)}</p>
+                            <p><strong>Total: ${utils.formatCurrency(order.total)}</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Order Items</h4>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Size</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr>
+                                    <td>${item.productName}</td>
+                                    <td>${item.size || 'N/A'}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${utils.formatCurrency(item.price)}</td>
+                                    <td>${utils.formatCurrency(item.price * item.quantity)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('order-details').innerHTML = detailsHTML;
+            utils.openModal('#order-modal');
+        }
+
+        function exportOrders() {
+            const exportData = dataManager.exportOrders();
+            utils.exportDataAsCSV(exportData, `orders_${new Date().toISOString().split('T')[0]}.csv`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Hearts & Threads</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Hearts & Threads</h2>
+                <p>Admin Panel Login</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="remember-me" style="width: auto;">
+                        Remember me
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                    Login
+                </button>
+
+                <div class="text-center mt-3">
+                    <small class="text-muted">
+                        Demo credentials: <strong>admin</strong> / <strong>admin123</strong>
+                    </small>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="../index.html" style="color: #7f8c8d;">← Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (utils.isAuthenticated()) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            setupLoginForm();
+        });
+
+        function setupLoginForm() {
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+        }
+
+        function handleLogin() {
+            const form = document.getElementById('login-form');
+            const formData = new FormData(form);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const rememberMe = formData.get('remember-me');
+
+            // Validate form
+            if (!username || !password) {
+                utils.showNotification('Please enter both username and password', 'error');
+                return;
+            }
+
+            // Authenticate user
+            const user = dataManager.authenticateAdmin(username, password);
+
+            if (user) {
+                // Store session
+                utils.setSession('admin_user', {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role,
+                    loginTime: Date.now()
+                });
+
+                utils.showNotification('Login successful!', 'success');
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                utils.showNotification('Invalid username or password', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
