@@ -6,18 +6,107 @@
     <title>Content Management - Admin Panel</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .content-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+        .content-tab-btn {
+            padding: 15px 25px;
+            border: none;
+            background: transparent;
+            color: #7f8c8d;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s ease;
+        }
+        .content-tab-btn:hover {
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        .content-tab-btn.active {
+            background: white;
+            color: #e74c3c;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .image-uploader {
+            border: 2px dashed #e0e6ed;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .image-uploader:hover {
+            border-color: #e74c3c;
+            background: #fff;
+        }
+        .image-uploader.dragover {
+            border-color: #e74c3c;
+            background: #fff3f3;
+        }
+        .preview-image {
+            max-width: 300px;
+            max-height: 200px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 8px;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .image-item {
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .image-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .image-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .image-item-info {
+            padding: 10px;
+            background: white;
+        }
+        .image-item-actions {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
         <nav class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+                <a href="dashboard.html" class="sidebar-brand">Charity Store</a>
             </div>
             <ul class="sidebar-nav">
                 <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
-                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
-                <li><a href="orders.html"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="content.html" class="active"><span class="icon">📝</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
@@ -29,25 +118,430 @@
             <div class="admin-header">
                 <h1>Content Management</h1>
                 <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
                     <button class="logout-btn" onclick="utils.logout()">Logout</button>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body text-center" style="padding: 60px;">
-                    <h3>Content Management System</h3>
-                    <p>This feature allows editing of homepage content, story page content, and site settings.</p>
-                    <p class="text-muted">Full implementation would include form fields for editing hero sections, mission statements, team members, and contact information.</p>
-                    <a href="dashboard.html" class="btn btn-primary">Back to Dashboard</a>
+            <!-- Content Tabs -->
+            <div class="content-tabs">
+                <button class="content-tab-btn active" onclick="showContentTab('homepage')">Homepage</button>
+                <button class="content-tab-btn" onclick="showContentTab('images')">Images</button>
+                <button class="content-tab-btn" onclick="showContentTab('story')">Our Story</button>
+                <button class="content-tab-btn" onclick="showContentTab('impact')">Impact Page</button>
+            </div>
+
+            <!-- Homepage Content -->
+            <div id="content-homepage" class="content-section active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Homepage Hero Section</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="homepage-form">
+                            <div class="form-group">
+                                <label for="hero-title">Hero Title</label>
+                                <input type="text" id="hero-title" placeholder="Transforming Lives Through Giving">
+                            </div>
+                            <div class="form-group">
+                                <label for="hero-subtitle">Hero Subtitle</label>
+                                <textarea id="hero-subtitle" rows="3" placeholder="Join our mission to create positive change..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="mission-statement">Mission Statement</label>
+                                <textarea id="mission-statement" rows="4" placeholder="Our mission is to..."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveHomepageContent()">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Images Content -->
+            <div id="content-images" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Image Gallery</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 20px;">
+                            <label for="image-category" style="display: block; margin-bottom: 10px; font-weight: 600;">
+                                Select where this image will be used:
+                            </label>
+                            <select id="image-category" style="width: 100%; padding: 10px; border: 1px solid #e0e6ed; border-radius: 5px; font-size: 14px;">
+                                <option value="homepage-hero">Homepage - Hero Section</option>
+                                <option value="homepage-gallery">Homepage - Image Gallery</option>
+                                <option value="story">Our Story Page</option>
+                                <option value="team">Team Members</option>
+                                <option value="impact">Impact Page</option>
+                                <option value="donate">Donation Page</option>
+                                <option value="general">General / Other</option>
+                            </select>
+                        </div>
+
+                        <div class="image-uploader" id="image-uploader" onclick="document.getElementById('image-input').click()">
+                            <input type="file" id="image-input" accept="image/*" style="display:none" onchange="handleImageUpload(event)" multiple>
+                            <div id="upload-placeholder">
+                                <svg width="64" height="64" style="margin: 0 auto; display: block;" fill="#e74c3c" viewBox="0 0 24 24">
+                                    <path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/>
+                                </svg>
+                                <p style="margin-top: 15px; color: #7f8c8d;">
+                                    <strong>Click to upload</strong> or drag and drop<br>
+                                    <small>PNG, JPG, GIF up to 5MB</small>
+                                </p>
+                            </div>
+                            <div id="upload-preview" style="display:none;">
+                                <img id="preview-img" class="preview-image">
+                                <p id="preview-name"></p>
+                            </div>
+                        </div>
+
+                        <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                            <strong>Filter by page:</strong>
+                            <select id="filter-category" onchange="loadImageGallery()" style="margin-left: 10px; padding: 5px 10px; border: 1px solid #e0e6ed; border-radius: 5px;">
+                                <option value="all">All Images</option>
+                                <option value="homepage-hero">Homepage - Hero</option>
+                                <option value="homepage-gallery">Homepage - Gallery</option>
+                                <option value="story">Our Story</option>
+                                <option value="team">Team Members</option>
+                                <option value="impact">Impact Page</option>
+                                <option value="donate">Donation Page</option>
+                                <option value="general">General / Other</option>
+                            </select>
+                        </div>
+
+                        <div class="image-gallery" id="image-gallery">
+                            <p class="text-center">No images uploaded yet. Upload images to manage website photos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Content -->
+            <div id="content-story" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Our Story Page</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="story-form">
+                            <div class="form-group">
+                                <label for="story-title">Page Title</label>
+                                <input type="text" id="story-title" placeholder="Our Story">
+                            </div>
+                            <div class="form-group">
+                                <label for="story-content">Story Content</label>
+                                <textarea id="story-content" rows="10" placeholder="Tell your organization's story..."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveStoryContent()">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Content -->
+            <div id="content-impact" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Impact Page</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="impact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="lives-impacted">Lives Impacted</label>
+                                    <input type="number" id="lives-impacted" placeholder="500+">
+                                </div>
+                                <div class="form-group">
+                                    <label for="donations-received">Donations Received</label>
+                                    <input type="number" id="donations-received" placeholder="1000+">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="impact-description">Impact Description</label>
+                                <textarea id="impact-description" rows="6" placeholder="Describe your impact..."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveImpactContent()">Save Changes</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="../js/dataManager.js"></script>
+    <script src="../js/dataManager.js?v=2"></script>
     <script src="../js/utils.js"></script>
     <script>
-        if (!utils.requireAuth()) utils.logout();
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+
+            const adminUser = utils.getSession('admin_user');
+            if (adminUser && adminUser.username) {
+                document.getElementById('admin-name').textContent = adminUser.username;
+            }
+
+            loadContent();
+            setupDragAndDrop();
+        });
+
+        function showContentTab(tabName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.content-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById('content-' + tabName).classList.add('active');
+
+            // Add active to clicked button
+            event.target.classList.add('active');
+        }
+
+        function loadContent() {
+            const content = dataManager.getContent() || {};
+
+            // Load homepage content
+            if (content.homepage) {
+                document.getElementById('hero-title').value = content.homepage.heroTitle || '';
+                document.getElementById('hero-subtitle').value = content.homepage.heroSubtitle || '';
+                document.getElementById('mission-statement').value = content.homepage.missionStatement || '';
+            }
+
+            // Load story content
+            if (content.story) {
+                document.getElementById('story-title').value = content.story.title || '';
+                document.getElementById('story-content').value = content.story.content || '';
+            }
+
+            // Load impact content
+            if (content.impact) {
+                document.getElementById('lives-impacted').value = content.impact.livesImpacted || '';
+                document.getElementById('donations-received').value = content.impact.donationsReceived || '';
+                document.getElementById('impact-description').value = content.impact.description || '';
+            }
+
+            // Load images
+            loadImageGallery();
+        }
+
+        function saveHomepageContent() {
+            const content = {
+                heroTitle: document.getElementById('hero-title').value,
+                heroSubtitle: document.getElementById('hero-subtitle').value,
+                missionStatement: document.getElementById('mission-statement').value
+            };
+
+            if (dataManager.updateContent('homepage', content)) {
+                utils.showNotification('Homepage content saved!', 'success');
+            } else {
+                utils.showNotification('Failed to save content', 'error');
+            }
+        }
+
+        function saveStoryContent() {
+            const content = {
+                title: document.getElementById('story-title').value,
+                content: document.getElementById('story-content').value
+            };
+
+            if (dataManager.updateContent('story', content)) {
+                utils.showNotification('Story content saved!', 'success');
+            } else {
+                utils.showNotification('Failed to save content', 'error');
+            }
+        }
+
+        function saveImpactContent() {
+            const content = {
+                livesImpacted: document.getElementById('lives-impacted').value,
+                donationsReceived: document.getElementById('donations-received').value,
+                description: document.getElementById('impact-description').value
+            };
+
+            if (dataManager.updateContent('impact', content)) {
+                utils.showNotification('Impact content saved!', 'success');
+            } else {
+                utils.showNotification('Failed to save content', 'error');
+            }
+        }
+
+        // Image Upload Functions
+        function setupDragAndDrop() {
+            const uploader = document.getElementById('image-uploader');
+
+            uploader.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploader.classList.add('dragover');
+            });
+
+            uploader.addEventListener('dragleave', () => {
+                uploader.classList.remove('dragover');
+            });
+
+            uploader.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploader.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                handleImageFiles(files);
+            });
+        }
+
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            handleImageFiles(files);
+        }
+
+        function handleImageFiles(files) {
+            if (files.length === 0) return;
+
+            const category = document.getElementById('image-category').value;
+            console.log('Processing', files.length, 'files for category:', category);
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                console.log('Processing file:', file.name, 'Type:', file.type, 'Size:', file.size);
+
+                if (!file.type.startsWith('image/')) {
+                    utils.showNotification('Please upload only image files', 'error');
+                    continue;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    utils.showNotification('Image size should be less than 5MB', 'error');
+                    continue;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log('File loaded, data length:', e.target.result.length);
+
+                    const imageData = {
+                        name: file.name,
+                        data: e.target.result,
+                        size: file.size,
+                        type: file.type,
+                        category: category,
+                        uploadedAt: Date.now()
+                    };
+
+                    console.log('Attempting to save image:', imageData.name, 'Category:', category);
+
+                    try {
+                        const result = dataManager.addImage(imageData);
+                        console.log('Save result:', result);
+
+                        if (result) {
+                            utils.showNotification(`Image "${file.name}" uploaded to "${getCategoryLabel(category)}"!`, 'success');
+                            loadImageGallery();
+                        } else {
+                            // Check localStorage usage
+                            let totalSize = 0;
+                            for (let key in localStorage) {
+                                if (localStorage.hasOwnProperty(key)) {
+                                    totalSize += localStorage[key].length + key.length;
+                                }
+                            }
+                            const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+
+                            utils.showNotification(`Failed to upload image. Storage may be full (${sizeMB}MB used). Try smaller images or delete old ones.`, 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error saving image:', error);
+                        utils.showNotification('Error uploading image: ' + error.message, 'error');
+                    }
+                };
+                reader.onerror = function(error) {
+                    console.error('FileReader error:', error);
+                    utils.showNotification('Error reading file', 'error');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {
+                'homepage-hero': 'Homepage - Hero Section',
+                'homepage-gallery': 'Homepage - Image Gallery',
+                'story': 'Our Story Page',
+                'team': 'Team Members',
+                'impact': 'Impact Page',
+                'donate': 'Donation Page',
+                'general': 'General / Other'
+            };
+            return labels[category] || category;
+        }
+
+        function loadImageGallery() {
+            const images = dataManager.getImages() || [];
+            const gallery = document.getElementById('image-gallery');
+            const filterCategory = document.getElementById('filter-category').value;
+
+            console.log('Loading image gallery, found', images.length, 'images');
+
+            // Filter images by category
+            let filteredImages = images;
+            if (filterCategory !== 'all') {
+                filteredImages = images.filter(img => img.category === filterCategory);
+            }
+
+            if (filteredImages.length === 0) {
+                const message = filterCategory === 'all'
+                    ? 'No images uploaded yet. Upload images to manage website photos.'
+                    : `No images uploaded for "${getCategoryLabel(filterCategory)}" yet.`;
+                gallery.innerHTML = `<p class="text-center" style="grid-column: 1/-1;">${message}</p>`;
+                return;
+            }
+
+            console.log('Images to display:', filteredImages.length);
+
+            gallery.innerHTML = filteredImages.map((img, originalIndex) => {
+                // Find the original index in the full images array
+                const fullIndex = images.findIndex(i => i.id === img.id);
+                console.log('Rendering image', fullIndex, ':', img.name, 'Category:', img.category);
+
+                return `
+                <div class="image-item">
+                    <img src="${img.data}" alt="${img.name}">
+                    <div class="image-item-info">
+                        <strong>${img.name}</strong><br>
+                        <small>${(img.size / 1024).toFixed(1)} KB</small><br>
+                        <span style="color: #e74c3c; font-weight: 600; font-size: 12px; display: inline-block; margin-top: 5px;">
+                            📍 ${getCategoryLabel(img.category || 'general')}
+                        </span>
+                    </div>
+                    <div class="image-item-actions">
+                        <button class="btn btn-sm btn-primary" onclick="copyImageUrl('${img.data}')">Copy URL</button>
+                        <button class="btn btn-sm btn-outline" onclick="deleteImage(${fullIndex})">Delete</button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            console.log('Gallery HTML updated');
+        }
+
+        function copyImageUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                utils.showNotification('Image URL copied to clipboard!', 'success');
+            });
+        }
+
+        function deleteImage(index) {
+            if (confirm('Are you sure you want to delete this image?')) {
+                if (dataManager.deleteImage(index)) {
+                    utils.showNotification('Image deleted successfully!', 'success');
+                    loadImageGallery();
+                } else {
+                    utils.showNotification('Failed to delete image', 'error');
+                }
+            }
+        }
     </script>
 </body>
 </html>

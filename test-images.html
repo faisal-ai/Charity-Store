@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test - Diagnostic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 150px;
+            margin: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Image System Diagnostic</h1>
+        <p>This page checks if images are properly stored and if the functions are working.</p>
+
+        <div id="results"></div>
+
+        <button onclick="runDiagnostic()">Run Diagnostic</button>
+        <button onclick="showAllImages()">Show All Images</button>
+        <button onclick="clearAllImages()">Clear All Images</button>
+
+        <div id="image-display"></div>
+    </div>
+
+    <script src="js/dataManager.js?v=4"></script>
+    <script>
+        function runDiagnostic() {
+            const resultsDiv = document.getElementById('results');
+            let html = '';
+
+            // Test 1: Check if dataManager exists
+            html += '<div class="section ' + (typeof dataManager !== 'undefined' ? 'success' : 'error') + '">';
+            html += '<strong>Test 1: DataManager Object</strong><br>';
+            html += typeof dataManager !== 'undefined' ? '✅ DataManager exists' : '❌ DataManager not found';
+            html += '</div>';
+
+            if (typeof dataManager === 'undefined') {
+                resultsDiv.innerHTML = html;
+                return;
+            }
+
+            // Test 2: Check if getImages function exists
+            html += '<div class="section ' + (typeof dataManager.getImages === 'function' ? 'success' : 'error') + '">';
+            html += '<strong>Test 2: getImages Function</strong><br>';
+            html += typeof dataManager.getImages === 'function' ? '✅ getImages function exists' : '❌ getImages function not found';
+            html += '</div>';
+
+            // Test 3: Try to get images
+            try {
+                const images = dataManager.getImages();
+                const imageCount = images ? images.length : 0;
+
+                html += '<div class="section ' + (imageCount > 0 ? 'success' : 'warning') + '">';
+                html += '<strong>Test 3: Images in Storage</strong><br>';
+                html += imageCount > 0 ? `✅ Found ${imageCount} images` : '⚠️ No images found in storage';
+                html += '</div>';
+
+                // Test 4: Show image categories
+                if (imageCount > 0) {
+                    const categories = {};
+                    images.forEach(img => {
+                        const cat = img.category || 'uncategorized';
+                        categories[cat] = (categories[cat] || 0) + 1;
+                    });
+
+                    html += '<div class="section info">';
+                    html += '<strong>Test 4: Image Categories</strong><br>';
+                    html += '<pre>' + JSON.stringify(categories, null, 2) + '</pre>';
+                    html += '</div>';
+
+                    // Test 5: Show sample image data
+                    html += '<div class="section info">';
+                    html += '<strong>Test 5: Sample Image Data</strong><br>';
+                    const sampleImage = images[0];
+                    html += '<pre>' + JSON.stringify({
+                        name: sampleImage.name,
+                        size: sampleImage.size,
+                        type: sampleImage.type,
+                        category: sampleImage.category,
+                        hasData: !!sampleImage.data,
+                        dataLength: sampleImage.data ? sampleImage.data.length : 0
+                    }, null, 2) + '</pre>';
+                    html += '</div>';
+                }
+
+                // Test 6: Check localStorage directly
+                const directCheck = localStorage.getItem('charity_store_images');
+                html += '<div class="section ' + (directCheck ? 'success' : 'warning') + '">';
+                html += '<strong>Test 6: Direct localStorage Check</strong><br>';
+                if (directCheck) {
+                    const parsed = JSON.parse(directCheck);
+                    html += `✅ Found data in localStorage<br>`;
+                    html += `Images stored: ${parsed.length}<br>`;
+                    html += `Storage size: ${(directCheck.length / 1024).toFixed(2)} KB`;
+                } else {
+                    html += '⚠️ No data in charity_store_images key';
+                }
+                html += '</div>';
+
+            } catch (error) {
+                html += '<div class="section error">';
+                html += '<strong>Error during diagnostic:</strong><br>';
+                html += error.message;
+                html += '<pre>' + error.stack + '</pre>';
+                html += '</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function showAllImages() {
+            const displayDiv = document.getElementById('image-display');
+
+            try {
+                const images = dataManager.getImages();
+
+                if (!images || images.length === 0) {
+                    displayDiv.innerHTML = '<div class="section warning">No images to display</div>';
+                    return;
+                }
+
+                let html = '<div class="section info">';
+                html += '<h3>All Images in Storage:</h3>';
+
+                images.forEach((img, index) => {
+                    html += `
+                        <div style="display: inline-block; margin: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <img src="${img.data}" alt="${img.name}" class="image-preview"><br>
+                            <strong>${img.name}</strong><br>
+                            <small>Category: ${img.category || 'none'}</small><br>
+                            <small>Size: ${(img.size / 1024).toFixed(1)} KB</small>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                displayDiv.innerHTML = html;
+
+            } catch (error) {
+                displayDiv.innerHTML = '<div class="section error">Error: ' + error.message + '</div>';
+            }
+        }
+
+        function clearAllImages() {
+            if (confirm('Are you sure you want to delete ALL images? This cannot be undone.')) {
+                try {
+                    localStorage.removeItem('charity_store_images');
+                    document.getElementById('results').innerHTML = '<div class="section success">All images cleared!</div>';
+                    document.getElementById('image-display').innerHTML = '';
+                } catch (error) {
+                    document.getElementById('results').innerHTML = '<div class="section error">Error: ' + error.message + '</div>';
+                }
+            }
+        }
+
+        // Auto-run diagnostic on load
+        window.addEventListener('DOMContentLoaded', function() {
+            runDiagnostic();
+        });
+    </script>
+</body>
+</html>

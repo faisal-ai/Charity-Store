@@ -12,12 +12,13 @@
         <!-- Sidebar -->
         <nav class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="dashboard.html" class="sidebar-brand">Hearts & Threads</a>
+                <a href="dashboard.html" class="sidebar-brand">Charity Store</a>
             </div>
             <ul class="sidebar-nav">
                 <li><a href="dashboard.html" class="active"><span class="icon">📊</span> Dashboard</a></li>
-                <li><a href="products.html"><span class="icon">👕</span> Products</a></li>
-                <li><a href="orders.html"><span class="icon">📦</span> Orders</a></li>
+                <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="content.html"><span class="icon">📝</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
@@ -37,114 +38,105 @@
 
             <!-- Dashboard Cards -->
             <div class="dashboard-cards">
-                <div class="dashboard-card products">
-                    <div class="card-number" id="total-products">0</div>
-                    <div class="card-label">Total Products</div>
-                    <div class="card-change positive" id="active-products">0 active</div>
+                <div class="dashboard-card donation-bookings">
+                    <div class="card-number" id="total-donation-bookings">0</div>
+                    <div class="card-label">Donation Bookings</div>
+                    <div class="card-change positive" id="today-donation-bookings">0 today</div>
                 </div>
 
-                <div class="dashboard-card orders">
-                    <div class="card-number" id="total-orders">0</div>
-                    <div class="card-label">Total Orders</div>
-                    <div class="card-change positive" id="today-orders">0 today</div>
+                <div class="dashboard-card mentoring-bookings">
+                    <div class="card-number" id="total-mentoring-bookings">0</div>
+                    <div class="card-label">Mentoring Sessions</div>
+                    <div class="card-change positive" id="today-mentoring-bookings">0 today</div>
                 </div>
 
-                <div class="dashboard-card revenue">
-                    <div class="card-number" id="total-revenue">$0</div>
-                    <div class="card-label">Total Revenue</div>
-                    <div class="card-change positive" id="month-revenue">$0 this month</div>
+                <div class="dashboard-card mentors">
+                    <div class="card-number" id="total-mentors">0</div>
+                    <div class="card-label">Active Mentors</div>
+                    <div class="card-change positive" id="mentor-stats">Available</div>
                 </div>
 
-                <div class="dashboard-card customers">
+                <div class="dashboard-card donations">
                     <div class="card-number" id="total-donations">0</div>
                     <div class="card-label">Total Donations</div>
-                    <div class="card-change positive" id="recent-donations">0 recent</div>
+                    <div class="card-change positive" id="donation-stats">Received</div>
                 </div>
             </div>
 
-            <!-- Charts and Tables Row -->
-            <div class="row">
-                <div class="col-8">
-                    <!-- Recent Orders -->
-                    <div class="admin-table">
-                        <div class="table-header">
-                            <h3>Recent Orders</h3>
-                            <div class="table-actions">
-                                <a href="orders.html" class="btn btn-primary btn-sm">View All</a>
+            <!-- Recent Activity -->
+            <div class="dashboard-content">
+                <!-- Pending Bookings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Pending Bookings</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline" onclick="refreshPendingBookings()">Refresh</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="pending-tabs">
+                            <button class="tab-btn active" onclick="showPendingTab('donations')">Donation Slots</button>
+                            <button class="tab-btn" onclick="showPendingTab('mentoring')">Mentoring Sessions</button>
+                        </div>
+
+                        <div id="pending-donations" class="pending-content active">
+                            <div class="pending-list" id="pending-donation-list">
+                                <div class="empty-state">
+                                    <p>No pending donation bookings</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="recent-orders-table">
-                                    <tr>
-                                        <td colspan="6" class="text-center">Loading...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <div id="pending-mentoring" class="pending-content">
+                            <div class="pending-list" id="pending-mentoring-list">
+                                <div class="empty-state">
+                                    <p>No pending mentoring bookings</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-4">
-                    <!-- Quick Actions -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Quick Actions</h3>
-                        </div>
-                        <div class="card-body">
-                            <a href="products.html" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
-                                Add New Product
-                            </a>
-                            <a href="orders.html" class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">
-                                View Orders
-                            </a>
-                            <a href="donations.html" class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">
-                                Manage Donations
-                            </a>
-                            <a href="content.html" class="btn btn-outline" style="width: 100%;">
-                                Edit Content
-                            </a>
+                <!-- Recent Activity Feed -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline" onclick="refreshActivity()">Refresh</button>
                         </div>
                     </div>
-
-                    <!-- Low Stock Alerts -->
-                    <div class="card mt-3">
-                        <div class="card-header">
-                            <h3>Low Stock Alerts</h3>
-                        </div>
-                        <div class="card-body" id="low-stock-alerts">
-                            <p class="text-center">Loading...</p>
+                    <div class="card-body">
+                        <div class="activity-feed" id="activity-feed">
+                            <div class="empty-state">
+                                <p>No recent activity</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sales Chart -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <h3>Sales Overview</h3>
-                            <div>
-                                <select id="chart-period" style="width: auto;">
-                                    <option value="7">Last 7 Days</option>
-                                    <option value="30" selected>Last 30 Days</option>
-                                    <option value="90">Last 90 Days</option>
-                                </select>
+                <!-- Quick Stats -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>This Week's Stats</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="week-donations">0</div>
+                                <div class="stat-label">Donation Bookings</div>
                             </div>
-                        </div>
-                        <div class="chart-placeholder">
-                            📊 Sales chart would go here (Chart.js or similar could be integrated)
+                            <div class="stat-item">
+                                <div class="stat-number" id="week-mentoring">0</div>
+                                <div class="stat-label">Mentoring Sessions</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="pending-confirmations">0</div>
+                                <div class="stat-label">Pending Confirmations</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="completed-this-week">0</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,88 +144,458 @@
         </main>
     </div>
 
-    <!-- Scripts -->
+    <!-- Booking Action Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Booking Details</h3>
+                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Booking details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeBookingModal()">Close</button>
+                <button class="btn btn-success" id="confirm-btn" onclick="confirmBooking()">Confirm</button>
+                <button class="btn btn-danger" id="cancel-btn" onclick="cancelBooking()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/dataManager.js"></script>
     <script src="../js/utils.js"></script>
     <script>
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            if (!utils.requireAuth()) return;
+        // Check authentication with fallback
+        function checkAuth() {
+            if (typeof utils !== 'undefined' && utils.requireAuth && typeof utils.requireAuth === 'function') {
+                if (!utils.requireAuth()) {
+                    if (utils.logout) {
+                        utils.logout();
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                }
+            } else {
+                // Fallback authentication check
+                const adminUser = sessionStorage.getItem('admin_user');
+                if (!adminUser) {
+                    window.location.href = 'login.html';
+                }
+            }
+        }
 
-            loadDashboard();
+        let currentBooking = null;
+
+        // Initialize dashboard with error handling
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                checkAuth();
+
+                // Initialize functions with error handling
+                if (typeof dataManager !== 'undefined') {
+                    loadDashboardData();
+                    loadPendingBookings();
+                    loadRecentActivity();
+                } else {
+                    console.warn('DataManager not available, using placeholder data');
+                    // Show empty dashboard with placeholder
+                    showEmptyDashboard();
+                }
+
+                // Set admin name from session
+                const adminUser = getSessionData('admin_user');
+                if (adminUser && adminUser.username) {
+                    document.getElementById('admin-name').textContent = adminUser.username;
+                }
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+                showErrorMessage('Error loading dashboard. Please refresh the page.');
+            }
         });
 
-        function loadDashboard() {
-            const user = utils.getSession('admin_user');
-            if (user) {
-                document.getElementById('admin-name').textContent = user.username;
+        // Fallback session getter
+        function getSessionData(key) {
+            try {
+                if (typeof utils !== 'undefined' && utils.getSession) {
+                    return utils.getSession(key);
+                } else {
+                    const data = sessionStorage.getItem(key);
+                    return data ? JSON.parse(data) : null;
+                }
+            } catch (error) {
+                console.error('Session error:', error);
+                return null;
             }
-
-            const stats = dataManager.getDashboardStats();
-            updateDashboardStats(stats);
-            loadRecentOrders();
-            loadLowStockAlerts();
         }
 
-        function updateDashboardStats(stats) {
-            document.getElementById('total-products').textContent = stats.totalProducts;
-            document.getElementById('active-products').textContent = `${stats.activeProducts} active`;
-
-            document.getElementById('total-orders').textContent = stats.totalOrders;
-            document.getElementById('today-orders').textContent = `${stats.todayOrders} today`;
-
-            document.getElementById('total-revenue').textContent = utils.formatCurrency(stats.totalRevenue);
-            document.getElementById('month-revenue').textContent = `${utils.formatCurrency(stats.monthRevenue)} this month`;
-
-            document.getElementById('total-donations').textContent = stats.totalDonations;
-            document.getElementById('recent-donations').textContent = `${stats.monetaryDonations + stats.clothingDonations} recent`;
+        // Show empty dashboard when dataManager is not available
+        function showEmptyDashboard() {
+            document.getElementById('total-donation-bookings').textContent = '0';
+            document.getElementById('today-donation-bookings').textContent = '0 today';
+            document.getElementById('total-mentoring-bookings').textContent = '0';
+            document.getElementById('today-mentoring-bookings').textContent = '0 today';
+            document.getElementById('total-mentors').textContent = '0';
+            document.getElementById('mentor-stats').textContent = 'N/A';
+            document.getElementById('total-donations').textContent = '0';
+            document.getElementById('week-donations').textContent = '0';
+            document.getElementById('week-mentoring').textContent = '0';
+            document.getElementById('pending-confirmations').textContent = '0';
+            document.getElementById('completed-this-week').textContent = '0';
         }
 
-        function loadRecentOrders() {
-            const orders = dataManager.getOrders()
-                .sort((a, b) => b.createdAt - a.createdAt)
-                .slice(0, 10);
+        // Show error message
+        function showErrorMessage(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger';
+            errorDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; z-index: 10000;';
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
 
-            const tableBody = document.getElementById('recent-orders-table');
-
-            if (orders.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No orders yet</td></tr>';
-                return;
-            }
-
-            tableBody.innerHTML = orders.map(order => `
-                <tr>
-                    <td>#${order.id.slice(-6)}</td>
-                    <td>${order.customerName}</td>
-                    <td>${utils.formatDate(order.createdAt)}</td>
-                    <td>${order.items.length} items</td>
-                    <td>${utils.formatCurrency(order.total)}</td>
-                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
-                </tr>
-            `).join('');
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 5000);
         }
 
-        function loadLowStockAlerts() {
-            const products = dataManager.getProducts();
-            const lowStockProducts = products.filter(p => p.stock < 5 && p.active !== false);
+        function loadDashboardData() {
+            try {
+                if (!dataManager || !dataManager.getBookingStats) {
+                    console.warn('DataManager getBookingStats not available');
+                    showEmptyDashboard();
+                    return;
+                }
 
-            const container = document.getElementById('low-stock-alerts');
+                const stats = dataManager.getBookingStats();
 
-            if (lowStockProducts.length === 0) {
-                container.innerHTML = '<p class="text-center">All products are well stocked!</p>';
-                return;
+                // Update dashboard cards with safe access
+                updateElement('total-donation-bookings', stats.totalDonationBookings || 0);
+                updateElement('today-donation-bookings', `${stats.todayDonationBookings || 0} today`);
+
+                updateElement('total-mentoring-bookings', stats.totalMentoringBookings || 0);
+                updateElement('today-mentoring-bookings', `${stats.todayMentoringBookings || 0} today`);
+
+                updateElement('total-mentors', stats.activeMentors || 0);
+                updateElement('mentor-stats', `${stats.totalMentors || 0} total`);
+
+                const donationsCount = dataManager.getDonations ? dataManager.getDonations().length : 0;
+                updateElement('total-donations', donationsCount);
+
+                // Update weekly stats
+                updateElement('week-donations', stats.weekDonationBookings || 0);
+                updateElement('week-mentoring', stats.weekMentoringBookings || 0);
+                updateElement('pending-confirmations', (stats.pendingDonationBookings || 0) + (stats.pendingMentoringBookings || 0));
+                updateElement('completed-this-week', (stats.completedDonationBookings || 0) + (stats.completedMentoringBookings || 0));
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showEmptyDashboard();
             }
+        }
 
-            container.innerHTML = lowStockProducts.map(product => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
-                    <div>
-                        <strong>${product.name}</strong><br>
-                        <small>Stock: ${product.stock}</small>
+        // Safe element update function
+        function updateElement(id, value) {
+            try {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            } catch (error) {
+                console.warn(`Failed to update element ${id}:`, error);
+            }
+        }
+
+        function loadPendingBookings() {
+            try {
+                // Load pending donation bookings with error handling
+                let donationBookings = [];
+                if (dataManager && dataManager.getDonationBookings) {
+                    donationBookings = dataManager.getDonationBookings().filter(b => b.status === 'pending');
+                }
+                const donationContainer = document.getElementById('pending-donation-list');
+
+            if (donationBookings.length === 0) {
+                donationContainer.innerHTML = '<div class="empty-state"><p>No pending donation bookings</p></div>';
+            } else {
+                donationContainer.innerHTML = donationBookings.map(booking => `
+                    <div class="pending-item" onclick="viewBooking('${booking.id}', 'donation')">
+                        <div class="pending-info">
+                            <div class="pending-name">${booking.donorName}</div>
+                            <div class="pending-details">${booking.preferredDate} at ${booking.preferredTime}</div>
+                            <div class="pending-types">${Array.isArray(booking.donationTypes) ? booking.donationTypes.join(', ') : booking.donationTypes}</div>
+                        </div>
+                        <div class="pending-actions">
+                            <button class="btn btn-sm btn-success" onclick="event.stopPropagation(); quickConfirm('${booking.id}', 'donation')">Confirm</button>
+                            <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); viewBooking('${booking.id}', 'donation')">View</button>
+                        </div>
                     </div>
-                    <a href="products.html" class="btn btn-sm btn-outline">Edit</a>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+                // Load pending mentoring bookings with error handling
+                let mentoringBookings = [];
+                if (dataManager && dataManager.getMentoringBookings) {
+                    mentoringBookings = dataManager.getMentoringBookings().filter(b => b.status === 'pending');
+                }
+                const mentoringContainer = document.getElementById('pending-mentoring-list');
+
+                if (mentoringBookings.length === 0) {
+                    mentoringContainer.innerHTML = '<div class="empty-state"><p>No pending mentoring bookings</p></div>';
+                } else {
+                    mentoringContainer.innerHTML = mentoringBookings.map(booking => {
+                        let mentor = null;
+                        if (dataManager && dataManager.getMentorById) {
+                            mentor = dataManager.getMentorById(booking.mentorId);
+                        }
+                        return `
+                            <div class="pending-item" onclick="viewBooking('${booking.id}', 'mentoring')">
+                                <div class="pending-info">
+                                    <div class="pending-name">${booking.clientName}</div>
+                                    <div class="pending-details">${booking.preferredDate} at ${booking.selectedTimeSlot}</div>
+                                    <div class="pending-types">Mentor: ${mentor ? mentor.name : 'Unknown'} • ${booking.sessionType}</div>
+                                </div>
+                                <div class="pending-actions">
+                                    <button class="btn btn-sm btn-success" onclick="event.stopPropagation(); quickConfirm('${booking.id}', 'mentoring')">Confirm</button>
+                                    <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); viewBooking('${booking.id}', 'mentoring')">View</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('Error loading pending bookings:', error);
+                // Show empty state for both containers
+                const donationContainer = document.getElementById('pending-donation-list');
+                const mentoringContainer = document.getElementById('pending-mentoring-list');
+                if (donationContainer) donationContainer.innerHTML = '<div class="empty-state"><p>Error loading donation bookings</p></div>';
+                if (mentoringContainer) mentoringContainer.innerHTML = '<div class="empty-state"><p>Error loading mentoring bookings</p></div>';
+            }
+        }
+
+        function loadRecentActivity() {
+            try {
+                let donationBookings = [];
+                let mentoringBookings = [];
+
+                // Safe data access
+                if (dataManager && dataManager.getDonationBookings) {
+                    donationBookings = dataManager.getDonationBookings().slice(-5);
+                }
+                if (dataManager && dataManager.getMentoringBookings) {
+                    mentoringBookings = dataManager.getMentoringBookings().slice(-5);
+                }
+
+                // Combine and sort by creation date
+                const allActivity = [...donationBookings, ...mentoringBookings]
+                    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+                    .slice(0, 10);
+
+                const container = document.getElementById('activity-feed');
+
+                if (allActivity.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>No recent activity</p></div>';
+                } else {
+                    container.innerHTML = allActivity.map(activity => {
+                        const isBooking = activity.type === 'donation' || activity.donorName;
+                        const icon = isBooking ? '📅' : '🎓';
+                        const name = isBooking ? activity.donorName : activity.clientName;
+                        const type = isBooking ? 'donation booking' : 'mentoring session';
+
+                        // Safe date formatting
+                        let date = 'Unknown date';
+                        if (activity.createdAt) {
+                            if (utils && utils.formatRelativeTime) {
+                                date = utils.formatRelativeTime(activity.createdAt);
+                            } else {
+                                date = new Date(activity.createdAt).toLocaleDateString();
+                            }
+                        }
+
+                        return `
+                            <div class="activity-item">
+                                <div class="activity-icon">${icon}</div>
+                                <div class="activity-details">
+                                    <div class="activity-text">
+                                        <strong>${name || 'Unknown'}</strong> booked a ${type}
+                                    </div>
+                                    <div class="activity-time">${date}</div>
+                                </div>
+                                <div class="activity-status status-${activity.status || 'pending'}">${activity.status || 'pending'}</div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('Error loading recent activity:', error);
+                const container = document.getElementById('activity-feed');
+                if (container) {
+                    container.innerHTML = '<div class="empty-state"><p>Error loading recent activity</p></div>';
+                }
+            }
+        }
+
+        function showPendingTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="showPendingTab('${tab}')"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.pending-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`pending-${tab}`).classList.add('active');
+        }
+
+        function viewBooking(bookingId, type) {
+            if (type === 'donation') {
+                currentBooking = dataManager.getDonationBookingById(bookingId);
+            } else {
+                currentBooking = dataManager.getMentoringBookingById(bookingId);
+            }
+
+            if (!currentBooking) return;
+
+            const modal = document.getElementById('booking-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            modalTitle.textContent = type === 'donation' ? 'Donation Booking Details' : 'Mentoring Session Details';
+
+            if (type === 'donation') {
+                modalBody.innerHTML = `
+                    <div class="booking-details">
+                        <h4>Contact Information</h4>
+                        <p><strong>Name:</strong> ${currentBooking.donorName}</p>
+                        <p><strong>Email:</strong> ${currentBooking.donorEmail}</p>
+                        <p><strong>Phone:</strong> ${currentBooking.donorPhone}</p>
+                        <p><strong>Preferred Contact:</strong> ${currentBooking.preferredContact}</p>
+
+                        <h4>Donation Details</h4>
+                        <p><strong>Items:</strong> ${Array.isArray(currentBooking.donationTypes) ? currentBooking.donationTypes.join(', ') : currentBooking.donationTypes}</p>
+                        <p><strong>Estimated Quantity:</strong> ${currentBooking.estimatedBags}</p>
+                        <p><strong>Transport Method:</strong> ${currentBooking.transportMethod}</p>
+                        ${currentBooking.donationNotes ? `<p><strong>Notes:</strong> ${currentBooking.donationNotes}</p>` : ''}
+
+                        <h4>Appointment Details</h4>
+                        <p><strong>Preferred Date:</strong> ${currentBooking.preferredDate}</p>
+                        <p><strong>Preferred Time:</strong> ${currentBooking.preferredTime}</p>
+                        ${currentBooking.alternateDate ? `<p><strong>Alternate Date:</strong> ${currentBooking.alternateDate}</p>` : ''}
+                        ${currentBooking.requirements && currentBooking.requirements.length > 0 ? `<p><strong>Requirements:</strong> ${currentBooking.requirements.join(', ')}</p>` : ''}
+
+                        <h4>Booking Status</h4>
+                        <p><strong>Status:</strong> <span class="status-${currentBooking.status}">${currentBooking.status}</span></p>
+                        <p><strong>Booked:</strong> ${utils.formatDate(currentBooking.createdAt)}</p>
+                    </div>
+                `;
+            } else {
+                const mentor = dataManager.getMentorById(currentBooking.mentorId);
+                modalBody.innerHTML = `
+                    <div class="booking-details">
+                        <h4>Client Information</h4>
+                        <p><strong>Name:</strong> ${currentBooking.clientName}</p>
+                        <p><strong>Email:</strong> ${currentBooking.clientEmail}</p>
+                        <p><strong>Phone:</strong> ${currentBooking.clientPhone}</p>
+                        ${currentBooking.clientAge ? `<p><strong>Age Range:</strong> ${currentBooking.clientAge}</p>` : ''}
+
+                        <h4>Session Details</h4>
+                        <p><strong>Mentor:</strong> ${mentor ? mentor.name : 'Unknown'}</p>
+                        <p><strong>Session Type:</strong> ${currentBooking.sessionType}</p>
+                        <p><strong>Duration:</strong> ${currentBooking.sessionDuration} minutes</p>
+                        <p><strong>Format:</strong> ${currentBooking.sessionFormat}</p>
+
+                        <h4>Goals & Background</h4>
+                        <p><strong>Session Goals:</strong> ${currentBooking.sessionGoals}</p>
+                        ${currentBooking.backgroundInfo ? `<p><strong>Background:</strong> ${currentBooking.backgroundInfo}</p>` : ''}
+
+                        <h4>Appointment Details</h4>
+                        <p><strong>Date:</strong> ${currentBooking.preferredDate}</p>
+                        <p><strong>Time Slot:</strong> ${currentBooking.selectedTimeSlot}</p>
+                        ${currentBooking.timePreference ? `<p><strong>Time Preference:</strong> ${currentBooking.timePreference}</p>` : ''}
+                        ${currentBooking.preferences && currentBooking.preferences.length > 0 ? `<p><strong>Preferences:</strong> ${currentBooking.preferences.join(', ')}</p>` : ''}
+
+                        <h4>Booking Status</h4>
+                        <p><strong>Status:</strong> <span class="status-${currentBooking.status}">${currentBooking.status}</span></p>
+                        <p><strong>Booked:</strong> ${utils.formatDate(currentBooking.createdAt)}</p>
+                    </div>
+                `;
+            }
+
+            // Show/hide action buttons based on status
+            const confirmBtn = document.getElementById('confirm-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+
+            if (currentBooking.status === 'pending') {
+                confirmBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+            } else {
+                confirmBtn.style.display = 'none';
+                cancelBtn.style.display = currentBooking.status !== 'cancelled' ? 'inline-block' : 'none';
+            }
+
+            modal.classList.add('show');
+        }
+
+        function quickConfirm(bookingId, type) {
+            const success = type === 'donation'
+                ? dataManager.updateDonationBookingStatus(bookingId, 'confirmed')
+                : dataManager.updateMentoringBookingStatus(bookingId, 'confirmed');
+
+            if (success) {
+                utils.showNotification('Booking confirmed successfully!', 'success');
+                loadDashboardData();
+                loadPendingBookings();
+                loadRecentActivity();
+            } else {
+                utils.showNotification('Error confirming booking', 'error');
+            }
+        }
+
+        function confirmBooking() {
+            if (!currentBooking) return;
+
+            const type = currentBooking.donorName ? 'donation' : 'mentoring';
+            const success = type === 'donation'
+                ? dataManager.updateDonationBookingStatus(currentBooking.id, 'confirmed')
+                : dataManager.updateMentoringBookingStatus(currentBooking.id, 'confirmed');
+
+            if (success) {
+                utils.showNotification('Booking confirmed successfully!', 'success');
+                closeBookingModal();
+                loadDashboardData();
+                loadPendingBookings();
+                loadRecentActivity();
+            } else {
+                utils.showNotification('Error confirming booking', 'error');
+            }
+        }
+
+        function cancelBooking() {
+            if (!currentBooking || !confirm('Are you sure you want to cancel this booking?')) return;
+
+            const type = currentBooking.donorName ? 'donation' : 'mentoring';
+            const success = type === 'donation'
+                ? dataManager.updateDonationBookingStatus(currentBooking.id, 'cancelled')
+                : dataManager.updateMentoringBookingStatus(currentBooking.id, 'cancelled');
+
+            if (success) {
+                utils.showNotification('Booking cancelled successfully', 'success');
+                closeBookingModal();
+                loadDashboardData();
+                loadPendingBookings();
+                loadRecentActivity();
+            } else {
+                utils.showNotification('Error cancelling booking', 'error');
+            }
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.remove('show');
+            currentBooking = null;
+        }
+
+        function refreshPendingBookings() {
+            loadPendingBookings();
+        }
+
+        function refreshActivity() {
+            loadRecentActivity();
         }
     </script>
 </body>

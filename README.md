@@ -1,8 +1,8 @@
-# 💖 Hearts & Threads - Charity Clothes Store
+# 💖 Charity Store - Charity Clothes Store
 
 A complete, fully functional charity clothes store website with e-commerce functionality and admin panel. Built with pure HTML5, CSS3, and JavaScript - no external dependencies required!
 
-![Hearts & Threads](https://via.placeholder.com/800x400/e74c3c/ffffff?text=Hearts+%26+Threads+Charity+Store)
+![Charity Store](https://via.placeholder.com/800x400/e74c3c/ffffff?text=Charity+Store)
 
 ## 🌟 **Live Demo**
 

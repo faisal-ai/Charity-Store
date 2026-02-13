@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story - Hearts & Threads</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/shop.css">
+    <title>Our Story - Charity Store</title>
+    <link rel="stylesheet" href="css/base.css?v=8">
+    <link rel="stylesheet" href="css/shop.css?v=8">
 </head>
 <body>
     <!-- Navigation -->
@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col">
-                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                    <a href="index.html" class="navbar-brand">Charity Store</a>
                 </div>
                 <div class="col">
                     <ul class="navbar-nav">
@@ -21,25 +21,19 @@
                             <a href="index.html" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="shop.html" class="nav-link">Shop</a>
+                            <a href="donate-booking.html" class="nav-link">Donate Items</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="mentoring-booking.html" class="nav-link">Book Mentoring</a>
                         </li>
                         <li class="nav-item">
                             <a href="story.html" class="nav-link active">Our Story</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="donate.html" class="nav-link">Donate</a>
                         </li>
                         <li class="nav-item">
                             <a href="impact.html" class="nav-link">Impact</a>
                         </li>
                         <li class="nav-item">
                             <a href="contact.html" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="cart.html" class="nav-link cart-icon">
-                                🛒
-                                <span class="cart-count">0</span>
-                            </a>
                         </li>
                     </ul>
                 </div>
@@ -63,14 +57,15 @@
             <div class="row align-items-center">
                 <div class="col-6">
                     <div class="section-title">
-                        <h2>About Hearts & Threads</h2>
+                        <h2>About Charity Store</h2>
                     </div>
                     <p id="about-content">
-                        Hearts & Threads was founded in 2019 with a simple mission: to provide quality clothing to those in need while promoting sustainable fashion practices. What started as a small community initiative has grown into a thriving charity that has helped thousands of families.
+                        Charity Store was founded in 2019 with a simple mission: to provide quality clothing to those in need while promoting sustainable fashion practices. What started as a small community initiative has grown into a thriving charity that has helped thousands of families.
                     </p>
                 </div>
                 <div class="col-6">
-                    <img src="https://via.placeholder.com/500x400/2ecc71/ffffff?text=Our+Story"
+                    <img id="story-image"
+                         src="https://via.placeholder.com/500x400/2ecc71/ffffff?text=Our+Story"
                          alt="Our Story" style="width: 100%; border-radius: 8px;">
                 </div>
             </div>
@@ -119,7 +114,7 @@
                         <div class="timeline-date">2019</div>
                         <div class="timeline-content">
                             <h4>The Beginning</h4>
-                            <p>Hearts & Threads was founded by Sarah Johnson with a simple goal: help families in need access quality clothing.</p>
+                            <p>Charity Store was founded by Sarah Johnson with a simple goal: help families in need access quality clothing.</p>
                         </div>
                     </div>
 
@@ -172,7 +167,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Meet Our Team</h2>
-                <p>The people behind Hearts & Threads</p>
+                <p>The people behind Charity Store</p>
             </div>
 
             <div class="row" id="team-members">
@@ -226,8 +221,8 @@
                     There are many ways to support our mission
                 </p>
                 <div class="mt-4">
-                    <a href="shop.html" class="btn btn-secondary btn-lg">Shop Our Store</a>
-                    <a href="donate.html" class="btn btn-outline btn-lg">Donate Items</a>
+                    <a href="donate-booking.html" class="btn btn-secondary btn-lg">Donate Items</a>
+                    <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
                     <a href="contact.html" class="btn btn-outline btn-lg">Volunteer</a>
                 </div>
             </div>
@@ -239,13 +234,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-3">
-                    <h5>Hearts & Threads</h5>
+                    <h5>Charity Store</h5>
                     <p>Giving fashion a second chance while helping our community.</p>
                 </div>
                 <div class="col-3">
                     <h5>Quick Links</h5>
-                    <p><a href="shop.html">Shop</a></p>
-                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="donate-booking.html">Donate Items</a></p>
+                    <p><a href="mentoring-booking.html">Book Mentoring</a></p>
                     <p><a href="story.html">Our Story</a></p>
                     <p><a href="impact.html">Impact</a></p>
                 </div>
@@ -267,15 +262,15 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p>&copy; 2024 Hearts & Threads. All rights reserved.</p>
+                    <p>&copy; 2024 Charity Store. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="js/dataManager.js"></script>
-    <script src="js/utils.js"></script>
+    <script src="js/dataManager.js?v=7"></script>
+    <script src="js/utils.js?v=7"></script>
     <script>
         // Initialize story page
         document.addEventListener('DOMContentLoaded', function() {
@@ -306,6 +301,51 @@
                 if (storyContent.team) {
                     loadTeamMembers(storyContent.team);
                 }
+            }
+
+            // Load images
+            loadStoryImages();
+            loadTeamImages();
+        }
+
+        function loadTeamImages() {
+            // Get all images from localStorage
+            const images = dataManager.getImages() || [];
+
+            // Filter images for team members
+            const teamImages = images.filter(img => img.category === 'team');
+
+            if (teamImages.length > 0) {
+                const container = document.getElementById('team-members');
+
+                // Display team member photos (up to 6)
+                container.innerHTML = teamImages.slice(0, 6).map((img, index) => `
+                    <div class="col-4">
+                        <div class="card text-center" style="height: 100%;">
+                            <div class="card-body">
+                                <div style="width: 120px; height: 120px; background: #f8f9fa; border-radius: 50%; margin: 0 auto 20px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                    <img src="${img.data}" alt="${img.name}"
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <h4>Team Member ${index + 1}</h4>
+                                <p style="color: #e74c3c; font-weight: 500;">Team</p>
+                                <p>Dedicated to making a difference in our community.</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function loadStoryImages() {
+            // Get all images from localStorage
+            const images = dataManager.getImages() || [];
+
+            // Filter images for story page
+            const storyImages = images.filter(img => img.category === 'story');
+            if (storyImages.length > 0) {
+                // Use the first story image
+                document.getElementById('story-image').src = storyImages[0].data;
             }
         }
 

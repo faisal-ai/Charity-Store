@@ -3,37 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Hearts & Threads</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/admin.css">
+    <title>Admin Login - Charity Store</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Login container */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Checkbox styling */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.2);
+        }
+
+        /* Text styles */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 20px;
+        }
+
+        .text-muted {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Link styles */
+        a {
+            color: #7f8c8d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e74c3c;
+        }
+
+        /* Loading state */
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Message styles */
+        .login-message {
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .login-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .login-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Debug info */
+        .debug-info {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #6c757d;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .login-header h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <h2>Hearts & Threads</h2>
+                <h2>Charity Store</h2>
                 <p>Admin Panel Login</p>
             </div>
 
             <form id="login-form">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                    <input type="text" id="username" name="username" required placeholder="Enter your username" value="admin">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password" value="admin123">
                 </div>
 
-                <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" id="remember-me" style="width: auto;">
-                        Remember me
-                    </label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                <button type="submit" class="btn btn-primary" id="login-btn">
                     Login
                 </button>
 
@@ -44,27 +240,145 @@
                 </div>
             </form>
 
-            <div class="text-center mt-4">
-                <a href="../index.html" style="color: #7f8c8d;">← Back to Website</a>
+            <div class="debug-info" id="debug-info">
+                <strong>Debug Information:</strong><br>
+                <span id="debug-text"></span>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="../index.html">← Back to Website</a> |
+                <a href="debug.html" style="color: #e74c3c;">Debug Page</a>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="../js/dataManager.js"></script>
-    <script src="../js/utils.js"></script>
+    <script src="../js/dataManager.js" onerror="console.error('Failed to load dataManager.js')"></script>
+    <script src="../js/utils.js" onerror="console.error('Failed to load utils.js')"></script>
     <script>
+        console.log('Login script starting...');
+        console.log('DataManager available:', typeof dataManager);
+        console.log('Utils available:', typeof utils);
+
+        let debugMode = false;
+
+        // Initialize DataManager if it's not available
+        function initializeDataManager() {
+            if (typeof dataManager === 'undefined') {
+                console.log('DataManager not found, creating fallback...');
+                updateDebugInfo('Creating fallback DataManager...');
+
+                // Simple fallback authentication
+                window.dataManager = {
+                    authenticateAdmin: function(username, password) {
+                        // Default admin credentials
+                        if (username === 'admin' && password === 'admin123') {
+                            return {
+                                id: 'admin-1',
+                                username: 'admin',
+                                email: 'admin@charitystore.com',
+                                role: 'admin'
+                            };
+                        }
+                        return null;
+                    }
+                };
+                updateDebugInfo('Fallback DataManager created');
+            }
+        }
+
+        // Initialize Utils if it's not available
+        function initializeUtils() {
+            if (typeof utils === 'undefined') {
+                console.log('Utils not found, creating fallback...');
+                updateDebugInfo('Creating fallback Utils...');
+
+                window.utils = {
+                    setSession: function(key, data) {
+                        sessionStorage.setItem(key, JSON.stringify(data));
+                    },
+                    isAuthenticated: function() {
+                        return sessionStorage.getItem('admin_user') !== null;
+                    }
+                };
+                updateDebugInfo('Fallback Utils created');
+            }
+        }
+
+        // Wait for all scripts to load with fallback
+        function waitForScripts() {
+            return new Promise((resolve) => {
+                let attempts = 0;
+                const maxAttempts = 20; // 1 second max wait
+
+                const checkScripts = () => {
+                    attempts++;
+
+                    if (typeof dataManager !== 'undefined' && typeof utils !== 'undefined') {
+                        updateDebugInfo('All scripts loaded successfully');
+                        resolve();
+                    } else if (attempts >= maxAttempts) {
+                        updateDebugInfo('Scripts not loaded, using fallbacks');
+                        initializeDataManager();
+                        initializeUtils();
+                        resolve();
+                    } else {
+                        setTimeout(checkScripts, 50);
+                    }
+                };
+                checkScripts();
+            });
+        }
+
         // Check if already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            if (utils.isAuthenticated()) {
-                window.location.href = 'dashboard.html';
-                return;
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('DOM Content Loaded - Starting login page...');
+
+            // Show debug info if needed
+            if (window.location.search.includes('debug=true')) {
+                debugMode = true;
+                document.getElementById('debug-info').style.display = 'block';
+                updateDebugInfo('Debug mode enabled');
             }
 
-            setupLoginForm();
+            try {
+                // Wait for scripts to load
+                updateDebugInfo('Waiting for scripts to load...');
+                await waitForScripts();
+
+                updateDebugInfo(`DataManager loaded: ${typeof dataManager !== 'undefined'}`);
+                updateDebugInfo(`Utils loaded: ${typeof utils !== 'undefined'}`);
+
+                // Initialize dataManager if needed
+                if (typeof dataManager !== 'undefined' && dataManager.initializeData) {
+                    dataManager.initializeData();
+                    updateDebugInfo('DataManager initialized');
+                }
+
+                if (typeof utils !== 'undefined' && utils.isAuthenticated && utils.isAuthenticated()) {
+                    updateDebugInfo('User already authenticated, redirecting...');
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+
+                setupLoginForm();
+            } catch (error) {
+                console.error('Error during initialization:', error);
+                updateDebugInfo(`Error: ${error.message}`);
+                showMessage('Error loading system. Please refresh the page.', 'error');
+            }
         });
 
+        function updateDebugInfo(message) {
+            if (!debugMode) return;
+            const debugText = document.getElementById('debug-text');
+            const currentText = debugText.innerHTML;
+            debugText.innerHTML = currentText + '<br>' + message;
+            console.log('DEBUG:', message);
+        }
+
         function setupLoginForm() {
+            updateDebugInfo('Setting up login form...');
             document.getElementById('login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 handleLogin();
@@ -72,39 +386,134 @@
         }
 
         function handleLogin() {
-            const form = document.getElementById('login-form');
-            const formData = new FormData(form);
-            const username = formData.get('username');
-            const password = formData.get('password');
-            const rememberMe = formData.get('remember-me');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('login-btn');
 
-            // Validate form
+            updateDebugInfo(`Attempting login with username: ${username}`);
+
+            // Validate inputs
             if (!username || !password) {
-                utils.showNotification('Please enter both username and password', 'error');
+                showMessage('Please enter both username and password', 'error');
                 return;
             }
 
-            // Authenticate user
-            const user = dataManager.authenticateAdmin(username, password);
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
 
-            if (user) {
-                // Store session
-                utils.setSession('admin_user', {
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    role: user.role,
-                    loginTime: Date.now()
-                });
+            // Simulate brief loading delay
+            setTimeout(() => {
+                try {
+                    // Check if dataManager is available
+                    if (typeof dataManager === 'undefined') {
+                        console.error('DataManager not loaded');
+                        updateDebugInfo('ERROR: DataManager not loaded');
+                        showMessage('System error: DataManager not loaded. Please refresh the page.', 'error');
+                        resetButton();
+                        return;
+                    }
 
-                utils.showNotification('Login successful!', 'success');
+                    // Ensure dataManager has required methods
+                    if (!dataManager.authenticateAdmin || typeof dataManager.authenticateAdmin !== 'function') {
+                        console.error('DataManager authenticateAdmin method not available');
+                        updateDebugInfo('ERROR: DataManager authenticateAdmin method not available');
+                        showMessage('System error: DataManager not properly loaded. Please refresh the page.', 'error');
+                        resetButton();
+                        return;
+                    }
 
-                // Redirect to dashboard
+                    updateDebugInfo('DataManager authentication method available');
+
+                    // Initialize data if method exists
+                    if (dataManager.initializeData && typeof dataManager.initializeData === 'function') {
+                        try {
+                            dataManager.initializeData();
+                            updateDebugInfo('DataManager initialized');
+                        } catch (error) {
+                            updateDebugInfo(`DataManager initialization error: ${error.message}`);
+                        }
+                    }
+
+                    updateDebugInfo('Attempting authentication...');
+
+                    // Authenticate user
+                    const user = dataManager.authenticateAdmin(username, password);
+                    updateDebugInfo(`Authentication result: ${user ? 'SUCCESS' : 'FAILED'}`);
+
+                    if (user) {
+                        updateDebugInfo(`User found: ${JSON.stringify(user)}`);
+
+                        // Store session
+                        const sessionData = {
+                            id: user.id,
+                            username: user.username,
+                            email: user.email,
+                            role: user.role,
+                            loginTime: Date.now()
+                        };
+
+                        if (typeof utils !== 'undefined' && utils.setSession) {
+                            utils.setSession('admin_user', sessionData);
+                            updateDebugInfo('Session set using utils.setSession');
+                        } else {
+                            // Fallback to sessionStorage
+                            sessionStorage.setItem('admin_user', JSON.stringify(sessionData));
+                            updateDebugInfo('Session set using sessionStorage fallback');
+                        }
+
+                        showMessage('Login successful! Redirecting...', 'success');
+
+                        // Redirect to dashboard
+                        setTimeout(() => {
+                            updateDebugInfo('Redirecting to dashboard...');
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        updateDebugInfo('Authentication failed - invalid credentials');
+                        showMessage('Invalid username or password', 'error');
+                        resetButton();
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    updateDebugInfo(`ERROR: ${error.message}`);
+                    showMessage('Login failed. Please try again.', 'error');
+                    resetButton();
+                }
+            }, 500);
+        }
+
+        function resetButton() {
+            const loginBtn = document.getElementById('login-btn');
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Login';
+        }
+
+        function showMessage(message, type) {
+            updateDebugInfo(`Showing message: ${type} - ${message}`);
+
+            // Remove existing message
+            const existingMessage = document.querySelector('.login-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `login-message ${type}`;
+            messageDiv.textContent = message;
+
+            // Insert message after form
+            const form = document.getElementById('login-form');
+            form.parentNode.insertBefore(messageDiv, form.nextSibling);
+
+            // Auto-remove success messages
+            if (type === 'success') {
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1000);
-            } else {
-                utils.showNotification('Invalid username or password', 'error');
+                    if (messageDiv.parentNode) {
+                        messageDiv.remove();
+                    }
+                }, 3000);
             }
         }
     </script>

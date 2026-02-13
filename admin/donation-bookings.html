@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Bookings - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">Charity Store</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="donation-bookings.html" class="active"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html"><span class="icon">📝</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Donation Bookings</h1>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="card-number" id="total-bookings">0</div>
+                    <div class="card-label">Total Bookings</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="pending-bookings">0</div>
+                    <div class="card-label">Pending</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="confirmed-bookings">0</div>
+                    <div class="card-label">Confirmed</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="completed-bookings">0</div>
+                    <div class="card-label">Completed</div>
+                </div>
+            </div>
+
+            <!-- Bookings Table -->
+            <div class="admin-table">
+                <div class="table-header">
+                    <h3>All Donation Bookings</h3>
+                    <div class="table-actions">
+                        <select id="filter-status" onchange="filterBookings()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Donor Info</th>
+                                <th>Items</th>
+                                <th>Preferred Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table">
+                            <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+
+            const adminUser = utils.getSession('admin_user');
+            if (adminUser && adminUser.username) {
+                document.getElementById('admin-name').textContent = adminUser.username;
+            }
+
+            loadBookings();
+        });
+
+        function loadBookings() {
+            const bookings = dataManager.getDonationBookings() || [];
+
+            // Update summary
+            const pending = bookings.filter(b => b.status === 'pending').length;
+            const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+            const completed = bookings.filter(b => b.status === 'completed').length;
+
+            document.getElementById('total-bookings').textContent = bookings.length;
+            document.getElementById('pending-bookings').textContent = pending;
+            document.getElementById('confirmed-bookings').textContent = confirmed;
+            document.getElementById('completed-bookings').textContent = completed;
+
+            renderTable(bookings);
+        }
+
+        function renderTable(bookings) {
+            const tableBody = document.getElementById('bookings-table');
+
+            if (bookings.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No donation bookings yet</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = bookings.map(booking => `
+                <tr>
+                    <td>${utils.formatDate(booking.createdAt)}</td>
+                    <td>
+                        <strong>${booking.donorName}</strong><br>
+                        <small>${booking.donorEmail}</small><br>
+                        <small>${booking.donorPhone}</small>
+                    </td>
+                    <td>${Array.isArray(booking.donationTypes) ? booking.donationTypes.join(', ') : booking.donationTypes}</td>
+                    <td>${booking.preferredDate} at ${booking.preferredTime}</td>
+                    <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            ${booking.status === 'pending' ?
+                                `<button class="btn btn-sm btn-primary" onclick="updateStatus('${booking.id}', 'confirmed')">Confirm</button>` :
+                                ''}
+                            ${booking.status === 'confirmed' ?
+                                `<button class="btn btn-sm btn-success" onclick="updateStatus('${booking.id}', 'completed')">Complete</button>` :
+                                ''}
+                            ${booking.status !== 'cancelled' ?
+                                `<button class="btn btn-sm btn-outline" onclick="updateStatus('${booking.id}', 'cancelled')">Cancel</button>` :
+                                ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterBookings() {
+            const filterStatus = document.getElementById('filter-status').value;
+            let bookings = dataManager.getDonationBookings() || [];
+
+            if (filterStatus) {
+                bookings = bookings.filter(b => b.status === filterStatus);
+            }
+
+            renderTable(bookings);
+        }
+
+        function updateStatus(bookingId, newStatus) {
+            const success = dataManager.updateDonationBookingStatus(bookingId, newStatus);
+
+            if (success) {
+                utils.showNotification(`Booking ${newStatus} successfully!`, 'success');
+                loadBookings();
+            } else {
+                utils.showNotification('Failed to update booking status', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

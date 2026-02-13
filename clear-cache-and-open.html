@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 { color: #2c3e50; margin-bottom: 10px; }
+        p { color: #7f8c8d; line-height: 1.6; }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #c0392b;
+        }
+        .manual-steps {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .manual-steps h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .manual-steps ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        kbd {
+            background: #e9ecef;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            border: 1px solid #adb5bd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Clearing Cache...</h1>
+        <div class="spinner"></div>
+        <p id="status">Redirecting to admin panel...</p>
+        
+        <div class="manual-steps">
+            <h3>If the page doesn't load correctly:</h3>
+            <ol>
+                <li>Press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> (Mac)</li>
+                <li>Or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> (Windows)</li>
+                <li>This will do a hard refresh and clear cached files</li>
+            </ol>
+            <p style="margin-top: 15px; color: #7f8c8d; font-size: 14px;">
+                If you still see "Products" and "Orders" in the sidebar, 
+                use the hard refresh shortcut above.
+            </p>
+        </div>
+        
+        <a href="http://localhost:8000/admin/login.html" class="btn" id="manualBtn" style="display:none;">
+            Click here if not redirected
+        </a>
+    </div>
+
+    <script>
+        // Add cache-busting parameter
+        const timestamp = new Date().getTime();
+        setTimeout(() => {
+            window.location.href = `http://localhost:8000/admin/login.html?v=${timestamp}`;
+        }, 2000);
+        
+        // Show manual button after 3 seconds
+        setTimeout(() => {
+            document.getElementById('manualBtn').style.display = 'inline-block';
+        }, 3000);
+    </script>
+</body>
+</html>

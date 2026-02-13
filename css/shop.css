@@ -157,22 +157,43 @@
 .cart-icon {
     position: relative;
     display: inline-block;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
 }
 
 .cart-count {
     position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #e74c3c;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
     color: white;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.75rem;
+    min-width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 500;
+    font-weight: 600;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+    }
+    50% {
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.6), 0 0 0 5px rgba(231, 76, 60, 0.1);
+    }
+    100% {
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+    }
 }
 
 .add-to-cart-btn {
@@ -389,6 +410,93 @@
     margin-top: 15px;
 }
 
+/* Modal Styles for Shop */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e6ed;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #7f8c8d;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #f8f9fa;
+    color: #e74c3c;
+    transform: rotate(90deg);
+}
+
+/* Ensure body doesn't scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     .product-grid {
@@ -419,5 +527,16 @@
     .cart-item-details {
         padding-left: 0;
         margin-top: 15px;
+    }
+
+    .modal-content {
+        padding: 20px;
+        margin: 10px;
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-header h3 {
+        font-size: 1.25rem;
     }
 }

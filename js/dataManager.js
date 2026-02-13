@@ -12,7 +12,11 @@ class DataManager {
             content: 'charity_store_content',
             adminUsers: 'charity_store_admin_users',
             cart: 'charity_store_cart',
-            settings: 'charity_store_settings'
+            settings: 'charity_store_settings',
+            donationBookings: 'charity_store_donation_bookings',
+            mentoringBookings: 'charity_store_mentoring_bookings',
+            mentors: 'charity_store_mentors',
+            images: 'charity_store_images'
         };
         this.initializeData();
     }
@@ -34,7 +38,7 @@ class DataManager {
         // Initialize site settings
         if (!this.getSettings()) {
             this.setSettings({
-                siteName: 'Hearts & Threads',
+                siteName: 'Charity Store',
                 siteTagline: 'Giving Back Through Fashion',
                 currency: 'USD',
                 taxRate: 0.08,
@@ -68,6 +72,10 @@ class DataManager {
             return true;
         } catch (error) {
             console.error('Error saving to localStorage:', error);
+            // Check if it's a quota exceeded error
+            if (error.name === 'QuotaExceededError' || error.code === 22) {
+                console.error('localStorage quota exceeded!');
+            }
             return false;
         }
     }
@@ -321,6 +329,10 @@ class DataManager {
         return this.setData(this.storageKeys.content, content);
     }
 
+    updateContent(section, data) {
+        return this.setContent(section, data);
+    }
+
     // Admin users management
     getAdminUsers() {
         return this.getData(this.storageKeys.adminUsers) || [];
@@ -372,14 +384,14 @@ class DataManager {
 
         // Story page content
         this.setContent('story', {
-            about: 'Hearts & Threads was founded in 2019 with a simple mission: to provide quality clothing to those in need while promoting sustainable fashion practices. What started as a small community initiative has grown into a thriving charity that has helped thousands of families.',
+            about: 'Charity Store was founded in 2019 with a simple mission: to provide quality clothing to those in need while promoting sustainable fashion practices. What started as a small community initiative has grown into a thriving charity that has helped thousands of families.',
             mission: 'To create a world where everyone has access to quality clothing, regardless of their economic situation, while promoting environmental sustainability through clothing reuse and recycling.',
             vision: 'We envision communities where clothing insecurity is eliminated, and sustainable fashion practices are the norm.',
             team: [
                 {
                     name: 'Sarah Johnson',
                     role: 'Founder & Executive Director',
-                    bio: 'Sarah founded Hearts & Threads after volunteering at local shelters and seeing the need for quality clothing donations.'
+                    bio: 'Sarah founded Charity Store after volunteering at local shelters and seeing the need for quality clothing donations.'
                 },
                 {
                     name: 'Michael Chen',
@@ -562,6 +574,266 @@ class DataManager {
             Items: d.items || 'N/A',
             Date: new Date(d.date).toLocaleDateString()
         }));
+    }
+
+    // Donation Bookings Management
+    getDonationBookings() {
+        return this.getData(this.storageKeys.donationBookings) || [];
+    }
+
+    setDonationBookings(bookings) {
+        return this.setData(this.storageKeys.donationBookings, bookings);
+    }
+
+    addDonationBooking(booking) {
+        const bookings = this.getDonationBookings();
+        booking.id = this.generateId();
+        booking.createdAt = booking.createdAt || Date.now();
+        booking.updatedAt = Date.now();
+        bookings.push(booking);
+        return this.setDonationBookings(bookings);
+    }
+
+    updateDonationBookingStatus(bookingId, status) {
+        const bookings = this.getDonationBookings();
+        const index = bookings.findIndex(b => b.id === bookingId);
+        if (index !== -1) {
+            bookings[index].status = status;
+            bookings[index].updatedAt = Date.now();
+            return this.setDonationBookings(bookings);
+        }
+        return false;
+    }
+
+    getDonationBookingById(bookingId) {
+        const bookings = this.getDonationBookings();
+        return bookings.find(b => b.id === bookingId);
+    }
+
+    deleteDonationBooking(bookingId) {
+        const bookings = this.getDonationBookings();
+        const filtered = bookings.filter(b => b.id !== bookingId);
+        return this.setDonationBookings(filtered);
+    }
+
+    // Mentoring Bookings Management
+    getMentoringBookings() {
+        return this.getData(this.storageKeys.mentoringBookings) || [];
+    }
+
+    setMentoringBookings(bookings) {
+        return this.setData(this.storageKeys.mentoringBookings, bookings);
+    }
+
+    addMentoringBooking(booking) {
+        const bookings = this.getMentoringBookings();
+        booking.id = this.generateId();
+        booking.createdAt = booking.createdAt || Date.now();
+        booking.updatedAt = Date.now();
+        bookings.push(booking);
+        return this.setMentoringBookings(bookings);
+    }
+
+    updateMentoringBookingStatus(bookingId, status) {
+        const bookings = this.getMentoringBookings();
+        const index = bookings.findIndex(b => b.id === bookingId);
+        if (index !== -1) {
+            bookings[index].status = status;
+            bookings[index].updatedAt = Date.now();
+            return this.setMentoringBookings(bookings);
+        }
+        return false;
+    }
+
+    getMentoringBookingById(bookingId) {
+        const bookings = this.getMentoringBookings();
+        return bookings.find(b => b.id === bookingId);
+    }
+
+    deleteMentoringBooking(bookingId) {
+        const bookings = this.getMentoringBookings();
+        const filtered = bookings.filter(b => b.id !== bookingId);
+        return this.setMentoringBookings(filtered);
+    }
+
+    // Mentors Management
+    getMentors() {
+        return this.getData(this.storageKeys.mentors) || [];
+    }
+
+    setMentors(mentors) {
+        return this.setData(this.storageKeys.mentors, mentors);
+    }
+
+    addMentor(mentor) {
+        const mentors = this.getMentors();
+        mentor.id = this.generateId();
+        mentor.createdAt = Date.now();
+        mentors.push(mentor);
+        return this.setMentors(mentors);
+    }
+
+    updateMentor(mentorId, updates) {
+        const mentors = this.getMentors();
+        const index = mentors.findIndex(m => m.id === mentorId);
+        if (index !== -1) {
+            mentors[index] = { ...mentors[index], ...updates, updatedAt: Date.now() };
+            return this.setMentors(mentors);
+        }
+        return false;
+    }
+
+    getMentorById(mentorId) {
+        const mentors = this.getMentors();
+        return mentors.find(m => m.id === mentorId);
+    }
+
+    deleteMentor(mentorId) {
+        const mentors = this.getMentors();
+        const filtered = mentors.filter(m => m.id !== mentorId);
+        return this.setMentors(filtered);
+    }
+
+    // Get active mentors only
+    getActiveMentors() {
+        const mentors = this.getMentors();
+        return mentors.filter(m => m.active !== false);
+    }
+
+    // Booking Analytics and Reporting
+    getBookingStats() {
+        const donationBookings = this.getDonationBookings();
+        const mentoringBookings = this.getMentoringBookings();
+
+        const now = Date.now();
+        const oneDay = 24 * 60 * 60 * 1000;
+        const oneWeek = 7 * oneDay;
+        const oneMonth = 30 * oneDay;
+
+        const todayDonations = donationBookings.filter(b => b.createdAt > now - oneDay);
+        const weekDonations = donationBookings.filter(b => b.createdAt > now - oneWeek);
+        const monthDonations = donationBookings.filter(b => b.createdAt > now - oneMonth);
+
+        const todayMentoring = mentoringBookings.filter(b => b.createdAt > now - oneDay);
+        const weekMentoring = mentoringBookings.filter(b => b.createdAt > now - oneWeek);
+        const monthMentoring = mentoringBookings.filter(b => b.createdAt > now - oneMonth);
+
+        return {
+            totalDonationBookings: donationBookings.length,
+            todayDonationBookings: todayDonations.length,
+            weekDonationBookings: weekDonations.length,
+            monthDonationBookings: monthDonations.length,
+
+            totalMentoringBookings: mentoringBookings.length,
+            todayMentoringBookings: todayMentoring.length,
+            weekMentoringBookings: weekMentoring.length,
+            monthMentoringBookings: monthMentoring.length,
+
+            pendingDonationBookings: donationBookings.filter(b => b.status === 'pending').length,
+            confirmedDonationBookings: donationBookings.filter(b => b.status === 'confirmed').length,
+            completedDonationBookings: donationBookings.filter(b => b.status === 'completed').length,
+
+            pendingMentoringBookings: mentoringBookings.filter(b => b.status === 'pending').length,
+            confirmedMentoringBookings: mentoringBookings.filter(b => b.status === 'confirmed').length,
+            completedMentoringBookings: mentoringBookings.filter(b => b.status === 'completed').length,
+
+            totalMentors: this.getMentors().length,
+            activeMentors: this.getActiveMentors().length
+        };
+    }
+
+    // Export booking data for reports
+    exportDonationBookings() {
+        const bookings = this.getDonationBookings();
+        return bookings.map(b => ({
+            ID: b.id,
+            'Donor Name': b.donorName,
+            Email: b.donorEmail,
+            Phone: b.donorPhone,
+            'Donation Types': Array.isArray(b.donationTypes) ? b.donationTypes.join(', ') : b.donationTypes,
+            'Estimated Bags': b.estimatedBags,
+            'Preferred Date': b.preferredDate,
+            'Preferred Time': b.preferredTime,
+            Status: b.status,
+            'Created Date': new Date(b.createdAt).toLocaleDateString()
+        }));
+    }
+
+    exportMentoringBookings() {
+        const bookings = this.getMentoringBookings();
+        const mentors = this.getMentors();
+
+        return bookings.map(b => {
+            const mentor = mentors.find(m => m.id === b.mentorId);
+            return {
+                ID: b.id,
+                'Client Name': b.clientName,
+                Email: b.clientEmail,
+                Phone: b.clientPhone,
+                Mentor: mentor ? mentor.name : 'Unknown',
+                'Session Type': b.sessionType,
+                Duration: `${b.sessionDuration} minutes`,
+                Format: b.sessionFormat,
+                'Preferred Date': b.preferredDate,
+                'Time Slot': b.selectedTimeSlot,
+                Status: b.status,
+                'Created Date': new Date(b.createdAt).toLocaleDateString()
+            };
+        });
+    }
+
+    exportMentors() {
+        const mentors = this.getMentors();
+        return mentors.map(m => ({
+            ID: m.id,
+            Name: m.name,
+            Speciality: m.speciality,
+            Experience: `${m.experience} years`,
+            Rating: `${m.rating}/5 stars`,
+            Status: m.active ? 'Active' : 'Inactive',
+            'Created Date': new Date(m.createdAt).toLocaleDateString()
+        }));
+    }
+
+    // ===== IMAGE MANAGEMENT =====
+    getImages() {
+        return this.getData(this.storageKeys.images) || [];
+    }
+
+    addImage(imageData) {
+        try {
+            const images = this.getImages();
+            const newImage = {
+                id: this.generateId(),
+                ...imageData
+            };
+            images.push(newImage);
+            this.setData(this.storageKeys.images, images);
+            return true;
+        } catch (error) {
+            console.error('Error adding image:', error);
+            return false;
+        }
+    }
+
+    deleteImage(index) {
+        try {
+            const images = this.getImages();
+            if (index >= 0 && index < images.length) {
+                images.splice(index, 1);
+                this.setData(this.storageKeys.images, images);
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Error deleting image:', error);
+            return false;
+        }
+    }
+
+    getImageById(id) {
+        const images = this.getImages();
+        return images.find(img => img.id === id);
     }
 }
 

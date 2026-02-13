@@ -243,7 +243,10 @@ function openModal(modalId) {
     const modal = $(modalId);
     if (modal) {
         modal.classList.add('show');
+        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
     }
 }
 
@@ -251,7 +254,10 @@ function closeModal(modalId) {
     const modal = $(modalId);
     if (modal) {
         modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 }
 
@@ -446,7 +452,7 @@ function isAuthenticated() {
 
 function requireAuth() {
     if (!isAuthenticated()) {
-        window.location.href = '/admin/login.html';
+        window.location.href = 'login.html';
         return false;
     }
     return true;
@@ -454,7 +460,7 @@ function requireAuth() {
 
 function logout() {
     clearSession('admin_user');
-    window.location.href = '/admin/login.html';
+    window.location.href = 'login.html';
 }
 
 // Initialize common functionality

@@ -3,9 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearts & Threads - Charity Clothes Store</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/shop.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Charity Store - Charity Clothes Store</title>
+    <link rel="stylesheet" href="css/base.css?v=6">
+    <link rel="stylesheet" href="css/shop.css?v=6">
+    <style>
+        /* Enhanced Hero Section with Animations */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background pattern */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Floating shapes */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 60s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50px, 50px) rotate(360deg); }
+        }
+
+        /* Text Animations */
+        .hero h1 {
+            animation: slideInDown 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            animation: slideInUp 1s ease-out 0.3s both;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero .btn {
+            animation: fadeIn 1s ease-out 0.6s both;
+            position: relative;
+            z-index: 3;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Add a subtle text shadow for better readability */
+        .hero h1 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Update navigation colors to match new gradient */
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Update button colors to match gradient */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3, #6a3f8f) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 2px solid white !important;
+            color: white !important;
+            background: transparent !important;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: white !important;
+            color: white !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -13,7 +167,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col">
-                    <a href="index.html" class="navbar-brand">Hearts & Threads</a>
+                    <a href="index.html" class="navbar-brand">Charity Store</a>
                 </div>
                 <div class="col">
                     <ul class="navbar-nav">
@@ -21,25 +175,19 @@
                             <a href="index.html" class="nav-link active">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="shop.html" class="nav-link">Shop</a>
+                            <a href="donate-booking.html" class="nav-link">Donate Items</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="mentoring-booking.html" class="nav-link">Book Mentoring</a>
                         </li>
                         <li class="nav-item">
                             <a href="story.html" class="nav-link">Our Story</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="donate.html" class="nav-link">Donate</a>
                         </li>
                         <li class="nav-item">
                             <a href="impact.html" class="nav-link">Impact</a>
                         </li>
                         <li class="nav-item">
                             <a href="contact.html" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="cart.html" class="nav-link cart-icon">
-                                🛒
-                                <span class="cart-count">0</span>
-                            </a>
                         </li>
                     </ul>
                 </div>
@@ -54,11 +202,16 @@
                 <h1 id="hero-title">Give Fashion a Second Chance</h1>
                 <p id="hero-subtitle">Every purchase helps someone in need and saves clothing from landfills</p>
                 <div class="mt-4">
-                    <a href="shop.html" class="btn btn-primary btn-lg" id="hero-cta">Shop Now</a>
-                    <a href="donate.html" class="btn btn-outline btn-lg">Donate</a>
+                    <a href="donate-booking.html" class="btn btn-primary btn-lg">Book Donation Slot</a>
+                    <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
                 </div>
             </div>
         </div>
+        <!-- Decorative wave at bottom -->
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                  style="fill: #f8f9fa; opacity: 0.3;"></path>
+        </svg>
     </section>
 
     <!-- Mission Section -->
@@ -78,7 +231,8 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body">
-                            <img src="https://via.placeholder.com/500x300/2ecc71/ffffff?text=Making+a+Difference"
+                            <img id="homepage-hero-image"
+                                 src="https://via.placeholder.com/500x300/2ecc71/ffffff?text=Making+a+Difference"
                                  alt="Our Mission" style="width: 100%; border-radius: 8px;">
                         </div>
                     </div>
@@ -126,18 +280,93 @@
         </div>
     </section>
 
-    <!-- Featured Products -->
+    <!-- Image Gallery Section -->
+    <section class="section" id="homepage-gallery-section" style="display: none;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Community in Action</h2>
+                <p>See the impact we're making together</p>
+            </div>
+            <div class="row" id="homepage-gallery-container">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Money Donation -->
     <section class="section">
         <div class="container">
             <div class="section-title">
-                <h2>Featured Items</h2>
-                <p>Quality clothing at affordable prices</p>
+                <h2>Support Our Mission</h2>
+                <p>Your financial contribution helps us provide essential services to our community</p>
             </div>
-            <div class="product-grid" id="featured-products">
-                <!-- Products will be loaded here dynamically -->
-            </div>
-            <div class="text-center mt-4">
-                <a href="shop.html" class="btn btn-primary btn-lg">View All Items</a>
+
+            <div class="donation-container">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <div class="donation-info">
+                            <h3>Make a Financial Donation</h3>
+                            <p>Every dollar you contribute goes directly toward:</p>
+                            <ul class="donation-benefits">
+                                <li>📦 Processing and distributing donated items</li>
+                                <li>🎓 Supporting our mentoring programs</li>
+                                <li>🏢 Maintaining our facility and operations</li>
+                                <li>🤝 Community outreach and support services</li>
+                            </ul>
+                            <p><strong>100% of your donation directly supports those in need.</strong></p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card donation-card">
+                            <div class="card-body">
+                                <h4 class="text-center mb-3">Choose Your Donation Amount</h4>
+                                <form id="donation-form" class="donation-form">
+                                    <div class="donation-amounts">
+                                        <div class="amount-options">
+                                            <button type="button" class="amount-btn" data-amount="25">$25</button>
+                                            <button type="button" class="amount-btn" data-amount="50">$50</button>
+                                            <button type="button" class="amount-btn" data-amount="100">$100</button>
+                                            <button type="button" class="amount-btn" data-amount="250">$250</button>
+                                        </div>
+                                        <div class="custom-amount">
+                                            <label for="custom-amount">Or enter custom amount:</label>
+                                            <div class="input-group">
+                                                <span class="input-prefix">$</span>
+                                                <input type="number" id="custom-amount" name="customAmount" min="1" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="donor-info">
+                                        <div class="form-group">
+                                            <label for="donor-name">Full Name *</label>
+                                            <input type="text" id="donor-name" name="donorName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="donor-email">Email Address *</label>
+                                            <input type="email" id="donor-email" name="donorEmail" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" id="anonymous" name="anonymous">
+                                            <label for="anonymous">Make this donation anonymous</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea id="donation-message" name="donationMessage" rows="3" placeholder="Optional message or dedication..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-lg donate-btn">
+                                        Donate Now
+                                    </button>
+
+                                    <p class="donation-note">
+                                        Secure payment processing. Your information is protected.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -153,7 +382,7 @@
                 <div class="col-4">
                     <div class="card">
                         <div class="card-body">
-                            <p>"Hearts & Threads helped me dress professionally for job interviews when I couldn't afford new clothes. I got the job!"</p>
+                            <p>"Charity Store helped me dress professionally for job interviews when I couldn't afford new clothes. I got the job!"</p>
                             <div class="mt-3">
                                 <strong>Sarah M.</strong>
                                 <small class="text-muted">Community Member</small>
@@ -188,8 +417,9 @@
     </section>
 
     <!-- Newsletter Signup -->
-    <section class="section" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white;">
-        <div class="container">
+    <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%); color: white; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%); z-index: 1;"></div>
+        <div class="container" style="position: relative; z-index: 2;">
             <div class="row align-items-center">
                 <div class="col-6">
                     <h2 style="color: white; margin-bottom: 1rem;">Stay Updated</h2>
@@ -219,13 +449,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-3">
-                    <h5>Hearts & Threads</h5>
+                    <h5>Charity Store</h5>
                     <p>Giving fashion a second chance while helping our community.</p>
                 </div>
                 <div class="col-3">
                     <h5>Quick Links</h5>
-                    <p><a href="shop.html">Shop</a></p>
-                    <p><a href="donate.html">Donate</a></p>
+                    <p><a href="donate-booking.html">Donate Items</a></p>
+                    <p><a href="mentoring-booking.html">Book Mentoring</a></p>
                     <p><a href="story.html">Our Story</a></p>
                     <p><a href="impact.html">Impact</a></p>
                 </div>
@@ -247,21 +477,21 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p>&copy; 2024 Hearts & Threads. All rights reserved. | Made with ❤️ for our community</p>
+                    <p>&copy; 2024 Charity Store. All rights reserved. | Made with ❤️ for our community</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="js/dataManager.js"></script>
-    <script src="js/utils.js"></script>
+    <script src="js/dataManager.js?v=6"></script>
+    <script src="js/utils.js?v=6"></script>
     <script>
         // Initialize homepage
         document.addEventListener('DOMContentLoaded', function() {
             loadContent();
-            loadFeaturedProducts();
             setupNewsletterForm();
+            setupDonationForm();
         });
 
         function loadContent() {
@@ -291,6 +521,9 @@
                 }
             }
 
+            // Load images from data manager
+            loadHomePageImages();
+
             // Update footer contact info
             if (contactInfo) {
                 document.getElementById('footer-address').innerHTML = contactInfo.address.replace(', ', '<br>');
@@ -307,47 +540,70 @@
             }
         }
 
-        function loadFeaturedProducts() {
-            const products = dataManager.searchProducts('', { sortBy: 'newest' }).slice(0, 6);
-            const container = document.getElementById('featured-products');
+        function loadHomePageImages() {
+            console.log('🖼️ loadHomePageImages() called');
 
-            container.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="${product.images[0]}" alt="${product.name}"
-                             onerror="this.src='${utils.getPlaceholderUrl(product.name, 400, 300)}'">
-                        ${product.condition === 'New' ? '<span class="product-badge">New</span>' : ''}
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category}</div>
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-condition">${product.condition}</div>
-                        <div class="product-price">${utils.formatCurrency(product.price)}</div>
-                        <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+            // Get all images from localStorage
+            const images = dataManager.getImages() || [];
+            console.log('📊 Total images found:', images.length);
+            console.log('📊 Images data:', images);
 
-        function addToCart(productId) {
-            const product = dataManager.getProductById(productId);
-            if (!product) return;
+            // Filter images for homepage-hero
+            const heroImages = images.filter(img => img.category === 'homepage-hero');
+            console.log('🎯 Homepage-hero images found:', heroImages.length);
 
-            if (product.stock <= 0) {
-                utils.showNotification('Sorry, this item is out of stock', 'error');
-                return;
+            if (heroImages.length > 0) {
+                console.log('✅ Setting hero image:', heroImages[0].name);
+                const heroImageElement = document.getElementById('homepage-hero-image');
+                console.log('🔍 Hero image element found:', !!heroImageElement);
+
+                if (heroImageElement) {
+                    heroImageElement.src = heroImages[0].data;
+                    console.log('✅ Hero image src set!');
+                } else {
+                    console.error('❌ homepage-hero-image element not found!');
+                }
+            } else {
+                console.log('⚠️ No homepage-hero images found');
             }
 
-            dataManager.addToCart(productId, 1);
-            utils.updateCartCount();
-            utils.showNotification(`${product.name} added to cart!`, 'success');
+            // Filter images for homepage-gallery
+            const galleryImages = images.filter(img => img.category === 'homepage-gallery');
+            console.log('🎯 Homepage-gallery images found:', galleryImages.length);
 
-            // Animate the button
-            const button = event.target;
-            utils.addToCartAnimation(button);
+            if (galleryImages.length > 0) {
+                const gallerySection = document.getElementById('homepage-gallery-section');
+                const galleryContainer = document.getElementById('homepage-gallery-container');
+
+                console.log('🔍 Gallery section found:', !!gallerySection);
+                console.log('🔍 Gallery container found:', !!galleryContainer);
+
+                if (gallerySection && galleryContainer) {
+                    gallerySection.style.display = 'block';
+
+                    // Create gallery items (show up to 6 images)
+                    galleryContainer.innerHTML = galleryImages.slice(0, 6).map(img => `
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body" style="padding: 0;">
+                                    <img src="${img.data}" alt="${img.name}"
+                                         style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    console.log('✅ Gallery images rendered!');
+                } else {
+                    console.error('❌ Gallery elements not found!');
+                }
+            } else {
+                console.log('⚠️ No homepage-gallery images found');
+            }
+
+            console.log('🖼️ loadHomePageImages() completed');
         }
+
 
         function setupNewsletterForm() {
             document.getElementById('newsletter-form').addEventListener('submit', function(e) {
@@ -361,6 +617,127 @@
                 } else {
                     utils.showNotification('Please enter a valid email address', 'error');
                 }
+            });
+        }
+
+        // Money Donation Functionality
+        function setupDonationForm() {
+            const form = document.getElementById('donation-form');
+            const amountButtons = document.querySelectorAll('.amount-btn');
+            const customAmountInput = document.getElementById('custom-amount');
+            let selectedAmount = null;
+
+            // Amount button selection
+            amountButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove selected class from all buttons
+                    amountButtons.forEach(b => b.classList.remove('selected'));
+
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                    selectedAmount = parseFloat(this.dataset.amount);
+
+                    // Clear custom amount input
+                    customAmountInput.value = '';
+                });
+            });
+
+            // Custom amount input
+            customAmountInput.addEventListener('input', function() {
+                // Remove selected class from amount buttons
+                amountButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedAmount = parseFloat(this.value) || null;
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const donorName = formData.get('donorName');
+                const donorEmail = formData.get('donorEmail');
+                const isAnonymous = formData.get('anonymous') === 'on';
+                const message = formData.get('donationMessage');
+
+                // Get final amount
+                const finalAmount = selectedAmount || parseFloat(customAmountInput.value);
+
+                // Validate
+                if (!finalAmount || finalAmount <= 0) {
+                    utils.showNotification('Please select or enter a donation amount', 'error');
+                    return;
+                }
+
+                if (!donorName || !donorEmail) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                if (!utils.isValidEmail(donorEmail)) {
+                    utils.showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = form.querySelector('.donate-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+
+                // Simulate donation processing
+                setTimeout(() => {
+                    try {
+                        // Save donation to data manager
+                        const donation = {
+                            type: 'monetary',
+                            donorName: isAnonymous ? 'Anonymous' : donorName,
+                            donorEmail: donorEmail,
+                            amount: finalAmount,
+                            currency: 'USD',
+                            message: message || '',
+                            anonymous: isAnonymous,
+                            paymentMethod: 'online',
+                            status: 'completed',
+                            date: Date.now()
+                        };
+
+                        const success = dataManager.addDonation(donation);
+
+                        if (success) {
+                            // Show success message
+                            utils.showNotification(
+                                `Thank you for your generous donation of $${finalAmount.toFixed(2)}! You will receive a confirmation email shortly.`,
+                                'success'
+                            );
+
+                            // Reset form
+                            form.reset();
+                            amountButtons.forEach(btn => btn.classList.remove('selected'));
+                            selectedAmount = null;
+
+                            // Update button
+                            submitBtn.textContent = 'Donation Complete!';
+                            submitBtn.style.background = '#2ecc71';
+
+                            // Reset button after delay
+                            setTimeout(() => {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                                submitBtn.style.background = '';
+                            }, 3000);
+
+                        } else {
+                            throw new Error('Failed to process donation');
+                        }
+                    } catch (error) {
+                        console.error('Donation error:', error);
+                        utils.showNotification('There was an error processing your donation. Please try again.', 'error');
+
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
+                }, 2000);
             });
         }
     </script>
