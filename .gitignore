@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Debug/Test files
+debug-*.html
+test-*.html
+*-test.html
+START-HERE.html
+clear-cache-and-open.html
+simple.html
+test.html
+
+# Admin debug files
+admin/debug.html
+admin/test-*.html
+admin/dashboard-test.html
+admin/fix-cache.html
+
+# Scripts
+start-server.sh
