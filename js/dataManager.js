@@ -1,7 +1,23 @@
 /**
  * Data Management System for Charity Store
  * Handles all local storage operations and data models
+ * Now with Firebase Cloud Sync for images, mentors, and bookings
  */
+
+// Firebase integration - will be initialized when firebase scripts are loaded
+let firebaseDataManager = null;
+
+// Initialize Firebase when available
+if (typeof window !== 'undefined') {
+    window.addEventListener('firebaseReady', () => {
+        import('./firebaseDataManager.js').then(module => {
+            firebaseDataManager = module.default;
+            console.log('Firebase Data Manager loaded');
+        }).catch(err => {
+            console.warn('Firebase not available, using localStorage only:', err);
+        });
+    });
+}
 
 class DataManager {
     constructor() {
@@ -796,17 +812,40 @@ class DataManager {
     }
 
     // ===== IMAGE MANAGEMENT =====
-    getImages() {
+    async getImages() {
+        // Try Firebase first, fall back to localStorage
+        if (firebaseDataManager) {
+            try {
+                const images = await firebaseDataManager.getImages();
+                // Cache in localStorage
+                this.setData(this.storageKeys.images, images);
+                return images;
+            } catch (error) {
+                console.error('Error getting images from Firebase, using localStorage:', error);
+            }
+        }
         return this.getData(this.storageKeys.images) || [];
     }
 
-    addImage(imageData) {
+    async addImage(imageData) {
         try {
-            const images = this.getImages();
             const newImage = {
                 id: this.generateId(),
                 ...imageData
             };
+
+            // Save to Firebase if available
+            if (firebaseDataManager) {
+                try {
+                    await firebaseDataManager.saveImage(newImage);
+                    console.log('Image saved to Firebase');
+                } catch (error) {
+                    console.error('Error saving to Firebase:', error);
+                }
+            }
+
+            // Also save to localStorage as backup
+            const images = await this.getImages();
             images.push(newImage);
             this.setData(this.storageKeys.images, images);
             return true;
@@ -816,10 +855,23 @@ class DataManager {
         }
     }
 
-    deleteImage(index) {
+    async deleteImage(index) {
         try {
-            const images = this.getImages();
+            const images = await this.getImages();
             if (index >= 0 && index < images.length) {
+                const imageId = images[index].id;
+
+                // Delete from Firebase if available
+                if (firebaseDataManager && imageId) {
+                    try {
+                        await firebaseDataManager.deleteImage(imageId);
+                        console.log('Image deleted from Firebase');
+                    } catch (error) {
+                        console.error('Error deleting from Firebase:', error);
+                    }
+                }
+
+                // Delete from localStorage
                 images.splice(index, 1);
                 this.setData(this.storageKeys.images, images);
                 return true;
@@ -831,8 +883,8 @@ class DataManager {
         }
     }
 
-    getImageById(id) {
-        const images = this.getImages();
+    async getImageById(id) {
+        const images = await this.getImages();
         return images.find(img => img.id === id);
     }
 }

@@ -269,9 +269,17 @@
         </main>
     </div>
 
-    <script src="../js/dataManager.js?v=2"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from '../js/firebase-config.js';
+        // Dispatch event when Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('Firebase initialized and ready');
+    </script>
+
+    <script src="../js/dataManager.js?v=10"></script>
     <script src="../js/utils.js"></script>
-    <script>
+    <script type="module">
         document.addEventListener('DOMContentLoaded', function() {
             if (!utils.requireAuth()) return;
 
@@ -418,7 +426,7 @@
                 }
 
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     console.log('File loaded, data length:', e.target.result.length);
 
                     const imageData = {
@@ -433,12 +441,12 @@
                     console.log('Attempting to save image:', imageData.name, 'Category:', category);
 
                     try {
-                        const result = dataManager.addImage(imageData);
+                        const result = await dataManager.addImage(imageData);
                         console.log('Save result:', result);
 
                         if (result) {
                             utils.showNotification(`Image "${file.name}" uploaded to "${getCategoryLabel(category)}"!`, 'success');
-                            loadImageGallery();
+                            await loadImageGallery();
                         } else {
                             // Check localStorage usage
                             let totalSize = 0;
@@ -477,8 +485,8 @@
             return labels[category] || category;
         }
 
-        function loadImageGallery() {
-            const images = dataManager.getImages() || [];
+        async function loadImageGallery() {
+            const images = await dataManager.getImages() || [];
             const gallery = document.getElementById('image-gallery');
             const filterCategory = document.getElementById('filter-category').value;
 
@@ -532,11 +540,11 @@
             });
         }
 
-        function deleteImage(index) {
+        async function deleteImage(index) {
             if (confirm('Are you sure you want to delete this image?')) {
-                if (dataManager.deleteImage(index)) {
+                if (await dataManager.deleteImage(index)) {
                     utils.showNotification('Image deleted successfully!', 'success');
-                    loadImageGallery();
+                    await loadImageGallery();
                 } else {
                     utils.showNotification('Failed to delete image', 'error');
                 }

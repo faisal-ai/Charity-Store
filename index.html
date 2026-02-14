@@ -483,7 +483,15 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/dataManager.js?v=9"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        // Dispatch event when Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('Firebase initialized on homepage');
+    </script>
+
+    <script src="js/dataManager.js?v=10"></script>
     <script src="js/utils.js?v=9"></script>
     <script>
         // Initialize homepage
@@ -539,11 +547,11 @@
             }
         }
 
-        function loadHomePageImages() {
+        async function loadHomePageImages() {
             console.log('🖼️ loadHomePageImages() called');
 
-            // Get all images from localStorage
-            const images = dataManager.getImages() || [];
+            // Get all images from dataManager (will try Firebase first, then localStorage)
+            const images = await dataManager.getImages() || [];
             console.log('📊 Total images found:', images.length);
             console.log('📊 Images data:', images);
 
