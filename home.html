@@ -454,7 +454,7 @@
             <div class="row align-items-center">
                 <div class="col-6">
                     <h2 style="color: white; margin-bottom: 1rem;">Stay Updated</h2>
-                    <p style="color: rgba(255,255,255,0.9);">
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem;">
                         Subscribe to our newsletter to hear about new arrivals, impact stories, and special events.
                     </p>
                 </div>
@@ -710,7 +710,8 @@
 
             // Amount button selection
             amountButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent form submission
                     // Remove selected class from all buttons
                     amountButtons.forEach(b => b.classList.remove('selected'));
 
