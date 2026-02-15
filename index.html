@@ -496,12 +496,18 @@
     <script>
         // Initialize homepage
         document.addEventListener('DOMContentLoaded', function() {
-            loadContent();
-            setupNewsletterForm();
-            setupDonationForm();
+            console.log('🚀 DOM loaded, initializing homepage...');
+            try {
+                loadContent();
+                setupNewsletterForm();
+                setupDonationForm();
+            } catch (error) {
+                console.error('❌ Error during initialization:', error);
+            }
         });
 
         function loadContent() {
+            console.log('📄 loadContent() called');
             // Load homepage content from data manager
             const homepageContent = dataManager.getContent('homepage');
             const contactInfo = dataManager.getContent('contact');
@@ -529,6 +535,7 @@
             }
 
             // Load images from data manager - wait for Firebase to initialize
+            console.log('🔧 About to set 3-second timeout for image loading...');
             setTimeout(async () => {
                 console.log('⏰ Starting image load after Firebase init delay');
                 try {
@@ -547,6 +554,7 @@
                     }
                 }
             }, 3000); // Increased to 3 seconds for better Firebase loading
+            console.log('✅ Timeout set, will fire in 3 seconds');
 
             // Update footer contact info
             if (contactInfo) {
