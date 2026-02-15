@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Charity Store - Charity Clothes Store</title>
+
+    <!-- CACHE BUSTER - Forces immediate reload of new version -->
+    <script>
+    (function() {
+        const V = '20260215-v2';
+        const stored = sessionStorage.getItem('site_v');
+        if (stored !== V && !location.search.includes('v=')) {
+            sessionStorage.setItem('site_v', V);
+            location.href = location.pathname + '?v=' + V;
+        }
+    })();
+    </script>
+    <link rel="stylesheet" href="css/base.css?v=9">
+    <style>
+        /* Enhanced Hero Section with Animations */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background pattern */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Floating shapes */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 60s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50px, 50px) rotate(360deg); }
+        }
+
+        /* Text Animations */
+        .hero h1 {
+            animation: slideInDown 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            animation: slideInUp 1s ease-out 0.3s both;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero .btn {
+            animation: fadeIn 1s ease-out 0.6s both;
+            position: relative;
+            z-index: 3;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Add a subtle text shadow for better readability */
+        .hero h1 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Update navigation colors to match new gradient */
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Update button colors to match gradient */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3, #6a3f8f) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 2px solid white !important;
+            color: white !important;
+            background: transparent !important;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: white !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="index.html" class="navbar-brand">Charity Store</a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link active">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate-booking.html" class="nav-link">Donate Items</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="mentoring-booking.html" class="nav-link">Book Mentoring</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="story.html" class="nav-link">Our Story</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="impact.html" class="nav-link">Impact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center">
+                <h1 id="hero-title">Give Fashion a Second Chance</h1>
+                <p id="hero-subtitle">Every purchase helps someone in need and saves clothing from landfills</p>
+                <div class="mt-4">
+                    <a href="donate-booking.html" class="btn btn-primary btn-lg">Book Donation Slot</a>
+                    <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
+                </div>
+            </div>
+        </div>
+        <!-- Decorative wave at bottom -->
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                  style="fill: #f8f9fa; opacity: 0.3;"></path>
+        </svg>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="section-title">
+                        <h2 id="mission-title">Our Mission</h2>
+                    </div>
+                    <p id="mission-description">
+                        We believe that everyone deserves access to quality clothing, and that fashion should be sustainable.
+                        Every item you purchase helps provide clothing to families in need while reducing textile waste.
+                    </p>
+                    <a href="story.html" class="btn btn-primary">Learn More</a>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <img id="homepage-hero-image"
+                                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='300'%3E%3Crect fill='%23f0f0f0' width='500' height='300'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3ELoading...%3C/text%3E%3C/svg%3E"
+                                 alt="Our Mission" style="width: 100%; border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Statistics -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Impact</h2>
+                <p>Together, we're making a difference in our community</p>
+            </div>
+            <div class="row text-center">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="text-primary" id="stat-items">12,450</h3>
+                            <h4>Items Donated</h4>
+                            <p>Pieces of clothing given new life</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="text-primary" id="stat-people">3,200</h3>
+                            <h4>People Helped</h4>
+                            <p>Individuals who received clothing</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="text-primary" id="stat-funds">$89,500</h3>
+                            <h4>Funds Raised</h4>
+                            <p>Supporting our community programs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery Section -->
+    <section class="section" id="homepage-gallery-section" style="display: none;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Community in Action</h2>
+                <p>See the impact we're making together</p>
+            </div>
+            <div class="row" id="homepage-gallery-container">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Money Donation -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Support Our Mission</h2>
+                <p>Your financial contribution helps us provide essential services to our community</p>
+            </div>
+
+            <div class="donation-container">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <div class="donation-info">
+                            <h3>Make a Financial Donation</h3>
+                            <p>Every dollar you contribute goes directly toward:</p>
+                            <ul class="donation-benefits">
+                                <li>📦 Processing and distributing donated items</li>
+                                <li>🎓 Supporting our mentoring programs</li>
+                                <li>🏢 Maintaining our facility and operations</li>
+                                <li>🤝 Community outreach and support services</li>
+                            </ul>
+                            <p><strong>100% of your donation directly supports those in need.</strong></p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card donation-card">
+                            <div class="card-body">
+                                <h4 class="text-center mb-3">Choose Your Donation Amount</h4>
+                                <form id="donation-form" class="donation-form">
+                                    <div class="donation-amounts">
+                                        <div class="amount-options">
+                                            <button type="button" class="amount-btn" data-amount="25">$25</button>
+                                            <button type="button" class="amount-btn" data-amount="50">$50</button>
+                                            <button type="button" class="amount-btn" data-amount="100">$100</button>
+                                            <button type="button" class="amount-btn" data-amount="250">$250</button>
+                                        </div>
+                                        <div class="custom-amount">
+                                            <label for="custom-amount">Or enter custom amount:</label>
+                                            <div class="input-group">
+                                                <span class="input-prefix">$</span>
+                                                <input type="number" id="custom-amount" name="customAmount" min="1" step="0.01" placeholder="0.00">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="donor-info">
+                                        <div class="form-group">
+                                            <label for="donor-name">Full Name *</label>
+                                            <input type="text" id="donor-name" name="donorName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="donor-email">Email Address *</label>
+                                            <input type="email" id="donor-email" name="donorEmail" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" id="anonymous" name="anonymous">
+                                            <label for="anonymous">Make this donation anonymous</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea id="donation-message" name="donationMessage" rows="3" placeholder="Optional message or dedication..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-lg donate-btn">
+                                        Donate Now
+                                    </button>
+
+                                    <p class="donation-note">
+                                        Secure payment processing. Your information is protected.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <div class="section-title">
+                <h2>What People Say</h2>
+                <p>Stories from our community</p>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>"Charity Store helped me dress professionally for job interviews when I couldn't afford new clothes. I got the job!"</p>
+                            <div class="mt-3">
+                                <strong>Sarah M.</strong>
+                                <small class="text-muted">Community Member</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>"I love shopping here knowing that my purchase helps others. The quality is amazing and the prices are unbeatable."</p>
+                            <div class="mt-3">
+                                <strong>Michael R.</strong>
+                                <small class="text-muted">Regular Customer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>"Donating my gently used clothes here feels so much better than throwing them away. I know they'll help someone."</p>
+                            <div class="mt-3">
+                                <strong>Emma L.</strong>
+                                <small class="text-muted">Donor</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%); color: white; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%); z-index: 1;"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <h2 style="color: white; margin-bottom: 1rem;">Stay Updated</h2>
+                    <p style="color: rgba(255,255,255,0.9);">
+                        Subscribe to our newsletter to hear about new arrivals, impact stories, and special events.
+                    </p>
+                </div>
+                <div class="col-6">
+                    <form id="newsletter-form" class="row">
+                        <div class="col-8">
+                            <input type="email" placeholder="Enter your email" required
+                                   style="border: none; padding: 15px; width: 100%; border-radius: 5px;">
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-secondary" style="width: 100%; padding: 15px;">
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>Charity Store</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="donate-booking.html">Donate Items</a></p>
+                    <p><a href="mentoring-booking.html">Book Mentoring</a></p>
+                    <p><a href="story.html">Our Story</a></p>
+                    <p><a href="impact.html">Impact</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p id="footer-address">123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p id="footer-phone">(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org" id="footer-email">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#" id="footer-facebook">Facebook</a> |
+                        <a href="#" id="footer-instagram">Instagram</a> |
+                        <a href="#" id="footer-twitter">Twitter</a>
+                    </p>
+                    <p id="footer-hours">Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Charity Store. All rights reserved. | Made with ❤️ for our community</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        // Dispatch event when Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('Firebase initialized on homepage');
+    </script>
+
+    <script src="js/dataManager.js?v=11"></script>
+    <script src="js/utils.js?v=9"></script>
+    <script>
+        // Initialize homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 DOM loaded, initializing homepage...');
+            try {
+                loadContent();
+                setupNewsletterForm();
+                setupDonationForm();
+            } catch (error) {
+                console.error('❌ Error during initialization:', error);
+            }
+        });
+
+        function loadContent() {
+            console.log('📄 loadContent() called');
+            // Load homepage content from data manager
+            const homepageContent = dataManager.getContent('homepage');
+            const contactInfo = dataManager.getContent('contact');
+
+            if (homepageContent) {
+                // Update hero section
+                if (homepageContent.hero) {
+                    document.getElementById('hero-title').textContent = homepageContent.hero.title;
+                    document.getElementById('hero-subtitle').textContent = homepageContent.hero.subtitle;
+                    document.getElementById('hero-cta').textContent = homepageContent.hero.ctaText;
+                }
+
+                // Update mission section
+                if (homepageContent.mission) {
+                    document.getElementById('mission-title').textContent = homepageContent.mission.title;
+                    document.getElementById('mission-description').textContent = homepageContent.mission.description;
+                }
+
+                // Update statistics
+                if (homepageContent.stats) {
+                    document.getElementById('stat-items').textContent = homepageContent.stats.itemsDonated.toLocaleString();
+                    document.getElementById('stat-people').textContent = homepageContent.stats.peopleHelped.toLocaleString();
+                    document.getElementById('stat-funds').textContent = utils.formatCurrency(homepageContent.stats.fundsRaised);
+                }
+            }
+
+            // Load images from data manager - wait for Firebase to initialize
+            console.log('🔧 About to set 3-second timeout for image loading...');
+            setTimeout(async () => {
+                console.log('⏰ Starting image load after Firebase init delay');
+                try {
+                    await loadHomePageImages();
+                } catch (error) {
+                    console.error('❌ Error loading images:', error);
+                    // Show a user-friendly message
+                    const gallerySection = document.getElementById('homepage-gallery-section');
+                    if (gallerySection) {
+                        gallerySection.style.display = 'block';
+                        document.getElementById('homepage-gallery-container').innerHTML = `
+                            <div style="text-align: center; padding: 40px; color: #666;">
+                                <p>Unable to load images. Please refresh the page or check your internet connection.</p>
+                            </div>
+                        `;
+                    }
+                }
+            }, 3000); // Increased to 3 seconds for better Firebase loading
+            console.log('✅ Timeout set, will fire in 3 seconds');
+
+            // Update footer contact info
+            if (contactInfo) {
+                document.getElementById('footer-address').innerHTML = contactInfo.address.replace(', ', '<br>');
+                document.getElementById('footer-phone').textContent = contactInfo.phone;
+                document.getElementById('footer-email').textContent = contactInfo.email;
+                document.getElementById('footer-email').href = `mailto:${contactInfo.email}`;
+                document.getElementById('footer-hours').innerHTML = contactInfo.hours.replace(/,\s/g, '<br>');
+
+                if (contactInfo.social) {
+                    document.getElementById('footer-facebook').href = contactInfo.social.facebook;
+                    document.getElementById('footer-instagram').href = contactInfo.social.instagram;
+                    document.getElementById('footer-twitter').href = contactInfo.social.twitter;
+                }
+            }
+        }
+
+        async function loadHomePageImages() {
+            console.log('🖼️ loadHomePageImages() called');
+
+            // Get all images from dataManager (will try Firebase first, then localStorage)
+            const images = await dataManager.getImages() || [];
+            console.log('📊 Total images found:', images.length);
+            console.log('📊 Images data:', images);
+
+            // Filter images for homepage-hero
+            const heroImages = images.filter(img => img.category === 'homepage-hero');
+            console.log('🎯 Homepage-hero images found:', heroImages.length);
+
+            if (heroImages.length > 0) {
+                console.log('✅ Setting hero image:', heroImages[0].name);
+                const heroImageElement = document.getElementById('homepage-hero-image');
+                console.log('🔍 Hero image element found:', !!heroImageElement);
+
+                if (heroImageElement) {
+                    heroImageElement.src = heroImages[0].data;
+                    console.log('✅ Hero image src set!');
+                } else {
+                    console.error('❌ homepage-hero-image element not found!');
+                }
+            } else {
+                console.log('⚠️ No homepage-hero images found');
+            }
+
+            // Filter images for homepage-gallery
+            const galleryImages = images.filter(img => img.category === 'homepage-gallery');
+            console.log('🎯 Homepage-gallery images found:', galleryImages.length);
+
+            if (galleryImages.length > 0) {
+                const gallerySection = document.getElementById('homepage-gallery-section');
+                const galleryContainer = document.getElementById('homepage-gallery-container');
+
+                console.log('🔍 Gallery section found:', !!gallerySection);
+                console.log('🔍 Gallery container found:', !!galleryContainer);
+
+                if (gallerySection && galleryContainer) {
+                    gallerySection.style.display = 'block';
+
+                    // Create gallery items (show up to 6 images)
+                    galleryContainer.innerHTML = galleryImages.slice(0, 6).map(img => `
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-body" style="padding: 0;">
+                                    <img src="${img.data}" alt="${img.name}"
+                                         style="width: 100%; height: 250px; object-fit: cover; border-radius: 8px;">
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    console.log('✅ Gallery images rendered!');
+                } else {
+                    console.error('❌ Gallery elements not found!');
+                }
+            } else {
+                console.log('⚠️ No homepage-gallery images found');
+            }
+
+            console.log('🖼️ loadHomePageImages() completed');
+        }
+
+
+        function setupNewsletterForm() {
+            document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+
+                if (utils.isValidEmail(email)) {
+                    // Simulate newsletter signup
+                    utils.showNotification('Thank you for subscribing!', 'success');
+                    this.reset();
+                } else {
+                    utils.showNotification('Please enter a valid email address', 'error');
+                }
+            });
+        }
+
+        // Money Donation Functionality
+        function setupDonationForm() {
+            const form = document.getElementById('donation-form');
+            const amountButtons = document.querySelectorAll('.amount-btn');
+            const customAmountInput = document.getElementById('custom-amount');
+            let selectedAmount = null;
+
+            // Amount button selection
+            amountButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove selected class from all buttons
+                    amountButtons.forEach(b => b.classList.remove('selected'));
+
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                    selectedAmount = parseFloat(this.dataset.amount);
+
+                    // Clear custom amount input
+                    customAmountInput.value = '';
+                });
+            });
+
+            // Custom amount input
+            customAmountInput.addEventListener('input', function() {
+                // Remove selected class from amount buttons
+                amountButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedAmount = parseFloat(this.value) || null;
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const donorName = formData.get('donorName');
+                const donorEmail = formData.get('donorEmail');
+                const isAnonymous = formData.get('anonymous') === 'on';
+                const message = formData.get('donationMessage');
+
+                // Get final amount
+                const finalAmount = selectedAmount || parseFloat(customAmountInput.value);
+
+                // Validate
+                if (!finalAmount || finalAmount <= 0) {
+                    utils.showNotification('Please select or enter a donation amount', 'error');
+                    return;
+                }
+
+                if (!donorName || !donorEmail) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                if (!utils.isValidEmail(donorEmail)) {
+                    utils.showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = form.querySelector('.donate-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Processing...';
+
+                // Simulate donation processing
+                setTimeout(() => {
+                    try {
+                        // Save donation to data manager
+                        const donation = {
+                            type: 'monetary',
+                            donorName: isAnonymous ? 'Anonymous' : donorName,
+                            donorEmail: donorEmail,
+                            amount: finalAmount,
+                            currency: 'USD',
+                            message: message || '',
+                            anonymous: isAnonymous,
+                            paymentMethod: 'online',
+                            status: 'completed',
+                            date: Date.now()
+                        };
+
+                        const success = dataManager.addDonation(donation);
+
+                        if (success) {
+                            // Show success message
+                            utils.showNotification(
+                                `Thank you for your generous donation of $${finalAmount.toFixed(2)}! You will receive a confirmation email shortly.`,
+                                'success'
+                            );
+
+                            // Reset form
+                            form.reset();
+                            amountButtons.forEach(btn => btn.classList.remove('selected'));
+                            selectedAmount = null;
+
+                            // Update button
+                            submitBtn.textContent = 'Donation Complete!';
+                            submitBtn.style.background = '#2ecc71';
+
+                            // Reset button after delay
+                            setTimeout(() => {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                                submitBtn.style.background = '';
+                            }, 3000);
+
+                        } else {
+                            throw new Error('Failed to process donation');
+                        }
+                    } catch (error) {
+                        console.error('Donation error:', error);
+                        utils.showNotification('There was an error processing your donation. Please try again.', 'error');
+
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
