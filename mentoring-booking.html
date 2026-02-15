@@ -274,6 +274,13 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('Firebase initialized on mentoring-booking page');
+    </script>
+
     <script src="js/dataManager.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/booking.js"></script>

@@ -222,8 +222,8 @@
             loadMentors();
         });
 
-        function loadMentors() {
-            const mentors = dataManager.getMentors() || [];
+        async function loadMentors() {
+            const mentors = await dataManager.getMentors() || [];
             const sessions = dataManager.getMentoringBookings() || [];
 
             // Update summary
@@ -389,7 +389,7 @@
             delete document.getElementById('add-mentor-form').dataset.mentorId;
         }
 
-        function saveMentor() {
+        async function saveMentor() {
             const mentorId = document.getElementById('add-mentor-form').dataset.mentorId;
 
             // Get form values
@@ -432,7 +432,7 @@
             let success;
             if (mentorId) {
                 // Update existing mentor
-                success = dataManager.updateMentor(mentorId, mentorData);
+                success = await dataManager.updateMentor(mentorId, mentorData);
                 if (success) {
                     utils.showNotification('Mentor updated successfully!', 'success');
                 } else {
@@ -442,7 +442,7 @@
                 // Add new mentor
                 mentorData.rating = null;
                 mentorData.createdAt = Date.now();
-                success = dataManager.addMentor(mentorData);
+                success = await dataManager.addMentor(mentorData);
                 if (success) {
                     utils.showNotification('Mentor added successfully!', 'success');
                 } else {
@@ -452,7 +452,7 @@
 
             if (success) {
                 closeAddMentorModal();
-                loadMentors();
+                await loadMentors();
             }
         }
 

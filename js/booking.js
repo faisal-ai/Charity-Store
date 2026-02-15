@@ -30,12 +30,12 @@ function initializeDonationBooking() {
 }
 
 // Initialize mentoring booking functionality
-function initializeMentoringBooking() {
+async function initializeMentoringBooking() {
     const mentorsGrid = document.getElementById('mentors-grid');
     if (!mentorsGrid) return;
 
     // Load mentors
-    loadMentors();
+    await loadMentors();
 
     // Form elements
     const form = document.getElementById('mentoring-booking-form');
@@ -54,15 +54,15 @@ function initializeMentoringBooking() {
 }
 
 // Load mentors from data
-function loadMentors() {
+async function loadMentors() {
     const mentorsGrid = document.getElementById('mentors-grid');
     if (!mentorsGrid) return;
 
-    const mentors = dataManager.getMentors();
+    const mentors = await dataManager.getMentors();
 
     if (mentors.length === 0) {
         // Initialize sample mentors if none exist
-        initializeSampleMentors();
+        await initializeSampleMentors();
         return loadMentors();
     }
 
@@ -81,7 +81,7 @@ function loadMentors() {
 }
 
 // Initialize sample mentors
-function initializeSampleMentors() {
+async function initializeSampleMentors() {
     const sampleMentors = [
         {
             name: "Sarah Johnson",
@@ -175,9 +175,9 @@ function initializeSampleMentors() {
         }
     ];
 
-    sampleMentors.forEach(mentor => {
-        dataManager.addMentor(mentor);
-    });
+    for (const mentor of sampleMentors) {
+        await dataManager.addMentor(mentor);
+    }
 }
 
 // Select mentor
