@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-6">
                     <img id="story-image"
-                         src="https://via.placeholder.com/500x400/2ecc71/ffffff?text=Our+Story"
+                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='400'%3E%3Crect fill='%23f0f0f0' width='500' height='400'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3ELoading...%3C/text%3E%3C/svg%3E"
                          alt="Our Story" style="width: 100%; border-radius: 8px;">
                 </div>
             </div>
@@ -269,15 +269,25 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        // Dispatch event when Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('✅ Firebase initialized on story page');
+    </script>
+
     <script src="js/dataManager.js?v=11"></script>
     <script src="js/utils.js?v=7"></script>
     <script>
         // Initialize story page
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Story page DOM loaded');
             loadContent();
         });
 
         function loadContent() {
+            console.log('📄 Loading story content...');
             // Load story content from data manager
             const storyContent = dataManager.getContent('story');
 
@@ -303,17 +313,24 @@
                 }
             }
 
-            // Load images
-            loadStoryImages();
-            loadTeamImages();
+            // Wait for Firebase to initialize before loading images
+            console.log('⏳ Waiting 3 seconds for Firebase initialization...');
+            setTimeout(() => {
+                console.log('🔄 Starting image load...');
+                loadStoryImages();
+                loadTeamImages();
+            }, 3000);
         }
 
-        function loadTeamImages() {
-            // Get all images from localStorage
-            const images = dataManager.getImages() || [];
+        async function loadTeamImages() {
+            console.log('👥 Loading team images...');
+            // Get all images from dataManager (Firebase first, then localStorage)
+            const images = await dataManager.getImages() || [];
+            console.log(`📸 Got ${images.length} total images for team`);
 
             // Filter images for team members
             const teamImages = images.filter(img => img.category === 'team');
+            console.log(`👥 Filtered ${teamImages.length} team images`);
 
             if (teamImages.length > 0) {
                 const container = document.getElementById('team-members');
@@ -334,18 +351,31 @@
                         </div>
                     </div>
                 `).join('');
+                console.log('✅ Team images displayed');
+            } else {
+                console.log('⚠️ No team images found');
             }
         }
 
-        function loadStoryImages() {
-            // Get all images from localStorage
-            const images = dataManager.getImages() || [];
+        async function loadStoryImages() {
+            console.log('📖 Loading story images...');
+            // Get all images from dataManager (Firebase first, then localStorage)
+            const images = await dataManager.getImages() || [];
+            console.log(`📸 Got ${images.length} total images for story`);
 
             // Filter images for story page
             const storyImages = images.filter(img => img.category === 'story');
+            console.log(`📖 Filtered ${storyImages.length} story images`);
+
             if (storyImages.length > 0) {
                 // Use the first story image
-                document.getElementById('story-image').src = storyImages[0].data;
+                const storyImg = document.getElementById('story-image');
+                if (storyImg) {
+                    storyImg.src = storyImages[0].data;
+                    console.log('✅ Story image set');
+                }
+            } else {
+                console.log('⚠️ No story images found');
             }
         }
 

@@ -55,12 +55,20 @@ async function initializeMentoringBooking() {
 
 // Load mentors from data
 async function loadMentors() {
+    console.log('📋 loadMentors() called');
     const mentorsGrid = document.getElementById('mentors-grid');
-    if (!mentorsGrid) return;
+    if (!mentorsGrid) {
+        console.error('❌ mentors-grid element not found');
+        return;
+    }
 
+    console.log('⏳ Fetching mentors from Firebase...');
     const mentors = await dataManager.getMentors();
+    console.log(`✅ Got ${mentors.length} mentors from dataManager`);
+    console.log('👥 Mentors data:', mentors);
 
     if (mentors.length === 0) {
+        console.log('⚠️ No mentors found, initializing sample mentors...');
         // Initialize sample mentors if none exist
         await initializeSampleMentors();
         return loadMentors();
@@ -70,7 +78,7 @@ async function loadMentors() {
         <div class="mentor-card" data-mentor-id="${mentor.id}" onclick="selectMentor('${mentor.id}')">
             <div class="mentor-avatar">${mentor.avatar}</div>
             <h3>${mentor.name}</h3>
-            <div class="mentor-speciality">${mentor.speciality}</div>
+            <div class="mentor-speciality">${mentor.speciality || mentor.specialty}</div>
             <p class="mentor-bio">${mentor.bio}</p>
             <div class="mentor-rating">
                 ${'★'.repeat(mentor.rating)}${'☆'.repeat(5 - mentor.rating)}
@@ -78,6 +86,8 @@ async function loadMentors() {
             <div class="mentor-experience">${mentor.experience} years experience</div>
         </div>
     `).join('');
+
+    console.log(`✅ Rendered ${mentors.length} mentor cards to the page`);
 }
 
 // Initialize sample mentors
