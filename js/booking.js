@@ -276,15 +276,25 @@ function loadAvailableTimeSlots() {
 
 // Select time slot
 function selectTimeSlot(timeSlot) {
+    console.log('⏰ selectTimeSlot called with:', timeSlot);
     const timeSlots = document.querySelectorAll('.time-slot:not(.unavailable)');
     const hiddenInput = document.getElementById('selected-time-slot');
+
+    console.log('📝 Hidden input found:', !!hiddenInput);
 
     timeSlots.forEach(slot => slot.classList.remove('selected'));
 
     const selectedSlot = document.querySelector(`[data-slot="${timeSlot}"]`);
     if (selectedSlot) {
         selectedSlot.classList.add('selected');
-        hiddenInput.value = timeSlot;
+        if (hiddenInput) {
+            hiddenInput.value = timeSlot;
+            console.log('✅ Time slot set to:', timeSlot);
+        } else {
+            console.error('❌ Hidden input #selected-time-slot not found!');
+        }
+    } else {
+        console.error('❌ Time slot element not found for:', timeSlot);
     }
 }
 
