@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to everyone (public website)
+    // Allow write access to everyone (since we don't have authentication yet)
+    // TODO: Add proper authentication and restrict writes
+
+    match /images/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /mentors/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /donation_bookings/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /mentoring_bookings/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /content/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

@@ -673,7 +673,18 @@ class DataManager {
     }
 
     // Mentors Management
-    getMentors() {
+    async getMentors() {
+        // Try Firebase first, fall back to localStorage
+        if (firebaseDataManager) {
+            try {
+                const mentors = await firebaseDataManager.getMentors();
+                // Cache in localStorage
+                this.setData(this.storageKeys.mentors, mentors);
+                return mentors;
+            } catch (error) {
+                console.error('Error getting mentors from Firebase, using localStorage:', error);
+            }
+        }
         return this.getData(this.storageKeys.mentors) || [];
     }
 
@@ -681,38 +692,71 @@ class DataManager {
         return this.setData(this.storageKeys.mentors, mentors);
     }
 
-    addMentor(mentor) {
-        const mentors = this.getMentors();
+    async addMentor(mentor) {
         mentor.id = this.generateId();
         mentor.createdAt = Date.now();
+
+        // Save to Firebase if available
+        if (firebaseDataManager) {
+            try {
+                await firebaseDataManager.saveMentor(mentor);
+                console.log('Mentor saved to Firebase');
+            } catch (error) {
+                console.error('Error saving mentor to Firebase:', error);
+            }
+        }
+
+        // Also save to localStorage
+        const mentors = await this.getMentors();
         mentors.push(mentor);
         return this.setMentors(mentors);
     }
 
-    updateMentor(mentorId, updates) {
-        const mentors = this.getMentors();
+    async updateMentor(mentorId, updates) {
+        const mentors = await this.getMentors();
         const index = mentors.findIndex(m => m.id === mentorId);
         if (index !== -1) {
             mentors[index] = { ...mentors[index], ...updates, updatedAt: Date.now() };
+
+            // Update in Firebase if available
+            if (firebaseDataManager) {
+                try {
+                    await firebaseDataManager.saveMentor(mentors[index]);
+                    console.log('Mentor updated in Firebase');
+                } catch (error) {
+                    console.error('Error updating mentor in Firebase:', error);
+                }
+            }
+
             return this.setMentors(mentors);
         }
         return false;
     }
 
-    getMentorById(mentorId) {
-        const mentors = this.getMentors();
+    async getMentorById(mentorId) {
+        const mentors = await this.getMentors();
         return mentors.find(m => m.id === mentorId);
     }
 
-    deleteMentor(mentorId) {
-        const mentors = this.getMentors();
+    async deleteMentor(mentorId) {
+        // Delete from Firebase if available
+        if (firebaseDataManager) {
+            try {
+                await firebaseDataManager.deleteMentor(mentorId);
+                console.log('Mentor deleted from Firebase');
+            } catch (error) {
+                console.error('Error deleting mentor from Firebase:', error);
+            }
+        }
+
+        const mentors = await this.getMentors();
         const filtered = mentors.filter(m => m.id !== mentorId);
         return this.setMentors(filtered);
     }
 
     // Get active mentors only
-    getActiveMentors() {
-        const mentors = this.getMentors();
+    async getActiveMentors() {
+        const mentors = await this.getMentors();
         return mentors.filter(m => m.active !== false);
     }
 
