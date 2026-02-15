@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrate Data to Firebase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        .warning { background: #fff3cd; color: #856404; }
+        button {
+            padding: 15px 30px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-danger:hover { background: #c0392b; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Migrate Data to Firebase</h1>
+        <p>This tool will copy your existing localStorage data to Firebase Cloud Storage.</p>
+
+        <div id="status"></div>
+
+        <h2>Step 1: Check Local Data</h2>
+        <button class="btn-primary" onclick="checkLocalData()">Check What's in localStorage</button>
+
+        <h2>Step 2: Migrate to Firebase</h2>
+        <button class="btn-primary" onclick="migrateMentors()">Migrate Mentors to Firebase</button>
+        <button class="btn-primary" onclick="migrateImages()">Migrate Images to Firebase</button>
+        <button class="btn-primary" onclick="migrateAll()">Migrate Everything</button>
+
+        <div id="results"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        window.dispatchEvent(new Event('firebaseReady'));
+        window.firebaseDB = db;
+        console.log('Firebase initialized for migration');
+    </script>
+
+    <script src="js/dataManager.js"></script>
+    <script>
+        function addStatus(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            document.getElementById('status').appendChild(div);
+            console.log(message);
+        }
+
+        function showResults(title, data) {
+            document.getElementById('results').innerHTML += `
+                <h3>${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        function checkLocalData() {
+            try {
+                const mentors = JSON.parse(localStorage.getItem('charity_store_mentors') || '[]');
+                const images = JSON.parse(localStorage.getItem('charity_store_images') || '[]');
+
+                addStatus(`<strong>📊 Local Data Found:</strong><br>
+                    - Mentors in localStorage: ${mentors.length}<br>
+                    - Images in localStorage: ${images.length}`,
+                    mentors.length > 0 || images.length > 0 ? 'success' : 'warning');
+
+                if (mentors.length > 0) {
+                    showResults('Mentors in localStorage:', mentors.map(m => ({
+                        id: m.id,
+                        name: m.name,
+                        specialty: m.specialty || m.speciality
+                    })));
+                }
+
+                if (images.length > 0) {
+                    showResults('Images in localStorage:', images.map(img => ({
+                        name: img.name,
+                        category: img.category,
+                        size: img.size
+                    })));
+                }
+            } catch (error) {
+                addStatus(`❌ Error checking local data: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function migrateMentors() {
+            try {
+                addStatus('🔄 Starting mentor migration...', 'info');
+
+                const localMentors = JSON.parse(localStorage.getItem('charity_store_mentors') || '[]');
+
+                if (localMentors.length === 0) {
+                    addStatus('⚠️ No mentors found in localStorage to migrate', 'warning');
+                    return;
+                }
+
+                addStatus(`Found ${localMentors.length} mentors in localStorage`, 'info');
+
+                let migrated = 0;
+                let failed = 0;
+
+                for (const mentor of localMentors) {
+                    try {
+                        // Save to Firebase using dataManager
+                        await dataManager.updateMentor(mentor.id, mentor);
+                        migrated++;
+                        addStatus(`✅ Migrated: ${mentor.name}`, 'success');
+                    } catch (error) {
+                        failed++;
+                        addStatus(`❌ Failed to migrate ${mentor.name}: ${error.message}`, 'error');
+                        console.error(error);
+                    }
+                }
+
+                addStatus(`<strong>🎉 Migration Complete!</strong><br>
+                    - Successfully migrated: ${migrated}<br>
+                    - Failed: ${failed}`,
+                    failed === 0 ? 'success' : 'warning');
+
+            } catch (error) {
+                addStatus(`❌ Migration error: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function migrateImages() {
+            try {
+                addStatus('🔄 Starting image migration...', 'info');
+
+                const localImages = JSON.parse(localStorage.getItem('charity_store_images') || '[]');
+
+                if (localImages.length === 0) {
+                    addStatus('⚠️ No images found in localStorage to migrate', 'warning');
+                    return;
+                }
+
+                addStatus(`Found ${localImages.length} images in localStorage`, 'info');
+
+                let migrated = 0;
+                let failed = 0;
+
+                for (const image of localImages) {
+                    try {
+                        // Check if image already exists in Firebase
+                        const existingImages = await dataManager.getImages();
+                        const exists = existingImages.some(img => img.id === image.id);
+
+                        if (!exists) {
+                            // Save to Firebase
+                            await dataManager.addImage(image);
+                            migrated++;
+                            addStatus(`✅ Migrated: ${image.name}`, 'success');
+                        } else {
+                            addStatus(`⏭️ Skipped (already exists): ${image.name}`, 'info');
+                        }
+                    } catch (error) {
+                        failed++;
+                        addStatus(`❌ Failed to migrate ${image.name}: ${error.message}`, 'error');
+                        console.error(error);
+                    }
+                }
+
+                addStatus(`<strong>🎉 Image Migration Complete!</strong><br>
+                    - Successfully migrated: ${migrated}<br>
+                    - Failed: ${failed}`,
+                    failed === 0 ? 'success' : 'warning');
+
+            } catch (error) {
+                addStatus(`❌ Migration error: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function migrateAll() {
+            addStatus('🚀 Starting full migration...', 'info');
+            await migrateMentors();
+            await migrateImages();
+            addStatus('✅ All migrations complete!', 'success');
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addStatus('✅ Page loaded. Click "Check What\'s in localStorage" to begin.', 'info');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
