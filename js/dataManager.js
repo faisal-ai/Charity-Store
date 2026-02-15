@@ -6,17 +6,43 @@
 
 // Firebase integration - will be initialized when firebase scripts are loaded
 let firebaseDataManager = null;
+let firebaseInitialized = false;
+let firebaseInitPromise = null;
 
 // Initialize Firebase when available
 if (typeof window !== 'undefined') {
-    window.addEventListener('firebaseReady', () => {
-        import('./firebaseDataManager.js').then(module => {
-            firebaseDataManager = module.default;
-            console.log('Firebase Data Manager loaded');
-        }).catch(err => {
-            console.warn('Firebase not available, using localStorage only:', err);
+    firebaseInitPromise = new Promise((resolve) => {
+        window.addEventListener('firebaseReady', async () => {
+            try {
+                console.log('🔥 Firebase ready event received, loading module...');
+                const module = await import('./firebaseDataManager.js');
+                firebaseDataManager = module.default;
+                firebaseInitialized = true;
+                console.log('✅ Firebase Data Manager loaded successfully');
+                resolve(true);
+            } catch (err) {
+                console.error('❌ Firebase loading failed:', err);
+                firebaseInitialized = false;
+                resolve(false);
+            }
         });
+
+        // Timeout after 5 seconds if Firebase doesn't load
+        setTimeout(() => {
+            if (!firebaseInitialized) {
+                console.warn('⚠️ Firebase initialization timeout - using localStorage only');
+                resolve(false);
+            }
+        }, 5000);
     });
+}
+
+// Helper function to wait for Firebase
+async function ensureFirebaseReady() {
+    if (firebaseInitPromise) {
+        await firebaseInitPromise;
+    }
+    return firebaseDataManager;
 }
 
 class DataManager {
@@ -674,18 +700,27 @@ class DataManager {
 
     // Mentors Management
     async getMentors() {
+        // Wait for Firebase to be ready
+        await ensureFirebaseReady();
+
         // Try Firebase first, fall back to localStorage
         if (firebaseDataManager) {
             try {
+                console.log('👥 Loading mentors from Firebase...');
                 const mentors = await firebaseDataManager.getMentors();
+                console.log(`✅ Loaded ${mentors.length} mentors from Firebase`);
                 // Cache in localStorage
                 this.setData(this.storageKeys.mentors, mentors);
                 return mentors;
             } catch (error) {
-                console.error('Error getting mentors from Firebase, using localStorage:', error);
+                console.error('❌ Error getting mentors from Firebase, using localStorage:', error);
             }
+        } else {
+            console.warn('⚠️ Firebase not available for mentors, using localStorage only');
         }
-        return this.getData(this.storageKeys.mentors) || [];
+        const localMentors = this.getData(this.storageKeys.mentors) || [];
+        console.log(`📦 Loaded ${localMentors.length} mentors from localStorage`);
+        return localMentors;
     }
 
     setMentors(mentors) {
@@ -693,6 +728,9 @@ class DataManager {
     }
 
     async addMentor(mentor) {
+        // Wait for Firebase to be ready
+        await ensureFirebaseReady();
+
         mentor.id = this.generateId();
         mentor.createdAt = Date.now();
 
@@ -700,10 +738,12 @@ class DataManager {
         if (firebaseDataManager) {
             try {
                 await firebaseDataManager.saveMentor(mentor);
-                console.log('Mentor saved to Firebase');
+                console.log('✅ Mentor saved to Firebase');
             } catch (error) {
-                console.error('Error saving mentor to Firebase:', error);
+                console.error('❌ Error saving mentor to Firebase:', error);
             }
+        } else {
+            console.warn('⚠️ Firebase not available, saving mentor to localStorage only');
         }
 
         // Also save to localStorage
@@ -857,22 +897,34 @@ class DataManager {
 
     // ===== IMAGE MANAGEMENT =====
     async getImages() {
+        // Wait for Firebase to be ready
+        await ensureFirebaseReady();
+
         // Try Firebase first, fall back to localStorage
         if (firebaseDataManager) {
             try {
+                console.log('📸 Loading images from Firebase...');
                 const images = await firebaseDataManager.getImages();
+                console.log(`✅ Loaded ${images.length} images from Firebase`);
                 // Cache in localStorage
                 this.setData(this.storageKeys.images, images);
                 return images;
             } catch (error) {
-                console.error('Error getting images from Firebase, using localStorage:', error);
+                console.error('❌ Error getting images from Firebase, using localStorage:', error);
             }
+        } else {
+            console.warn('⚠️ Firebase not available, using localStorage only');
         }
-        return this.getData(this.storageKeys.images) || [];
+        const localImages = this.getData(this.storageKeys.images) || [];
+        console.log(`📦 Loaded ${localImages.length} images from localStorage`);
+        return localImages;
     }
 
     async addImage(imageData) {
         try {
+            // Wait for Firebase to be ready
+            await ensureFirebaseReady();
+
             const newImage = {
                 id: this.generateId(),
                 ...imageData
