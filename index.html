@@ -491,7 +491,7 @@
         console.log('Firebase initialized on homepage');
     </script>
 
-    <script src="js/dataManager.js?v=10"></script>
+    <script src="js/dataManager.js?v=11"></script>
     <script src="js/utils.js?v=9"></script>
     <script>
         // Initialize homepage
@@ -528,11 +528,25 @@
                 }
             }
 
-            // Load images from data manager - wait a bit for Firebase to initialize
+            // Load images from data manager - wait for Firebase to initialize
             setTimeout(async () => {
                 console.log('⏰ Starting image load after Firebase init delay');
-                await loadHomePageImages();
-            }, 2000); // Wait 2 seconds for Firebase to fully initialize
+                try {
+                    await loadHomePageImages();
+                } catch (error) {
+                    console.error('❌ Error loading images:', error);
+                    // Show a user-friendly message
+                    const gallerySection = document.getElementById('homepage-gallery-section');
+                    if (gallerySection) {
+                        gallerySection.style.display = 'block';
+                        document.getElementById('homepage-gallery-container').innerHTML = `
+                            <div style="text-align: center; padding: 40px; color: #666;">
+                                <p>Unable to load images. Please refresh the page or check your internet connection.</p>
+                            </div>
+                        `;
+                    }
+                }
+            }, 3000); // Increased to 3 seconds for better Firebase loading
 
             // Update footer contact info
             if (contactInfo) {

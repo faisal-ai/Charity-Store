@@ -779,6 +779,9 @@ class DataManager {
     }
 
     async deleteMentor(mentorId) {
+        // Wait for Firebase to be ready
+        await ensureFirebaseReady();
+
         // Delete from Firebase if available
         if (firebaseDataManager) {
             try {
@@ -900,24 +903,27 @@ class DataManager {
         // Wait for Firebase to be ready
         await ensureFirebaseReady();
 
-        // Try Firebase first, fall back to localStorage
+        // ALWAYS load directly from Firebase (no localStorage caching to avoid quota issues)
         if (firebaseDataManager) {
             try {
-                console.log('📸 Loading images from Firebase...');
+                console.log('📸 Loading images DIRECTLY from Firebase (no localStorage cache)...');
                 const images = await firebaseDataManager.getImages();
                 console.log(`✅ Loaded ${images.length} images from Firebase`);
-                // Cache in localStorage
-                this.setData(this.storageKeys.images, images);
+                // DO NOT cache in localStorage - images are too large
                 return images;
             } catch (error) {
-                console.error('❌ Error getting images from Firebase, using localStorage:', error);
+                console.error('❌ Error getting images from Firebase:', error);
+                // Try localStorage as emergency fallback only
+                const localImages = this.getData(this.storageKeys.images) || [];
+                console.warn(`⚠️ Falling back to localStorage: ${localImages.length} images`);
+                return localImages;
             }
         } else {
             console.warn('⚠️ Firebase not available, using localStorage only');
+            const localImages = this.getData(this.storageKeys.images) || [];
+            console.log(`📦 Loaded ${localImages.length} images from localStorage`);
+            return localImages;
         }
-        const localImages = this.getData(this.storageKeys.images) || [];
-        console.log(`📦 Loaded ${localImages.length} images from localStorage`);
-        return localImages;
     }
 
     async addImage(imageData) {
@@ -930,21 +936,26 @@ class DataManager {
                 ...imageData
             };
 
-            // Save to Firebase if available
+            // Save to Firebase ONLY (no localStorage to avoid quota issues)
             if (firebaseDataManager) {
                 try {
                     await firebaseDataManager.saveImage(newImage);
-                    console.log('Image saved to Firebase');
+                    console.log('✅ Image saved to Firebase (skipped localStorage to avoid quota)');
+                    return true;
                 } catch (error) {
-                    console.error('Error saving to Firebase:', error);
+                    console.error('❌ Error saving to Firebase:', error);
+                    // Try localStorage as emergency fallback
+                    const images = this.getData(this.storageKeys.images) || [];
+                    images.push(newImage);
+                    return this.setData(this.storageKeys.images, images);
                 }
+            } else {
+                // Firebase not available, use localStorage
+                console.warn('⚠️ Firebase not available, saving to localStorage');
+                const images = this.getData(this.storageKeys.images) || [];
+                images.push(newImage);
+                return this.setData(this.storageKeys.images, images);
             }
-
-            // Also save to localStorage as backup
-            const images = await this.getImages();
-            images.push(newImage);
-            this.setData(this.storageKeys.images, images);
-            return true;
         } catch (error) {
             console.error('Error adding image:', error);
             return false;
@@ -953,24 +964,29 @@ class DataManager {
 
     async deleteImage(index) {
         try {
+            // Wait for Firebase to be ready
+            await ensureFirebaseReady();
+
             const images = await this.getImages();
             if (index >= 0 && index < images.length) {
                 const imageId = images[index].id;
 
-                // Delete from Firebase if available
+                // Delete from Firebase ONLY (no localStorage to avoid quota issues)
                 if (firebaseDataManager && imageId) {
                     try {
                         await firebaseDataManager.deleteImage(imageId);
-                        console.log('Image deleted from Firebase');
+                        console.log('✅ Image deleted from Firebase');
+                        return true;
                     } catch (error) {
-                        console.error('Error deleting from Firebase:', error);
+                        console.error('❌ Error deleting from Firebase:', error);
+                        return false;
                     }
+                } else {
+                    // Firebase not available, use localStorage
+                    console.warn('⚠️ Firebase not available, deleting from localStorage');
+                    images.splice(index, 1);
+                    return this.setData(this.storageKeys.images, images);
                 }
-
-                // Delete from localStorage
-                images.splice(index, 1);
-                this.setData(this.storageKeys.images, images);
-                return true;
             }
             return false;
         } catch (error) {
