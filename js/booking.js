@@ -395,6 +395,7 @@ function handleDonationBooking(e) {
 // Handle mentoring booking submission
 function handleMentoringBooking(e) {
     e.preventDefault();
+    console.log('📋 handleMentoringBooking called');
 
     const form = e.target;
     const formData = new FormData(form);
@@ -426,8 +427,12 @@ function handleMentoringBooking(e) {
         createdAt: Date.now()
     };
 
+    console.log('📊 Booking data collected:', bookingData);
+    console.log('⏰ Selected time slot value:', bookingData.selectedTimeSlot);
+
     // Validate required fields
     const errors = validateBookingData(bookingData, 'mentoring');
+    console.log('✅ Validation errors:', errors);
 
     if (errors.length > 0) {
         showBookingMessage(errors.join('<br>'), 'error');

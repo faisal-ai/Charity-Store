@@ -39,6 +39,7 @@
     font-size: 3rem;
     margin-bottom: 20px;
     font-weight: 700;
+    color: white !important;
 }
 
 .hero-section p {
@@ -47,6 +48,7 @@
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
+    color: white !important;
 }
 
 /* Booking Section */
