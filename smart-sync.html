@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sync - Handle Large Data</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { text-align: center; color: #667eea; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 5px solid;
+        }
+        .success { background: #d4edda; color: #155724; border-color: #28a745; }
+        .error { background: #f8d7da; color: #721c24; border-color: #dc3545; }
+        .info { background: #d1ecf1; color: #0c5460; border-color: #17a2b8; }
+        .warning { background: #fff3cd; color: #856404; border-color: #ffc107; }
+        button {
+            padding: 15px 30px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover { transform: translateY(-2px); }
+        .section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        .section h2 { color: #667eea; margin-bottom: 15px; }
+        pre {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 300px;
+        }
+        .storage-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .storage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #ffc107 70%, #dc3545 100%);
+            transition: width 0.3s ease;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s ease;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Smart Sync Tool</h1>
+        <p class="subtitle">Handles large data and localStorage quota limits</p>
+
+        <div id="status"></div>
+
+        <!-- Storage Info -->
+        <div class="section">
+            <h2>💾 localStorage Usage</h2>
+            <div id="storage-info">Calculating...</div>
+            <div class="storage-bar">
+                <div class="storage-fill" id="storage-fill" style="width: 0%"></div>
+            </div>
+            <button onclick="checkStorage()">🔍 Refresh Storage Info</button>
+            <button onclick="clearAllStorage()">🗑️ Clear ALL localStorage</button>
+        </div>
+
+        <!-- Selective Sync -->
+        <div class="section">
+            <h2>🎯 Selective Sync</h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                Sync only what you need to avoid quota issues
+            </p>
+            <button onclick="syncMentorsOnly()">👥 Sync Mentors Only (Small)</button>
+            <button onclick="syncImagesSelective(10)">📸 Sync 10 Images</button>
+            <button onclick="syncImagesSelective(20)">📸 Sync 20 Images</button>
+            <button onclick="syncByCategory()">📂 Sync by Category</button>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="section" id="category-section" style="display: none;">
+            <h2>📂 Select Image Categories</h2>
+            <div id="category-list"></div>
+        </div>
+
+        <!-- Direct Display -->
+        <div class="section">
+            <h2>🖼️ Direct Firebase Display</h2>
+            <p style="color: #666; margin-bottom: 15px;">
+                View images directly from Firebase without localStorage (recommended)
+            </p>
+            <button onclick="showFirebaseImages()">👁️ Show Images from Firebase</button>
+            <button onclick="generateDirectLoadScript()">⚡ Generate Direct Load Script</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCvt35dMfwNY5PLW0gwbtdCcfputgcE6M",
+            authDomain: "bu-mentoring.firebaseapp.com",
+            projectId: "bu-mentoring",
+            storageBucket: "bu-mentoring.firebasestorage.app",
+            messagingSenderId: "172398452298",
+            appId: "1:172398452298:web:ee8908b8eed565e03350b3",
+            measurementId: "G-PT3DVJX0QG"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.firebaseDB = db;
+        window.firebaseCollection = collection;
+        window.firebaseGetDocs = getDocs;
+
+        console.log('✅ Firebase initialized');
+
+        // Check storage on load
+        setTimeout(checkStorage, 500);
+    </script>
+
+    <script>
+        function addStatus(msg, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = msg;
+            document.getElementById('status').appendChild(div);
+            div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function checkStorage() {
+            try {
+                let totalSize = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        totalSize += localStorage[key].length + key.length;
+                    }
+                }
+
+                const sizeInMB = (totalSize / 1024 / 1024).toFixed(2);
+                const maxSize = 10; // Assume 10MB limit
+                const percentUsed = ((totalSize / 1024 / 1024) / maxSize * 100).toFixed(1);
+
+                document.getElementById('storage-info').innerHTML = `
+                    <p><strong>Used:</strong> ${sizeInMB} MB / ~${maxSize} MB</p>
+                    <p><strong>Percentage:</strong> ${percentUsed}%</p>
+                    <p style="font-size: 12px; color: #666;">
+                        Keys: ${Object.keys(localStorage).length} |
+                        ${percentUsed > 80 ? '⚠️ Nearly full!' : percentUsed > 50 ? '⚡ Getting full' : '✅ Plenty of space'}
+                    </p>
+                `;
+
+                document.getElementById('storage-fill').style.width = Math.min(percentUsed, 100) + '%';
+
+                addStatus(`💾 localStorage: ${sizeInMB}MB used (${percentUsed}%)`,
+                    percentUsed > 80 ? 'error' : percentUsed > 50 ? 'warning' : 'success');
+
+            } catch (error) {
+                addStatus(`❌ Error checking storage: ${error.message}`, 'error');
+            }
+        }
+
+        function clearAllStorage() {
+            if (!confirm('⚠️ This will delete ALL data from localStorage. Are you sure?')) return;
+
+            try {
+                localStorage.clear();
+                addStatus('✅ localStorage cleared!', 'success');
+                checkStorage();
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function syncMentorsOnly() {
+            addStatus('👥 Syncing mentors only...', 'info');
+
+            try {
+                const snapshot = await window.firebaseGetDocs(
+                    window.firebaseCollection(window.firebaseDB, 'mentors')
+                );
+
+                const mentors = [];
+                snapshot.forEach(doc => mentors.push({ id: doc.id, ...doc.data() }));
+
+                localStorage.setItem('charity_store_mentors', JSON.stringify(mentors));
+
+                addStatus(`✅ Synced ${mentors.length} mentor(s) successfully!`, 'success');
+                checkStorage();
+
+                document.getElementById('results').innerHTML = `
+                    <div class="section">
+                        <h2>👥 Mentors Synced</h2>
+                        <pre>${JSON.stringify(mentors, null, 2)}</pre>
+                    </div>
+                `;
+
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function syncImagesSelective(limit) {
+            addStatus(`📸 Syncing ${limit} images...`, 'info');
+
+            try {
+                const snapshot = await window.firebaseGetDocs(
+                    window.firebaseCollection(window.firebaseDB, 'images')
+                );
+
+                const allImages = [];
+                snapshot.forEach(doc => allImages.push({ id: doc.id, ...doc.data() }));
+
+                // Take only the first N images
+                const imagesToSync = allImages.slice(0, limit);
+
+                // Try to save
+                try {
+                    localStorage.setItem('charity_store_images', JSON.stringify(imagesToSync));
+                    addStatus(`✅ Synced ${imagesToSync.length} images successfully!`, 'success');
+                    checkStorage();
+                } catch (quotaError) {
+                    addStatus(`❌ Quota exceeded! Try syncing fewer images.`, 'error');
+
+                    // Try with half the amount
+                    const halfLimit = Math.floor(limit / 2);
+                    if (halfLimit > 0) {
+                        addStatus(`🔄 Trying with ${halfLimit} images instead...`, 'info');
+                        const smallerSet = allImages.slice(0, halfLimit);
+                        localStorage.setItem('charity_store_images', JSON.stringify(smallerSet));
+                        addStatus(`✅ Synced ${smallerSet.length} images instead!`, 'success');
+                    }
+                }
+
+                checkStorage();
+
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function syncByCategory() {
+            addStatus('📂 Loading image categories...', 'info');
+
+            try {
+                const snapshot = await window.firebaseGetDocs(
+                    window.firebaseCollection(window.firebaseDB, 'images')
+                );
+
+                const allImages = [];
+                const categories = new Set();
+
+                snapshot.forEach(doc => {
+                    const img = { id: doc.id, ...doc.data() };
+                    allImages.push(img);
+                    categories.add(img.category || 'uncategorized');
+                });
+
+                const categorySection = document.getElementById('category-section');
+                categorySection.style.display = 'block';
+
+                const categoryList = document.getElementById('category-list');
+                let html = '';
+
+                Array.from(categories).forEach(cat => {
+                    const count = allImages.filter(img => (img.category || 'uncategorized') === cat).length;
+                    html += `
+                        <div style="margin: 10px 0; padding: 15px; background: white; border-radius: 8px;">
+                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                <input type="checkbox" id="cat-${cat}" value="${cat}" style="margin-right: 10px; width: 20px; height: 20px;">
+                                <span style="flex: 1;"><strong>${cat}</strong> (${count} images)</span>
+                            </label>
+                        </div>
+                    `;
+                });
+
+                categoryList.innerHTML = html + `
+                    <button onclick="syncSelectedCategories()" style="margin-top: 15px;">
+                        ✅ Sync Selected Categories
+                    </button>
+                `;
+
+                addStatus(`✅ Found ${categories.size} categories`, 'success');
+
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function syncSelectedCategories() {
+            const checkboxes = document.querySelectorAll('#category-list input[type="checkbox"]:checked');
+            const selectedCategories = Array.from(checkboxes).map(cb => cb.value);
+
+            if (selectedCategories.length === 0) {
+                addStatus('⚠️ Please select at least one category', 'warning');
+                return;
+            }
+
+            addStatus(`📂 Syncing categories: ${selectedCategories.join(', ')}...`, 'info');
+
+            try {
+                const snapshot = await window.firebaseGetDocs(
+                    window.firebaseCollection(window.firebaseDB, 'images')
+                );
+
+                const allImages = [];
+                snapshot.forEach(doc => allImages.push({ id: doc.id, ...doc.data() }));
+
+                const filteredImages = allImages.filter(img =>
+                    selectedCategories.includes(img.category || 'uncategorized')
+                );
+
+                localStorage.setItem('charity_store_images', JSON.stringify(filteredImages));
+                addStatus(`✅ Synced ${filteredImages.length} images from selected categories!`, 'success');
+                checkStorage();
+
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    addStatus(`❌ Quota exceeded! Try selecting fewer categories.`, 'error');
+                } else {
+                    addStatus(`❌ Error: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function showFirebaseImages() {
+            addStatus('👁️ Loading images directly from Firebase...', 'info');
+
+            try {
+                const snapshot = await window.firebaseGetDocs(
+                    window.firebaseCollection(window.firebaseDB, 'images')
+                );
+
+                const images = [];
+                snapshot.forEach(doc => images.push({ id: doc.id, ...doc.data() }));
+
+                let html = `
+                    <div class="section">
+                        <h2>🖼️ Images in Firebase (${images.length} total)</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                `;
+
+                images.forEach(img => {
+                    html += `
+                        <div style="background: white; border-radius: 8px; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <img src="${img.data}" alt="${img.name}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
+                            <p style="margin: 10px 0 5px; font-weight: bold; font-size: 14px;">${img.name}</p>
+                            <p style="margin: 0; font-size: 12px; color: #666;">${img.category || 'uncategorized'}</p>
+                        </div>
+                    `;
+                });
+
+                html += '</div></div>';
+                document.getElementById('results').innerHTML = html;
+
+                addStatus(`✅ Displayed ${images.length} images from Firebase`, 'success');
+
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function generateDirectLoadScript() {
+            addStatus('⚡ Generating direct Firebase load script...', 'info');
+
+            const script = `
+// Direct Firebase Loading (bypasses localStorage)
+// Add this to your index.html and other pages
+
+async function loadImagesDirectlyFromFirebase() {
+    try {
+        const snapshot = await getDocs(collection(db, 'images'));
+        const images = [];
+        snapshot.forEach(doc => images.push({ id: doc.id, ...doc.data() }));
+
+        console.log('Loaded', images.length, 'images directly from Firebase');
+        return images;
+    } catch (error) {
+        console.error('Error loading images:', error);
+        return [];
+    }
+}
+
+// Usage:
+const images = await loadImagesDirectlyFromFirebase();
+// Display images without storing in localStorage
+            `;
+
+            document.getElementById('results').innerHTML = `
+                <div class="section">
+                    <h2>⚡ Direct Firebase Load Script</h2>
+                    <p style="color: #666; margin-bottom: 15px;">
+                        This script loads images directly from Firebase without using localStorage.
+                        Copy this and integrate it into your website.
+                    </p>
+                    <pre>${script}</pre>
+                    <button onclick="navigator.clipboard.writeText(\`${script}\`)">
+                        📋 Copy to Clipboard
+                    </button>
+                </div>
+            `;
+
+            addStatus('✅ Script generated! See below for code.', 'success');
+        }
+    </script>
+</body>
+</html>
