@@ -712,6 +712,8 @@
             amountButtons.forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault(); // Prevent form submission
+                    console.log('💰 Amount button clicked:', this.dataset.amount);
+
                     // Remove selected class from all buttons
                     amountButtons.forEach(b => b.classList.remove('selected'));
 
@@ -721,6 +723,14 @@
 
                     // Clear custom amount input
                     customAmountInput.value = '';
+
+                    // Scroll to the donor info section
+                    const donorSection = document.querySelector('.donor-info');
+                    if (donorSection) {
+                        donorSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+
+                    console.log('✅ Selected amount:', selectedAmount);
                 });
             });
 
