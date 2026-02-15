@@ -246,23 +246,46 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('✅ Firebase initialized on impact page');
+    </script>
+
     <script src="js/dataManager.js?v=11"></script>
     <script src="js/utils.js?v=3"></script>
     <script>
         // Initialize impact page
         document.addEventListener('DOMContentLoaded', function() {
-            loadImpactImages();
+            console.log('🚀 Impact page DOM loaded');
+            // Wait for Firebase to initialize before loading images
+            console.log('⏳ Waiting 3 seconds for Firebase initialization...');
+            setTimeout(async () => {
+                console.log('🔄 Starting image load...');
+                await loadImpactImages();
+            }, 3000);
         });
 
-        function loadImpactImages() {
-            // Get all images from localStorage
-            const images = dataManager.getImages() || [];
+        async function loadImpactImages() {
+            console.log('📸 Loading impact images...');
+            // Get all images from dataManager (Firebase first, then localStorage)
+            const images = await dataManager.getImages() || [];
+            console.log(`📊 Got ${images.length} total images`);
 
             // Filter images for impact page
             const impactImages = images.filter(img => img.category === 'impact');
+            console.log(`🎯 Filtered ${impactImages.length} impact images`);
+
             if (impactImages.length > 0) {
                 // Use the first impact image
-                document.getElementById('impact-image').src = impactImages[0].data;
+                const impactImg = document.getElementById('impact-image');
+                if (impactImg) {
+                    impactImg.src = impactImages[0].data;
+                    console.log('✅ Impact image set');
+                }
+            } else {
+                console.log('⚠️ No impact images found');
             }
         }
     </script>
