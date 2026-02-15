@@ -7,6 +7,18 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Charity Store - Charity Clothes Store</title>
+
+    <!-- CACHE BUSTER - Forces immediate reload of new version -->
+    <script>
+    (function() {
+        const V = '20260215-v2';
+        const stored = sessionStorage.getItem('site_v');
+        if (stored !== V && !location.search.includes('v=')) {
+            sessionStorage.setItem('site_v', V);
+            location.href = location.pathname + '?v=' + V;
+        }
+    })();
+    </script>
     <link rel="stylesheet" href="css/base.css?v=9">
     <style>
         /* Enhanced Hero Section with Animations */
