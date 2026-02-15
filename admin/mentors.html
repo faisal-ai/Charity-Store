@@ -210,6 +210,12 @@
 
     <script src="../js/dataManager.js?v=11"></script>
     <script src="../js/utils.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from '../js/firebase-config.js';
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('✅ Firebase initialized in admin mentors panel');
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (!utils.requireAuth()) return;
@@ -224,7 +230,7 @@
             setTimeout(async () => {
                 console.log('🚀 Loading mentors from Firebase');
                 await loadMentors();
-            }, 2000);
+            }, 3000); // Increased to 3 seconds like other pages
         });
 
         async function loadMentors() {
@@ -395,7 +401,9 @@
         }
 
         async function saveMentor() {
+            console.log('💾 saveMentor() called');
             const mentorId = document.getElementById('add-mentor-form').dataset.mentorId;
+            console.log('📝 Mentor ID:', mentorId ? mentorId : 'NEW MENTOR');
 
             // Get form values
             const name = document.getElementById('mentor-name').value.trim();
@@ -434,29 +442,38 @@
                 availableHours: availableHours || ''
             };
 
+            console.log('📊 Mentor data to save:', mentorData);
+
             let success;
             if (mentorId) {
                 // Update existing mentor
+                console.log('🔄 Updating existing mentor...');
                 success = await dataManager.updateMentor(mentorId, mentorData);
                 if (success) {
+                    console.log('✅ Mentor updated successfully in Firebase');
                     utils.showNotification('Mentor updated successfully!', 'success');
                 } else {
+                    console.error('❌ Failed to update mentor in Firebase');
                     utils.showNotification('Failed to update mentor', 'error');
                 }
             } else {
                 // Add new mentor
+                console.log('➕ Adding new mentor...');
                 mentorData.rating = null;
                 mentorData.createdAt = Date.now();
                 success = await dataManager.addMentor(mentorData);
                 if (success) {
+                    console.log('✅ Mentor added successfully to Firebase');
                     utils.showNotification('Mentor added successfully!', 'success');
                 } else {
+                    console.error('❌ Failed to add mentor to Firebase');
                     utils.showNotification('Failed to add mentor', 'error');
                 }
             }
 
             if (success) {
                 closeAddMentorModal();
+                console.log('🔄 Reloading mentors list...');
                 await loadMentors();
             }
         }
