@@ -456,8 +456,8 @@
             }
         }
 
-        function openEditMentorModal(mentorId) {
-            const mentor = dataManager.getMentorById(mentorId);
+        async function openEditMentorModal(mentorId) {
+            const mentor = await dataManager.getMentorById(mentorId);
             if (!mentor) {
                 utils.showNotification('Mentor not found', 'error');
                 return;
