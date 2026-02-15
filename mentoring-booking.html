@@ -285,9 +285,13 @@
     <script src="js/utils.js"></script>
     <script src="js/booking.js"></script>
     <script>
-        // Initialize mentoring booking form
+        // Initialize mentoring booking form - wait for Firebase
         document.addEventListener('DOMContentLoaded', function() {
-            initializeMentoringBooking();
+            console.log('⏰ Waiting for Firebase before loading mentors...');
+            setTimeout(async () => {
+                console.log('🚀 Starting mentor initialization');
+                await initializeMentoringBooking();
+            }, 2000); // Wait 2 seconds for Firebase
         });
     </script>
 </body>

@@ -528,8 +528,11 @@
                 }
             }
 
-            // Load images from data manager
-            loadHomePageImages();
+            // Load images from data manager - wait a bit for Firebase to initialize
+            setTimeout(async () => {
+                console.log('⏰ Starting image load after Firebase init delay');
+                await loadHomePageImages();
+            }, 2000); // Wait 2 seconds for Firebase to fully initialize
 
             // Update footer contact info
             if (contactInfo) {

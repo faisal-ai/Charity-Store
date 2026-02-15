@@ -219,7 +219,12 @@
                 document.getElementById('admin-name').textContent = adminUser.username;
             }
 
-            loadMentors();
+            // Wait for Firebase before loading mentors
+            console.log('⏰ Waiting for Firebase in admin mentors...');
+            setTimeout(async () => {
+                console.log('🚀 Loading mentors from Firebase');
+                await loadMentors();
+            }, 2000);
         });
 
         async function loadMentors() {
