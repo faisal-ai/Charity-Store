@@ -547,22 +547,29 @@
             if (homepageContent) {
                 // Update hero section
                 if (homepageContent.hero) {
-                    document.getElementById('hero-title').textContent = homepageContent.hero.title;
-                    document.getElementById('hero-subtitle').textContent = homepageContent.hero.subtitle;
-                    document.getElementById('hero-cta').textContent = homepageContent.hero.ctaText;
+                    const heroTitle = document.getElementById('hero-title');
+                    const heroSubtitle = document.getElementById('hero-subtitle');
+                    if (heroTitle) heroTitle.textContent = homepageContent.hero.title;
+                    if (heroSubtitle) heroSubtitle.textContent = homepageContent.hero.subtitle;
+                    // Skip hero-cta since it doesn't exist in this version
                 }
 
                 // Update mission section
                 if (homepageContent.mission) {
-                    document.getElementById('mission-title').textContent = homepageContent.mission.title;
-                    document.getElementById('mission-description').textContent = homepageContent.mission.description;
+                    const missionTitle = document.getElementById('mission-title');
+                    const missionDesc = document.getElementById('mission-description');
+                    if (missionTitle) missionTitle.textContent = homepageContent.mission.title;
+                    if (missionDesc) missionDesc.textContent = homepageContent.mission.description;
                 }
 
                 // Update statistics
                 if (homepageContent.stats) {
-                    document.getElementById('stat-items').textContent = homepageContent.stats.itemsDonated.toLocaleString();
-                    document.getElementById('stat-people').textContent = homepageContent.stats.peopleHelped.toLocaleString();
-                    document.getElementById('stat-funds').textContent = utils.formatCurrency(homepageContent.stats.fundsRaised);
+                    const statItems = document.getElementById('stat-items');
+                    const statPeople = document.getElementById('stat-people');
+                    const statFunds = document.getElementById('stat-funds');
+                    if (statItems) statItems.textContent = homepageContent.stats.itemsDonated.toLocaleString();
+                    if (statPeople) statPeople.textContent = homepageContent.stats.peopleHelped.toLocaleString();
+                    if (statFunds) statFunds.textContent = utils.formatCurrency(homepageContent.stats.fundsRaised);
                 }
             }
 
@@ -590,16 +597,26 @@
 
             // Update footer contact info
             if (contactInfo) {
-                document.getElementById('footer-address').innerHTML = contactInfo.address.replace(', ', '<br>');
-                document.getElementById('footer-phone').textContent = contactInfo.phone;
-                document.getElementById('footer-email').textContent = contactInfo.email;
-                document.getElementById('footer-email').href = `mailto:${contactInfo.email}`;
-                document.getElementById('footer-hours').innerHTML = contactInfo.hours.replace(/,\s/g, '<br>');
+                const footerAddress = document.getElementById('footer-address');
+                const footerPhone = document.getElementById('footer-phone');
+                const footerEmail = document.getElementById('footer-email');
+                const footerHours = document.getElementById('footer-hours');
+
+                if (footerAddress) footerAddress.innerHTML = contactInfo.address.replace(', ', '<br>');
+                if (footerPhone) footerPhone.textContent = contactInfo.phone;
+                if (footerEmail) {
+                    footerEmail.textContent = contactInfo.email;
+                    footerEmail.href = `mailto:${contactInfo.email}`;
+                }
+                if (footerHours) footerHours.innerHTML = contactInfo.hours.replace(/,\s/g, '<br>');
 
                 if (contactInfo.social) {
-                    document.getElementById('footer-facebook').href = contactInfo.social.facebook;
-                    document.getElementById('footer-instagram').href = contactInfo.social.instagram;
-                    document.getElementById('footer-twitter').href = contactInfo.social.twitter;
+                    const footerFacebook = document.getElementById('footer-facebook');
+                    const footerInstagram = document.getElementById('footer-instagram');
+                    const footerTwitter = document.getElementById('footer-twitter');
+                    if (footerFacebook) footerFacebook.href = contactInfo.social.facebook;
+                    if (footerInstagram) footerInstagram.href = contactInfo.social.instagram;
+                    if (footerTwitter) footerTwitter.href = contactInfo.social.twitter;
                 }
             }
         }
