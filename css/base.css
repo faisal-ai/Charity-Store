@@ -471,14 +471,17 @@ textarea {
         padding: 0 15px;
     }
 
-    .col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-
-    .col-sm-12 {
+    /* Make all column layouts stack on mobile */
+    .col, .col-1, .col-2, .col-3, .col-4, .col-6, .col-8, .col-9, .col-12,
+    .col-md-6, .col-sm-12, .col-xs-12 {
         flex: 0 0 100%;
         max-width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Remove bottom margin from last child to prevent extra space */
+    .row > [class*="col-"]:last-child {
+        margin-bottom: 0;
     }
 
     .hero {
@@ -487,6 +490,11 @@ textarea {
 
     .hero h1 {
         font-size: 2rem;
+    }
+
+    .hero .btn {
+        width: 100%;
+        margin: 0 0 10px 0 !important;
     }
 
     .section {
@@ -534,7 +542,24 @@ textarea {
 
     .btn {
         width: 100%;
-        margin-bottom: 10px;
+        margin: 0 0 10px 0 !important;
+    }
+
+    /* Make newsletter form stack */
+    .section .row form.row {
+        flex-direction: column;
+    }
+
+    .section .row form.row .col-8,
+    .section .row form.row .col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Ensure buttons in newsletter are full width */
+    .section .row form.row .btn {
+        width: 100%;
     }
 }
 
@@ -708,20 +733,69 @@ textarea {
 
 /* Donation Section Responsive */
 @media (max-width: 768px) {
+    /* Make donation section stack vertically */
+    .donation-container .row {
+        flex-direction: column;
+    }
+
+    .donation-container .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
     .donation-info {
         padding-right: 0;
         margin-bottom: 2rem;
+        order: 2; /* Show info below form on mobile */
+    }
+
+    .donation-card {
+        margin-top: 0;
+        margin-bottom: 2rem;
+        order: 1; /* Show form first on mobile */
     }
 
     .amount-options {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr; /* Keep 2 columns for amount buttons */
     }
 
     .donation-benefits li {
         font-size: 0.9rem;
     }
 
-    .donation-card {
-        margin-top: 2rem;
+    /* Fix footer columns to stack properly */
+    .footer .row {
+        flex-direction: column;
+    }
+
+    .footer .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    /* Fix impact page cards */
+    .col-3, .col-4, .col-6, .col-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Keep proper spacing between cards */
+    .row > [class*="col-"] {
+        padding: 0 15px;
+    }
+
+    /* Newsletter section mobile fix */
+    .section .row.align-items-center {
+        flex-direction: column;
+    }
+
+    .section .row.align-items-center > .col-6,
+    .section .row.align-items-center > .col-8,
+    .section .row.align-items-center > .col-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
     }
 }
