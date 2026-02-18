@@ -749,7 +749,8 @@ class DataManager {
         // Also save to localStorage
         const mentors = await this.getMentors();
         mentors.push(mentor);
-        return this.setMentors(mentors);
+        this.setMentors(mentors);
+        return true;
     }
 
     async updateMentor(mentorId, updates) {
@@ -762,13 +763,14 @@ class DataManager {
             if (firebaseDataManager) {
                 try {
                     await firebaseDataManager.saveMentor(mentors[index]);
-                    console.log('Mentor updated in Firebase');
+                    console.log('✅ Mentor updated in Firebase');
                 } catch (error) {
-                    console.error('Error updating mentor in Firebase:', error);
+                    console.error('❌ Error updating mentor in Firebase:', error);
                 }
             }
 
-            return this.setMentors(mentors);
+            this.setMentors(mentors);
+            return true;
         }
         return false;
     }
