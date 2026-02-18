@@ -74,9 +74,15 @@ async function loadMentors() {
         return loadMentors();
     }
 
-    mentorsGrid.innerHTML = mentors.map(mentor => `
+    mentorsGrid.innerHTML = mentors.map(mentor => {
+        // Use uploaded image if available, otherwise use avatar emoji
+        const mentorImage = mentor.image
+            ? `<img src="${mentor.image}" alt="${mentor.name}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6;">`
+            : `<div class="mentor-avatar">${mentor.avatar || '👤'}</div>`;
+
+        return `
         <div class="mentor-card" data-mentor-id="${mentor.id}" onclick="selectMentor('${mentor.id}')">
-            <div class="mentor-avatar">${mentor.avatar}</div>
+            ${mentorImage}
             <h3>${mentor.name}</h3>
             <div class="mentor-speciality">${mentor.speciality || mentor.specialty}</div>
             <p class="mentor-bio">${mentor.bio}</p>
@@ -85,7 +91,8 @@ async function loadMentors() {
             </div>
             <div class="mentor-experience">${mentor.experience} years experience</div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     console.log(`✅ Rendered ${mentors.length} mentor cards to the page`);
 }

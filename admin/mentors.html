@@ -143,6 +143,16 @@
                         <textarea id="mentor-bio" rows="4" placeholder="Brief background and expertise..."></textarea>
                     </div>
 
+                    <div class="form-group">
+                        <label for="mentor-image">Profile Image</label>
+                        <input type="file" id="mentor-image" accept="image/*" onchange="previewMentorImage(event)">
+                        <div id="image-preview" style="margin-top: 10px; display: none;">
+                            <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #3b82f6;">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="removeMentorImage()" style="display: block; margin-top: 10px;">Remove Image</button>
+                        </div>
+                        <small style="color: #64748b;">Upload a professional photo of the mentor (JPG, PNG, or GIF)</small>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="mentor-availability">Availability Status</label>
@@ -400,6 +410,24 @@
             delete document.getElementById('add-mentor-form').dataset.mentorId;
         }
 
+        function previewMentorImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeMentorImage() {
+            document.getElementById('mentor-image').value = '';
+            document.getElementById('image-preview').style.display = 'none';
+            document.getElementById('preview-img').src = '';
+        }
+
         async function saveMentor() {
             console.log('💾 saveMentor() called');
             const mentorId = document.getElementById('add-mentor-form').dataset.mentorId;
@@ -428,6 +456,25 @@
                 .filter(day => document.getElementById(`day-${day}`).checked)
                 .map(day => day.charAt(0).toUpperCase() + day.slice(1));
 
+            // Handle image upload
+            const imageFile = document.getElementById('mentor-image').files[0];
+            let imageData = null;
+
+            if (imageFile) {
+                // Convert image to base64
+                imageData = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(imageFile);
+                });
+            } else if (mentorId) {
+                // If editing and no new image, keep existing image
+                const existingMentor = await dataManager.getMentorById(mentorId);
+                if (existingMentor && existingMentor.image) {
+                    imageData = existingMentor.image;
+                }
+            }
+
             // Create mentor object
             const mentorData = {
                 name: name,
@@ -439,7 +486,8 @@
                 availability: availability,
                 status: status,
                 availableDays: availableDays,
-                availableHours: availableHours || ''
+                availableHours: availableHours || '',
+                image: imageData || null
             };
 
             console.log('📊 Mentor data to save:', mentorData);
@@ -501,6 +549,14 @@
             document.getElementById('mentor-availability').value = mentor.availability || 'available';
             document.getElementById('mentor-status').value = mentor.status || 'active';
             document.getElementById('mentor-hours').value = mentor.availableHours || '';
+
+            // Show existing image if available
+            if (mentor.image) {
+                document.getElementById('preview-img').src = mentor.image;
+                document.getElementById('image-preview').style.display = 'block';
+            } else {
+                document.getElementById('image-preview').style.display = 'none';
+            }
 
             // Pre-check available days
             const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
