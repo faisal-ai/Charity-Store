@@ -6,24 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Brompton Community Store - Charity Clothes Store</title>
-
-    <!-- VISIBLE VERSION INDICATOR -->
-    <style>
-        .version-banner {
-            position: fixed !important;
-            top: 10px !important;
-            right: 10px !important;
-            background: #ff0000 !important;
-            color: white !important;
-            padding: 15px 25px !important;
-            border-radius: 8px !important;
-            z-index: 99999 !important;
-            font-weight: bold !important;
-            font-size: 16px !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
-        }
-    </style>
+    <title>BU Mentoring - Charity Clothes Store</title>
 
     <!-- CACHE BUSTER - Forces immediate reload of new version -->
     <script>
@@ -36,7 +19,7 @@
         }
     })();
     </script>
-    <link rel="stylesheet" href="css/base.css?v=12">
+    <link rel="stylesheet" href="css/base.css?v=13">
     <style>
         /* Enhanced Hero Section with Animations */
         .hero {
@@ -190,15 +173,12 @@
     </style>
 </head>
 <body>
-    <!-- RED VERSION BANNER - VISIBLE INDICATOR -->
-    <div class="version-banner">NEW VERSION - Feb 15, 2026</div>
-
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col">
-                    <a href="home.html" class="navbar-brand">Brompton Community Store</a>
+                    <a href="home.html" class="navbar-brand">BU Mentoring</a>
                 </div>
                 <div class="col">
                     <ul class="navbar-nav">
@@ -480,7 +460,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-3">
-                    <h5>Brompton Community Store</h5>
+                    <h5>BU Mentoring</h5>
                     <p>Giving fashion a second chance while helping our community.</p>
                 </div>
                 <div class="col-3">
@@ -508,7 +488,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p>&copy; 2026 Brompton Community Store. All rights reserved. | Made with ❤️ for our community</p>
+                    <p>&copy; 2026 BU Mentoring. All rights reserved. | Made with ❤️ for our community</p>
                 </div>
             </div>
         </div>
@@ -742,9 +722,9 @@
                     this.classList.add('selected');
                     selectedAmount = parseFloat(this.dataset.amount);
 
-                    // Clear custom amount input
+                    // Set the amount in the custom amount input box
                     if (customAmountInput) {
-                        customAmountInput.value = '';
+                        customAmountInput.value = selectedAmount;
                     }
 
                     // Scroll to the donor info section

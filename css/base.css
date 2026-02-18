@@ -241,19 +241,15 @@ textarea {
     font-size: 1.75rem;
     font-weight: 700;
     color: #ffffff;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
     padding: 10px 15px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
 .navbar-brand:hover {
     transform: translateY(-2px);
-    text-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+    text-shadow: 0 4px 12px rgba(255, 255, 255, 0.5);
 }
 
 .navbar-nav {
