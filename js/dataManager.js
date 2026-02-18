@@ -1004,32 +1004,39 @@ class DataManager {
                 return false;
             }
 
+            console.log('🗑️ Deleting image with ID:', imageId);
+
             // Wait for Firebase to be ready
             await ensureFirebaseReady();
 
-            // Delete from Firebase
+            // Delete from Firebase first
             if (firebaseDataManager) {
                 try {
                     await firebaseDataManager.deleteImage(imageId);
                     console.log('✅ Image deleted from Firebase by ID:', imageId);
-                    return true;
                 } catch (error) {
                     console.error('❌ Error deleting from Firebase:', error);
                     return false;
                 }
             } else {
-                // Firebase not available, use localStorage
-                console.warn('⚠️ Firebase not available, deleting from localStorage');
-                const images = await this.getImages();
-                const index = images.findIndex(img => img.id === imageId);
-                if (index !== -1) {
-                    images.splice(index, 1);
-                    return this.setData(this.storageKeys.images, images);
-                }
-                return false;
+                console.warn('⚠️ Firebase not available during deletion');
             }
+
+            // ALSO delete from localStorage to prevent it from reappearing
+            console.log('🧹 Cleaning up localStorage cache...');
+            const localImages = this.getData(this.storageKeys.images) || [];
+            const index = localImages.findIndex(img => img.id === imageId);
+            if (index !== -1) {
+                localImages.splice(index, 1);
+                this.setData(this.storageKeys.images, localImages);
+                console.log('✅ Image removed from localStorage cache');
+            } else {
+                console.log('ℹ️ Image not found in localStorage (might not have been cached)');
+            }
+
+            return true;
         } catch (error) {
-            console.error('Error deleting image by ID:', error);
+            console.error('❌ Error deleting image by ID:', error);
             return false;
         }
     }
