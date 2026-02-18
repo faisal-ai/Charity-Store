@@ -486,16 +486,19 @@
         }
 
         async function loadImageGallery() {
+            console.log('🔄 Loading image gallery...');
             const images = await dataManager.getImages() || [];
             const gallery = document.getElementById('image-gallery');
             const filterCategory = document.getElementById('filter-category').value;
 
-            console.log('Loading image gallery, found', images.length, 'images');
+            console.log('📊 Total images loaded:', images.length);
+            console.log('🔍 Filter category:', filterCategory);
 
             // Filter images by category
             let filteredImages = images;
             if (filterCategory !== 'all') {
                 filteredImages = images.filter(img => img.category === filterCategory);
+                console.log(`✅ Filtered to ${filteredImages.length} images for category: ${filterCategory}`);
             }
 
             if (filteredImages.length === 0) {
@@ -532,7 +535,7 @@
                 `;
             }).join('');
 
-            console.log('Gallery HTML updated');
+            console.log('✅ Gallery HTML updated');
         }
 
         function copyImageUrl(url) {
@@ -557,17 +560,34 @@
         async function deleteImageById(imageId) {
             if (!imageId) {
                 utils.showNotification('Invalid image ID', 'error');
+                console.error('❌ No image ID provided for deletion');
                 return;
             }
 
             if (confirm('Are you sure you want to delete this image?')) {
-                console.log('Deleting image with ID:', imageId);
-                const result = await dataManager.deleteImageById(imageId);
-                if (result) {
-                    utils.showNotification('Image deleted successfully!', 'success');
-                    await loadImageGallery();
-                } else {
-                    utils.showNotification('Failed to delete image. Please try again.', 'error');
+                console.log('🗑️ Deleting image with ID:', imageId);
+
+                try {
+                    const result = await dataManager.deleteImageById(imageId);
+                    console.log('Delete result:', result);
+
+                    if (result) {
+                        utils.showNotification('Image deleted successfully!', 'success');
+
+                        // Wait a moment for Firebase to sync, then reload
+                        console.log('⏳ Waiting for Firebase sync...');
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+
+                        console.log('🔄 Reloading gallery...');
+                        await loadImageGallery();
+                        console.log('✅ Gallery reloaded');
+                    } else {
+                        console.error('❌ Delete operation returned false');
+                        utils.showNotification('Failed to delete image. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    console.error('❌ Error during delete operation:', error);
+                    utils.showNotification('Error deleting image: ' + error.message, 'error');
                 }
             }
         }
