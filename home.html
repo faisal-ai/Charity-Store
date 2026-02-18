@@ -703,9 +703,30 @@
 
         // Money Donation Functionality
         function setupDonationForm() {
+            console.log('💰 Setting up donation form...');
+
             const form = document.getElementById('donation-form');
             const amountButtons = document.querySelectorAll('.amount-btn');
             const customAmountInput = document.getElementById('custom-amount');
+
+            // Validate all elements exist
+            if (!form) {
+                console.error('❌ Donation form not found!');
+                return;
+            }
+
+            if (!amountButtons || amountButtons.length === 0) {
+                console.error('❌ Amount buttons not found!');
+                return;
+            }
+
+            if (!customAmountInput) {
+                console.error('❌ Custom amount input not found!');
+                return;
+            }
+
+            console.log(`✅ Found ${amountButtons.length} amount buttons`);
+
             let selectedAmount = null;
 
             // Amount button selection
@@ -722,7 +743,9 @@
                     selectedAmount = parseFloat(this.dataset.amount);
 
                     // Clear custom amount input
-                    customAmountInput.value = '';
+                    if (customAmountInput) {
+                        customAmountInput.value = '';
+                    }
 
                     // Scroll to the donor info section
                     const donorSection = document.querySelector('.donor-info');
@@ -735,11 +758,15 @@
             });
 
             // Custom amount input
-            customAmountInput.addEventListener('input', function() {
-                // Remove selected class from amount buttons
-                amountButtons.forEach(btn => btn.classList.remove('selected'));
-                selectedAmount = parseFloat(this.value) || null;
-            });
+            if (customAmountInput) {
+                customAmountInput.addEventListener('input', function() {
+                    console.log('✏️ Custom amount entered:', this.value);
+
+                    // Remove selected class from amount buttons
+                    amountButtons.forEach(btn => btn.classList.remove('selected'));
+                    selectedAmount = parseFloat(this.value) || null;
+                });
+            }
 
             // Form submission
             form.addEventListener('submit', function(e) {
@@ -831,6 +858,8 @@
                     }
                 }, 2000);
             });
+
+            console.log('✅ Donation form setup complete!');
         }
     </script>
 </body>
