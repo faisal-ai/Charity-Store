@@ -517,8 +517,12 @@
                 const imageId = img.id || '';
                 console.log('Rendering image', fullIndex, ':', img.name, 'Category:', img.category, 'ID:', imageId);
 
+                // Escape any special characters in the image ID and data
+                const safeImageId = imageId.replace(/'/g, "\\'");
+                const safeImageData = img.data.replace(/'/g, "\\'");
+
                 return `
-                <div class="image-item">
+                <div class="image-item" data-image-id="${imageId}">
                     <img src="${img.data}" alt="${img.name}">
                     <div class="image-item-info">
                         <strong>${img.name}</strong><br>
@@ -528,12 +532,21 @@
                         </span>
                     </div>
                     <div class="image-item-actions">
-                        <button class="btn btn-sm btn-primary" onclick="copyImageUrl('${img.data}')">Copy URL</button>
-                        <button class="btn btn-sm btn-outline" onclick="deleteImageById('${imageId}')">Delete</button>
+                        <button class="btn btn-sm btn-primary" onclick="copyImageUrl('${safeImageData}')">Copy URL</button>
+                        <button class="btn btn-sm btn-outline delete-image-btn" data-image-id="${imageId}">Delete</button>
                     </div>
                 </div>
                 `;
             }).join('');
+
+            // Add event listeners to delete buttons after HTML is inserted
+            document.querySelectorAll('.delete-image-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const imageId = this.getAttribute('data-image-id');
+                    console.log('🔘 Delete button clicked for image ID:', imageId);
+                    deleteImageById(imageId);
+                });
+            });
 
             console.log('✅ Gallery HTML updated');
         }
