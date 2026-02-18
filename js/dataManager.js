@@ -997,6 +997,43 @@ class DataManager {
         }
     }
 
+    async deleteImageById(imageId) {
+        try {
+            if (!imageId) {
+                console.error('❌ No image ID provided');
+                return false;
+            }
+
+            // Wait for Firebase to be ready
+            await ensureFirebaseReady();
+
+            // Delete from Firebase
+            if (firebaseDataManager) {
+                try {
+                    await firebaseDataManager.deleteImage(imageId);
+                    console.log('✅ Image deleted from Firebase by ID:', imageId);
+                    return true;
+                } catch (error) {
+                    console.error('❌ Error deleting from Firebase:', error);
+                    return false;
+                }
+            } else {
+                // Firebase not available, use localStorage
+                console.warn('⚠️ Firebase not available, deleting from localStorage');
+                const images = await this.getImages();
+                const index = images.findIndex(img => img.id === imageId);
+                if (index !== -1) {
+                    images.splice(index, 1);
+                    return this.setData(this.storageKeys.images, images);
+                }
+                return false;
+            }
+        } catch (error) {
+            console.error('Error deleting image by ID:', error);
+            return false;
+        }
+    }
+
     async getImageById(id) {
         const images = await this.getImages();
         return images.find(img => img.id === id);
