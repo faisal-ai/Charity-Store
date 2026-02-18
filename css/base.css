@@ -10,14 +10,15 @@
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #0a1929 0%, #1a2332 50%, #2a3542 100%);
+    background-attachment: fixed;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 h1 {
@@ -37,7 +38,7 @@ h3 {
 
 p {
     margin-bottom: 1rem;
-    color: #555;
+    color: #4a5568;
 }
 
 a {
@@ -99,37 +100,42 @@ a:hover {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
     border: none;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #5568d3, #6a3f8f);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
     transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: #95a5a6;
+    background: linear-gradient(135deg, #64748b, #475569);
     color: white;
+    box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
 }
 
 .btn-secondary:hover {
-    background-color: #7f8c8d;
+    background: linear-gradient(135deg, #475569, #334155);
     color: white;
+    box-shadow: 0 6px 20px rgba(100, 116, 139, 0.5);
+    transform: translateY(-2px);
 }
 
 .btn-outline {
-    border: 2px solid #e74c3c;
-    color: #e74c3c;
+    border: 2px solid #3b82f6;
+    color: #3b82f6;
     background-color: transparent;
 }
 
 .btn-outline:hover {
-    background-color: #e74c3c;
+    background-color: #3b82f6;
     color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-sm {
@@ -151,13 +157,13 @@ label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 input, textarea, select {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e0e6ed;
+    border: 2px solid #cbd5e0;
     border-radius: 5px;
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -166,8 +172,8 @@ input, textarea, select {
 
 input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: #e74c3c;
-    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 textarea {
@@ -177,53 +183,56 @@ textarea {
 
 /* Cards */
 .card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(30, 58, 95, 0.1);
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(30, 58, 95, 0.25);
 }
 
 .card-header {
     padding: 20px;
-    border-bottom: 1px solid #e0e6ed;
-    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(30, 58, 95, 0.15);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+    color: white;
 }
 
 .card-body {
     padding: 20px;
+    background: white;
 }
 
 .card-footer {
     padding: 15px 20px;
-    border-top: 1px solid #e0e6ed;
-    background-color: #f8f9fa;
+    border-top: 1px solid rgba(30, 58, 95, 0.15);
+    background: linear-gradient(135deg, #f8fafc 0%, #e8f0f8 100%);
 }
 
 /* Navigation */
 .navbar {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid rgba(231, 76, 60, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-brand {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #e74c3c;
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #ffffff;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+    text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
     padding: 10px 15px;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -231,8 +240,7 @@ textarea {
 
 .navbar-brand:hover {
     transform: translateY(-2px);
-    color: #e74c3c;
-    -webkit-text-fill-color: #e74c3c;
+    text-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
 }
 
 .navbar-nav {
@@ -252,12 +260,12 @@ textarea {
 
 .nav-link {
     padding: 12px 16px;
-    color: #2c3e50;
+    color: #ffffff;
     font-weight: 500;
     display: block;
     transition: all 0.3s ease;
     border-radius: 25px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 2px solid transparent;
     text-decoration: none;
@@ -274,7 +282,7 @@ textarea {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(231, 76, 60, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.5s ease;
 }
 
@@ -284,16 +292,16 @@ textarea {
 
 .nav-link:hover, .nav-link.active {
     color: white;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     border-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
 .nav-link.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
     border-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -325,7 +333,7 @@ textarea {
 
 /* Hero section */
 .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 50%, #3b82f6 100%);
     color: white;
     padding: 80px 0;
     text-align: center;
@@ -399,6 +407,7 @@ textarea {
 .section-title h2 {
     position: relative;
     display: inline-block;
+    color: #1e3a5f;
 }
 
 .section-title h2::after {
@@ -409,33 +418,42 @@ textarea {
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background-color: #e74c3c;
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
 }
 
 /* Footer */
 .footer {
-    background-color: #2c3e50;
+    background: linear-gradient(135deg, #0f1d2e 0%, #1e3a5f 100%);
     color: white;
     padding: 40px 0 20px;
+    border-top: 3px solid #3b82f6;
 }
 
 .footer h5 {
-    color: white;
+    color: #ffd700;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .footer a {
-    color: #bdc3c7;
+    color: #a0c4e8;
+    transition: color 0.3s ease;
 }
 
 .footer a:hover {
-    color: white;
+    color: #3b82f6;
+}
+
+.footer p {
+    color: #cbd5e0;
 }
 
 /* Utility classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
+.text-primary { color: #3b82f6; }
+.text-muted { color: #64748b; }
 
 .mt-1 { margin-top: 0.25rem; }
 .mt-2 { margin-top: 0.5rem; }
@@ -574,7 +592,7 @@ textarea {
 }
 
 .donation-info h3 {
-    color: #2c3e50;
+    color: #1e3a5f;
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
 }
@@ -587,14 +605,15 @@ textarea {
 
 .donation-benefits li {
     padding: 0.75rem 0;
-    color: #5a6c7d;
+    color: #4a5568;
     font-size: 1rem;
 }
 
 .donation-card {
     border: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(30, 58, 95, 0.15);
     border-radius: 15px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
 }
 
 .donation-form {
@@ -610,26 +629,28 @@ textarea {
 
 .amount-btn {
     padding: 15px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #cbd5e0;
     background: white;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 .amount-btn:hover {
-    border-color: #e74c3c;
-    background: #fff5f5;
+    border-color: #3b82f6;
+    background: #eff6ff;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .amount-btn.selected {
-    border-color: #e74c3c;
-    background: #e74c3c;
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .custom-amount {
@@ -640,7 +661,7 @@ textarea {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 .input-group {
@@ -649,19 +670,19 @@ textarea {
 }
 
 .input-prefix {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
+    background: #f1f5f9;
+    border: 2px solid #cbd5e0;
     border-right: none;
     padding: 15px;
     border-radius: 8px 0 0 8px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 .input-group input {
     flex: 1;
     padding: 15px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #cbd5e0;
     border-left: none;
     border-radius: 0 8px 8px 0;
     font-size: 1rem;
@@ -669,12 +690,12 @@ textarea {
 
 .input-group input:focus {
     outline: none;
-    border-color: #e74c3c;
-    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .input-group input:focus + .input-prefix {
-    border-color: #e74c3c;
+    border-color: #3b82f6;
 }
 
 .donor-info {
@@ -689,7 +710,7 @@ textarea {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1e3a5f;
 }
 
 .donor-info input[type="text"],
@@ -697,7 +718,7 @@ textarea {
 .donor-info textarea {
     width: 100%;
     padding: 15px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #cbd5e0;
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -706,8 +727,8 @@ textarea {
 .donor-info input:focus,
 .donor-info textarea:focus {
     outline: none;
-    border-color: #e74c3c;
-    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .donor-info input[type="checkbox"] {
