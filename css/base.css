@@ -1,5 +1,8 @@
 /* Base styles and CSS framework for Charity Clothes Store */
 
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 /* Reset and base styles */
 * {
     margin: 0;
@@ -296,6 +299,7 @@ textarea {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
 .nav-link::before {
