@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Become a Mentor - BU Mentoring</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css?v=19">
+    <link rel="stylesheet" href="css/booking.css?v=10">
+    <style>
+        /* Hero Text Animations */
+        .hero-section h1 {
+            animation: slideInDown 1s ease-out;
+            font-family: 'Archivo Black', sans-serif;
+        }
+
+        .hero-section p {
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <a href="home.html" class="navbar-brand">
+                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                    </a>
+                </div>
+                <div class="col">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="home.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="donate-booking.html" class="nav-link">Donate Items</a>
+                        </li>
+                        <li class="nav-item nav-dropdown">
+                            <a href="mentoring-booking.html" class="nav-link active">
+                                Mentoring
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="mentoring-booking.html" class="dropdown-item">Book Mentoring</a></li>
+                                <li><a href="mentor-application.html" class="dropdown-item active">Become a Mentor</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Programmes & Resources with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="programmes-resources.html" class="nav-link">
+                                Programmes & Resources
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="programmes-resources.html#mentoring-programs" class="dropdown-item">Mentoring Programs</a></li>
+                                <li><a href="programmes-resources.html#resources" class="dropdown-item">Resources</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Impact & News with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="impact.html" class="nav-link">
+                                Impact & News
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="impact.html" class="dropdown-item">Our Impact</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">Events & News</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Our Story & Contact with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="contact.html" class="nav-link">
+                                About & Contact
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="story.html" class="dropdown-item">Our Story</a></li>
+                                <li><a href="contact.html" class="dropdown-item">Contact Us</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="position: relative;">
+        <div class="container">
+            <div class="hero-content">
+                <h1 id="hero-title">Become a Mentor</h1>
+                <p id="hero-subtitle">Share your experience and knowledge to empower others. Join our community of dedicated mentors making a real difference.</p>
+            </div>
+        </div>
+        <!-- Decorative wave at bottom -->
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                  style="fill: #f8f9fa; opacity: 0.3;"></path>
+        </svg>
+    </section>
+
+    <!-- Why Become a Mentor Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Become a Mentor?</h2>
+                <p>Make a meaningful impact in someone's life while enriching your own</p>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body" style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">💡</div>
+                            <h4 style="color: #3b82f6;">Share Your Expertise</h4>
+                            <p style="color: #4a5568;">Use your professional experience and life skills to guide others on their journey to success.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body" style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">🤝</div>
+                            <h4 style="color: #3b82f6;">Build Connections</h4>
+                            <p style="color: #4a5568;">Connect with motivated individuals and become part of a supportive community of mentors.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body" style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">⭐</div>
+                            <h4 style="color: #3b82f6;">Personal Growth</h4>
+                            <p style="color: #4a5568;">Develop leadership skills, gain fresh perspectives, and find fulfillment in giving back.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentor Application Form -->
+    <section class="booking-section" style="background: white;">
+        <div class="container">
+            <div class="booking-form-container">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Mentor Application Form</h2>
+                <p style="text-align: center; color: #4a5568; margin-bottom: 40px; font-size: 1.1rem;">
+                    Fill out the form below to apply as a mentor. We'll review your application and get back to you within 3-5 business days.
+                </p>
+
+                <form id="mentor-application-form" class="booking-form">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="full-name">Full Name *</label>
+                                <input type="text" id="full-name" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="age" min="18">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Background -->
+                    <div class="form-section">
+                        <h3>Professional Background</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="current-occupation">Current Occupation *</label>
+                                <input type="text" id="current-occupation" name="currentOccupation" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="years-experience">Years of Experience *</label>
+                                <input type="number" id="years-experience" name="yearsExperience" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="industry">Industry/Field</label>
+                            <input type="text" id="industry" name="industry" placeholder="e.g., Technology, Healthcare, Education">
+                        </div>
+                        <div class="form-group">
+                            <label for="expertise">Areas of Expertise</label>
+                            <textarea id="expertise" name="expertise" rows="3" placeholder="Describe your key skills and areas where you can provide guidance..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Mentoring Preferences -->
+                    <div class="form-section">
+                        <h3>Mentoring Preferences</h3>
+                        <div class="form-group">
+                            <label for="mentor-type">Type of Mentoring *</label>
+                            <select id="mentor-type" name="mentorType" required>
+                                <option value="">Select mentoring type...</option>
+                                <option value="career">Career Mentoring</option>
+                                <option value="education">Education Support</option>
+                                <option value="lifeskills">Life Skills</option>
+                                <option value="family">Family Support</option>
+                                <option value="youth">Youth Leadership</option>
+                                <option value="entrepreneur">Entrepreneurship</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="availability">Weekly Availability (hours) *</label>
+                                <select id="availability" name="availability" required>
+                                    <option value="">Select hours...</option>
+                                    <option value="1-2">1-2 hours</option>
+                                    <option value="3-5">3-5 hours</option>
+                                    <option value="6-10">6-10 hours</option>
+                                    <option value="10+">10+ hours</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="preferred-format">Preferred Format *</label>
+                                <select id="preferred-format" name="preferredFormat" required>
+                                    <option value="">Select format...</option>
+                                    <option value="in-person">In-Person</option>
+                                    <option value="virtual">Virtual/Online</option>
+                                    <option value="both">Both</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Motivation & Experience -->
+                    <div class="form-section">
+                        <h3>Motivation & Experience</h3>
+                        <div class="form-group">
+                            <label for="motivation">Why do you want to become a mentor?</label>
+                            <textarea id="motivation" name="motivation" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="previous-experience">Previous Mentoring Experience (if any)</label>
+                            <textarea id="previous-experience" name="previousExperience" rows="3" placeholder="Describe any previous mentoring, coaching, or teaching experience..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 1.2rem; padding: 15px;">
+                        Submit Application
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+        <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <h5>BU Mentoring</h5>
+                    <p>Giving fashion a second chance while helping our community.</p>
+                </div>
+                <div class="col-3">
+                    <h5>Quick Links</h5>
+                    <p><a href="home.html">Home</a></p>
+                    <p><a href="donate-booking.html">Donate Items</a></p>
+                    <p><a href="mentoring-booking.html">Mentoring</a></p>
+                    <p><a href="programmes-resources.html">Programmes & Resources</a></p>
+                    <p><a href="impact.html">Impact & News</a></p>
+                    <p><a href="contact.html">Contact Us</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Contact Info</h5>
+                    <p>123 Charity Lane<br>Helping City, HC 12345</p>
+                    <p>(555) 123-4567</p>
+                    <p><a href="mailto:info@heartsandthreads.org">info@heartsandthreads.org</a></p>
+                </div>
+                <div class="col-3">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> |
+                        <a href="#">Instagram</a> |
+                        <a href="#">Twitter</a>
+                    </p>
+                    <p>Mon-Fri: 9AM-6PM<br>Sat: 10AM-4PM<br>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p>&copy; 2026 BU Mentoring. All rights reserved. | Made with ❤️ for our community</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        window.dispatchEvent(new Event('firebaseReady'));
+        console.log('Firebase initialized on mentor application page');
+    </script>
+
+    <script src="js/dataManager.js?v=11"></script>
+    <script src="js/utils.js?v=9"></script>
+    <script>
+        // Initialize mentor application form
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Mentor application page initialized');
+            setupMentorApplicationForm();
+        });
+
+        function setupMentorApplicationForm() {
+            const form = document.getElementById('mentor-application-form');
+
+            if (!form) {
+                console.error('❌ Mentor application form not found');
+                return;
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('📝 Mentor application form submitted');
+
+                // Get form data
+                const formData = new FormData(form);
+                const applicationData = {
+                    // Personal Information
+                    fullName: formData.get('fullName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    age: formData.get('age') || '',
+
+                    // Professional Background
+                    currentOccupation: formData.get('currentOccupation'),
+                    yearsExperience: formData.get('yearsExperience'),
+                    industry: formData.get('industry') || '',
+                    expertise: formData.get('expertise') || '',
+
+                    // Mentoring Preferences
+                    mentorType: formData.get('mentorType'),
+                    availability: formData.get('availability'),
+                    preferredFormat: formData.get('preferredFormat'),
+
+                    // Motivation & Experience
+                    motivation: formData.get('motivation') || '',
+                    previousExperience: formData.get('previousExperience') || 'None',
+
+                    // Metadata
+                    status: 'pending',
+                    submittedAt: Date.now(),
+                    type: 'mentor-application'
+                };
+
+                // Validate required fields
+                if (!applicationData.fullName || !applicationData.email || !applicationData.phone) {
+                    utils.showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                if (!utils.isValidEmail(applicationData.email)) {
+                    utils.showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting Application...';
+
+                // Simulate submission (save to dataManager)
+                setTimeout(() => {
+                    try {
+                        // Save application
+                        const success = dataManager.addMentorApplication(applicationData);
+
+                        if (success) {
+                            // Show success message
+                            utils.showNotification(
+                                'Thank you for your application! We will review it and contact you within 3-5 business days.',
+                                'success'
+                            );
+
+                            // Reset form
+                            form.reset();
+
+                            // Reset button after delay
+                            setTimeout(() => {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                            }, 2000);
+
+                        } else {
+                            throw new Error('Failed to save application');
+                        }
+                    } catch (error) {
+                        console.error('Application submission error:', error);
+                        utils.showNotification(
+                            'There was an error submitting your application. Please try again.',
+                            'error'
+                        );
+
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
+                }, 1500);
+            });
+
+            console.log('✅ Mentor application form setup complete');
+        }
+    </script>
+    <script src="js/navigation.js?v=1"></script>
+            }
+        }
+    </script>
+    <script src="js/navigation.js?v=1"></script>
+</body>
+</html>

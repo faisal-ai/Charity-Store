@@ -249,7 +249,7 @@ textarea {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    padding: 12px 20px;
+    padding: 6px 10px;
     border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -260,10 +260,25 @@ textarea {
     font-family: 'Arial Black', 'Arial Bold', sans-serif;
     position: relative;
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Logo image styling */
+.navbar-logo {
+    height: 80px;
+    width: auto;
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.3));
+}
+
+.navbar-brand:hover .navbar-logo {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.5));
 }
 
 .navbar-brand:hover {
-    transform: translateY(-3px) scale(1.05);
+    transform: translateY(-3px);
     border-color: rgba(255, 255, 255, 0.4);
     box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.1);
@@ -286,7 +301,7 @@ textarea {
 
 .nav-link {
     padding: 12px 16px;
-    color: #ffffff;
+    color: #ffffff !important;
     font-weight: 500;
     display: block;
     transition: all 0.3s ease;
@@ -327,9 +342,27 @@ textarea {
 
 .nav-link.active {
     background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
+    color: white !important;
     box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
     border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Override browser default visited link colors */
+.nav-link:visited {
+    color: #ffffff !important;
+}
+
+.nav-link.active:visited {
+    color: white !important;
+}
+
+/* Ensure dropdown parent links stay white when visited */
+.nav-dropdown > .nav-link:visited {
+    color: #ffffff !important;
+}
+
+.nav-dropdown > .nav-link:link {
+    color: #ffffff !important;
 }
 
 /* Container adjustments for better navigation */
@@ -356,6 +389,154 @@ textarea {
     display: flex;
     justify-content: flex-end;
     padding: 0;
+}
+
+/* ============================================
+   DROPDOWN NAVIGATION STYLES
+   ============================================ */
+
+/* Dropdown parent container */
+.nav-dropdown {
+    position: relative;
+}
+
+/* Dropdown arrow indicator */
+.dropdown-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+    vertical-align: middle;
+}
+
+/* Rotate arrow on hover/active */
+.nav-dropdown:hover .dropdown-arrow,
+.nav-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown menu container */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    list-style: none;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Show dropdown on hover (desktop) */
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown menu items */
+.dropdown-item {
+    display: block;
+    padding: 12px 20px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Dropdown item hover effect */
+.dropdown-item:hover {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), transparent);
+    border-left-color: #3b82f6;
+    padding-left: 24px;
+    color: #ffffff;
+}
+
+/* Active dropdown item */
+.dropdown-item.active {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.5), transparent);
+    border-left-color: #3b82f6;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Add subtle divider between dropdown items */
+.dropdown-menu li:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile-specific dropdown behavior */
+@media (max-width: 768px) {
+    /* Make dropdown toggle on tap instead of hover */
+    .nav-dropdown .dropdown-menu {
+        position: static;
+        margin-top: 0;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transform: none;
+        transition: all 0.3s ease, max-height 0.4s ease;
+        border-radius: 8px;
+        margin: 4px 8px;
+    }
+
+    /* Show dropdown when parent has 'open' class */
+    .nav-dropdown.open .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        max-height: 400px;
+        padding: 8px 0;
+    }
+
+    /* Adjust dropdown items for mobile */
+    .dropdown-item {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+
+    .dropdown-item:hover {
+        padding-left: 20px;
+    }
+
+    /* Reduce arrow size on mobile */
+    .dropdown-arrow {
+        font-size: 0.6rem;
+        margin-left: 3px;
+    }
+
+    /* Adjust nav-link padding when it contains dropdown */
+    .nav-dropdown > .nav-link {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dropdown-menu {
+        min-width: 180px;
+    }
+
+    .dropdown-item {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+}
+
+/* Smooth scrolling for anchor links */
+.anchor-target {
+    scroll-margin-top: 100px;
 }
 
 /* Hero section */
@@ -552,6 +733,15 @@ textarea {
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
+    }
+
+    /* Logo responsive sizing */
+    .navbar-logo {
+        height: 60px;
+    }
+
+    .navbar-brand {
+        padding: 5px 8px;
     }
 
     /* Make all column layouts stack on mobile */

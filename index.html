@@ -19,7 +19,7 @@
         }
     })();
     </script>
-    <link rel="stylesheet" href="css/base.css?v=14">
+    <link rel="stylesheet" href="css/base.css?v=19">
     <style>
         /* Enhanced Hero Section with Animations */
         .hero {
@@ -130,21 +130,6 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* Update navigation colors to match new gradient */
-        .nav-link:hover, .nav-link.active {
-            color: white !important;
-            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
-            color: white !important;
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5) !important;
-            border-color: rgba(255, 255, 255, 0.5);
-        }
 
         /* Update button colors to match gradient */
         .btn-primary {
@@ -178,7 +163,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col">
-                    <a href="home.html" class="navbar-brand">BU Mentoring</a>
+                    <a href="home.html" class="navbar-brand">
+                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                    </a>
                 </div>
                 <div class="col">
                     <ul class="navbar-nav">
@@ -188,17 +175,51 @@
                         <li class="nav-item">
                             <a href="donate-booking.html" class="nav-link">Donate Items</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="mentoring-booking.html" class="nav-link">Book Mentoring</a>
+                        <li class="nav-item nav-dropdown">
+                            <a href="mentoring-booking.html" class="nav-link">
+                                Mentoring
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="mentoring-booking.html" class="dropdown-item">Book Mentoring</a></li>
+                                <li><a href="mentor-application.html" class="dropdown-item">Become a Mentor</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="story.html" class="nav-link">Our Story</a>
+
+                        <!-- Programmes & Resources with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="programmes-resources.html" class="nav-link">
+                                Programmes & Resources
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="programmes-resources.html#mentoring-programs" class="dropdown-item">Mentoring Programs</a></li>
+                                <li><a href="programmes-resources.html#resources" class="dropdown-item">Resources</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="impact.html" class="nav-link">Impact</a>
+
+                        <!-- Impact & News with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="impact.html" class="nav-link">
+                                Impact & News
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="impact.html" class="dropdown-item">Our Impact</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">Events & News</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="contact.html" class="nav-link">Contact</a>
+
+                        <!-- Our Story & Contact with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="contact.html" class="nav-link">
+                                About & Contact
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="story.html" class="dropdown-item">Our Story</a></li>
+                                <li><a href="contact.html" class="dropdown-item">Contact Us</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -215,6 +236,7 @@
                 <div class="mt-4">
                     <a href="donate-booking.html" class="btn btn-primary btn-lg">Book Donation Slot</a>
                     <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
+                    <a href="mentor-application.html" class="btn btn-outline btn-lg">Become a Mentor</a>
                 </div>
             </div>
         </div>
@@ -465,10 +487,12 @@
                 </div>
                 <div class="col-3">
                     <h5>Quick Links</h5>
+                    <p><a href="home.html">Home</a></p>
                     <p><a href="donate-booking.html">Donate Items</a></p>
-                    <p><a href="mentoring-booking.html">Book Mentoring</a></p>
-                    <p><a href="story.html">Our Story</a></p>
-                    <p><a href="impact.html">Impact</a></p>
+                    <p><a href="mentoring-booking.html">Mentoring</a></p>
+                    <p><a href="programmes-resources.html">Programmes & Resources</a></p>
+                    <p><a href="impact.html">Impact & News</a></p>
+                    <p><a href="contact.html">Contact Us</a></p>
                 </div>
                 <div class="col-3">
                     <h5>Contact Info</h5>
@@ -529,7 +553,6 @@
                 if (homepageContent.hero) {
                     document.getElementById('hero-title').textContent = homepageContent.hero.title;
                     document.getElementById('hero-subtitle').textContent = homepageContent.hero.subtitle;
-                    document.getElementById('hero-cta').textContent = homepageContent.hero.ctaText;
                 }
 
                 // Update mission section
@@ -821,5 +844,6 @@
             console.log('✅ Donation form setup complete!');
         }
     </script>
+    <script src="js/navigation.js?v=1"></script>
 </body>
 </html>

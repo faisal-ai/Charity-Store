@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Impact - BU Mentoring</title>
+    <title>Programmes & Resources - BU Mentoring</title>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+
+    <!-- CACHE BUSTER -->
+    <script>
+    (function() {
+        const V = '20260221-v1';
+        const stored = sessionStorage.getItem('site_v');
+        if (stored !== V && !location.search.includes('v=')) {
+            sessionStorage.setItem('site_v', V);
+            location.href = location.pathname + '?v=' + V;
+        }
+    })();
+    </script>
+
     <link rel="stylesheet" href="css/base.css?v=19">
-    <link rel="stylesheet" href="css/shop.css?v=8">
     <style>
         /* Hero Text Animations */
         .hero h1 {
@@ -43,27 +56,35 @@
             }
         }
 
-        /* Event card styling */
-        .event-card {
-            border-left: 4px solid #3b82f6;
-            transition: all 0.3s ease;
+        /* Resource card styling */
+        .resource-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .event-card:hover {
-            border-left-width: 8px;
-            transform: translateX(4px);
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
         }
 
-        /* News card date badge */
-        .news-date {
-            display: inline-block;
+        /* Download button styling */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
             font-weight: 600;
-            margin-bottom: 10px;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            color: white;
         }
     </style>
 </head>
@@ -98,7 +119,7 @@
 
                         <!-- Programmes & Resources with Dropdown -->
                         <li class="nav-item nav-dropdown">
-                            <a href="programmes-resources.html" class="nav-link">
+                            <a href="programmes-resources.html" class="nav-link active">
                                 Programmes & Resources
                                 <span class="dropdown-arrow">▼</span>
                             </a>
@@ -110,12 +131,12 @@
 
                         <!-- Impact & News with Dropdown -->
                         <li class="nav-item nav-dropdown">
-                            <a href="impact.html" class="nav-link active">
+                            <a href="impact.html" class="nav-link">
                                 Impact & News
                                 <span class="dropdown-arrow">▼</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="impact.html" class="dropdown-item active">Our Impact</a></li>
+                                <li><a href="impact.html" class="dropdown-item">Our Impact</a></li>
                                 <li><a href="events-news.html" class="dropdown-item">Events & News</a></li>
                             </ul>
                         </li>
@@ -138,11 +159,11 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" style="position: relative;">
+    <section class="hero">
         <div class="container">
             <div class="text-center">
-                <h1 id="hero-title">Our Impact</h1>
-                <p id="hero-subtitle">See how together we're making a difference in our community</p>
+                <h1>Programmes & Resources</h1>
+                <p>Empowering our community through mentoring and education</p>
             </div>
         </div>
         <!-- Decorative wave at bottom -->
@@ -152,38 +173,85 @@
         </svg>
     </section>
 
-    <!-- Impact Statistics -->
-    <section id="statistics" class="section anchor-target">
+    <!-- Mentoring Programs Section -->
+    <section id="mentoring-programs" class="section anchor-target">
         <div class="container">
             <div class="section-title">
-                <h2>Our Impact</h2>
-                <p>Together, we're making a difference in our community</p>
+                <h2>Mentoring Programs</h2>
+                <p>Comprehensive support for personal and professional growth</p>
             </div>
-            <div class="row text-center">
+
+            <div class="row">
                 <div class="col-4">
-                    <div class="card" style="height: 100%;">
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="text-primary" style="font-size: 3rem; color: #3b82f6 !important;">12,450</h3>
-                            <h4 style="color: #1e3a5f;">Items Donated</h4>
-                            <p style="color: #4a5568;">Pieces of clothing given new life and purpose</p>
+                            <h4 style="color: #3b82f6;">💼 Career Mentoring</h4>
+                            <p><strong>Duration:</strong> 6 months</p>
+                            <p><strong>Focus:</strong> Job search, interview skills, professional development</p>
+                            <p>One-on-one mentoring with experienced professionals to help you navigate career transitions, build your resume, and develop interview skills.</p>
+                            <a href="mentoring-booking.html?program=career" class="btn btn-primary">Book Session</a>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-4">
-                    <div class="card" style="height: 100%;">
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="text-primary" style="font-size: 3rem; color: #3b82f6 !important;">3,200</h3>
-                            <h4 style="color: #1e3a5f;">People Helped</h4>
-                            <p style="color: #4a5568;">Individuals who received clothing assistance</p>
+                            <h4 style="color: #3b82f6;">📚 Education Support</h4>
+                            <p><strong>Duration:</strong> Academic year</p>
+                            <p><strong>Focus:</strong> Study skills, academic planning, college prep</p>
+                            <p>Dedicated mentors help students develop effective study habits, prepare for exams, and plan their educational path.</p>
+                            <a href="mentoring-booking.html?program=education" class="btn btn-primary">Book Session</a>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-4">
-                    <div class="card" style="height: 100%;">
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="text-primary" style="font-size: 3rem; color: #3b82f6 !important;">$89,500</h3>
-                            <h4 style="color: #1e3a5f;">Funds Raised</h4>
-                            <p style="color: #4a5568;">Supporting community programs and operations</p>
+                            <h4 style="color: #3b82f6;">🤝 Life Skills Mentoring</h4>
+                            <p><strong>Duration:</strong> 3-12 months</p>
+                            <p><strong>Focus:</strong> Financial literacy, communication, goal setting</p>
+                            <p>Practical guidance on essential life skills including budgeting, time management, and effective communication.</p>
+                            <a href="mentoring-booking.html?program=lifeskills" class="btn btn-primary">Book Session</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 style="color: #3b82f6;">👨‍👩‍👧 Family Support Program</h4>
+                            <p><strong>Duration:</strong> Flexible</p>
+                            <p><strong>Focus:</strong> Parenting, family dynamics, household management</p>
+                            <p>Support for families facing challenges, offering guidance on parenting, household budgeting, and family communication.</p>
+                            <a href="mentoring-booking.html?program=family" class="btn btn-primary">Book Session</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 style="color: #3b82f6;">🌟 Youth Leadership</h4>
+                            <p><strong>Duration:</strong> 9 months</p>
+                            <p><strong>Focus:</strong> Leadership, community service, personal growth</p>
+                            <p>Empower young people to become community leaders through workshops, projects, and peer mentoring opportunities.</p>
+                            <a href="mentoring-booking.html?program=youth" class="btn btn-primary">Book Session</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 style="color: #3b82f6;">🏢 Entrepreneurship</h4>
+                            <p><strong>Duration:</strong> 6-12 months</p>
+                            <p><strong>Focus:</strong> Business planning, marketing, financial management</p>
+                            <p>Guidance for aspiring entrepreneurs on starting and growing small businesses, from idea to execution.</p>
+                            <a href="mentoring-booking.html?program=entrepreneur" class="btn btn-primary">Book Session</a>
                         </div>
                     </div>
                 </div>
@@ -191,45 +259,93 @@
         </div>
     </section>
 
-    <!-- Success Stories -->
-    <section id="success-stories" class="section anchor-target" style="background: white;">
+    <!-- Resources Section -->
+    <section id="resources" class="section anchor-target" style="background: white;">
         <div class="container">
             <div class="section-title">
-                <h2>Success Stories</h2>
-                <p>Real stories from people we've helped</p>
+                <h2>Downloadable Resources & Guides</h2>
+                <p>Free resources to support your journey</p>
             </div>
 
             <div class="row">
-                <div class="col-4">
-                    <div class="card">
+                <div class="col-6">
+                    <div class="card resource-card">
                         <div class="card-body">
-                            <h4>Sarah's New Beginning</h4>
-                            <p>"After losing my job, I couldn't afford professional clothes for interviews. Charity Store provided me with a complete professional wardrobe. I landed a job at a local accounting firm and now I donate back to help others like me."</p>
-                            <div class="text-right">
-                                <small class="text-muted">- Sarah M., Community Member</small>
-                            </div>
+                            <h4>📄 Resume Building Guide</h4>
+                            <p>Comprehensive guide to creating a professional resume that gets noticed. Includes templates, examples, and best practices.</p>
+                            <p><strong>Format:</strong> PDF | <strong>Pages:</strong> 24</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Guide
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="card">
+
+                <div class="col-6">
+                    <div class="card resource-card">
                         <div class="card-body">
-                            <h4>The Martinez Family</h4>
-                            <p>"When our apartment flooded, we lost everything. Charity Store provided clothing for our entire family - my husband, our three kids, and me. Their kindness during our darkest time meant everything to us."</p>
-                            <div class="text-right">
-                                <small class="text-muted">- Maria Martinez, Mother of 3</small>
-                            </div>
+                            <h4>💡 Interview Preparation Workbook</h4>
+                            <p>Step-by-step workbook to prepare for job interviews, including common questions, STAR method guidance, and practice exercises.</p>
+                            <p><strong>Format:</strong> PDF | <strong>Pages:</strong> 32</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Workbook
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="card">
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card resource-card">
                         <div class="card-body">
-                            <h4>Student Success Program</h4>
-                            <p>"Our partnership with Charity Store has helped over 200 students get appropriate school clothing. We've seen improved attendance and confidence levels. Students feel proud to wear nice clothes to school."</p>
-                            <div class="text-right">
-                                <small class="text-muted">- Linda Chen, School Counselor</small>
-                            </div>
+                            <h4>💰 Personal Finance Toolkit</h4>
+                            <p>Essential tools for managing your money, including budget templates, savings calculators, and debt reduction strategies.</p>
+                            <p><strong>Format:</strong> PDF + Excel | <strong>Pages:</strong> 18</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Toolkit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="card resource-card">
+                        <div class="card-body">
+                            <h4>🎯 Goal Setting Framework</h4>
+                            <p>Proven framework for setting and achieving personal and professional goals using SMART criteria and action plans.</p>
+                            <p><strong>Format:</strong> PDF | <strong>Pages:</strong> 16</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Framework
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card resource-card">
+                        <div class="card-body">
+                            <h4>📚 Study Skills Handbook</h4>
+                            <p>Evidence-based study techniques, time management strategies, and exam preparation tips for students of all ages.</p>
+                            <p><strong>Format:</strong> PDF | <strong>Pages:</strong> 28</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Handbook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="card resource-card">
+                        <div class="card-body">
+                            <h4>🏠 Family Resource Directory</h4>
+                            <p>Comprehensive directory of local services, support programs, and community resources available to families in need.</p>
+                            <p><strong>Format:</strong> PDF | <strong>Pages:</strong> 42</p>
+                            <a href="#" class="download-btn">
+                                <span>⬇</span> Download Directory
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -237,66 +353,17 @@
         </div>
     </section>
 
-    <!-- Community Partnerships -->
-    <section class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Community Partnerships</h2>
-                <p>Working together for greater impact</p>
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 style="color: #3b82f6;">🏫 Local Schools</h4>
-                            <p style="color: #4a5568;">We partner with 12 local schools to ensure students have appropriate clothing, supporting better attendance and confidence in the classroom.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 style="color: #3b82f6;">🏠 Homeless Shelters</h4>
-                            <p style="color: #4a5568;">Regular donations to 5 local shelters provide essential clothing to those experiencing homelessness, helping them maintain dignity and access services.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 style="color: #3b82f6;">💼 Job Centers</h4>
-                            <p style="color: #4a5568;">Professional clothing donations help job seekers make great first impressions during interviews and in their new careers.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 style="color: #3b82f6;">🏥 Healthcare Programs</h4>
-                            <p style="color: #4a5568;">Supporting families dealing with medical hardships by providing clothing during difficult times when finances are tight.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Get Involved -->
+    <!-- Call to Action -->
     <section class="section" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 50%, #3b82f6 100%); color: white;">
         <div class="container">
             <div class="text-center">
-                <h2 style="color: white;">Be Part of Our Impact</h2>
+                <h2 style="color: white;">Ready to Get Started?</h2>
                 <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem;">
-                    Every donation and purchase creates positive change
+                    Book a mentoring session or contact us to learn more about our programs
                 </p>
                 <div class="mt-4">
-                    <a href="donate-booking.html" class="btn btn-secondary btn-lg">Make a Donation</a>
-                    <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
-                    <a href="contact.html" class="btn btn-outline btn-lg">Volunteer</a>
+                    <a href="mentoring-booking.html" class="btn btn-secondary btn-lg">Book Mentoring</a>
+                    <a href="contact.html" class="btn btn-outline btn-lg">Contact Us</a>
                 </div>
             </div>
         </div>
@@ -337,70 +404,21 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p>&copy; 2026 BU Mentoring. All rights reserved.</p>
+                    <p>&copy; 2026 BU Mentoring. All rights reserved. | Made with ❤️ for our community</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <!-- Firebase SDK -->
     <script type="module">
         import { db } from './js/firebase-config.js';
         window.dispatchEvent(new Event('firebaseReady'));
-        console.log('✅ Firebase initialized on impact page');
+        console.log('Firebase initialized on programmes-resources page');
     </script>
 
     <script src="js/dataManager.js?v=11"></script>
-    <script src="js/utils.js?v=3"></script>
+    <script src="js/utils.js?v=9"></script>
     <script src="js/navigation.js?v=1"></script>
-    <script>
-        // Initialize impact page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Impact page DOM loaded');
-
-            // Load hero content
-            loadHeroContent();
-
-            // Wait for Firebase to initialize before loading images
-            console.log('⏳ Waiting 3 seconds for Firebase initialization...');
-            setTimeout(async () => {
-                console.log('🔄 Starting image load...');
-                await loadImpactImages();
-            }, 3000);
-        });
-
-        function loadHeroContent() {
-            const heroContent = dataManager.getContent('impact-hero');
-            if (heroContent) {
-                const heroTitle = document.getElementById('hero-title');
-                const heroSubtitle = document.getElementById('hero-subtitle');
-                if (heroTitle && heroContent.title) heroTitle.textContent = heroContent.title;
-                if (heroSubtitle && heroContent.subtitle) heroSubtitle.textContent = heroContent.subtitle;
-            }
-        }
-
-        async function loadImpactImages() {
-            console.log('📸 Loading impact images...');
-            // Get all images from dataManager (Firebase first, then localStorage)
-            const images = await dataManager.getImages() || [];
-            console.log(`📊 Got ${images.length} total images`);
-
-            // Filter images for impact page
-            const impactImages = images.filter(img => img.category === 'impact');
-            console.log(`🎯 Filtered ${impactImages.length} impact images`);
-
-            if (impactImages.length > 0) {
-                // Use the first impact image
-                const impactImg = document.getElementById('impact-image');
-                if (impactImg) {
-                    impactImg.src = impactImages[0].data;
-                    console.log('✅ Impact image set');
-                }
-            } else {
-                console.log('⚠️ No impact images found');
-            }
-        }
-    </script>
 </body>
 </html>

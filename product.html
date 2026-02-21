@@ -13,7 +13,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col">
-                    <a href="home.html" class="navbar-brand">BU Mentoring</a>
+                    <a href="home.html" class="navbar-brand">
+                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                    </a>
                 </div>
                 <div class="col">
                     <ul class="navbar-nav">
@@ -21,25 +23,53 @@
                             <a href="home.html" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="shop.html" class="nav-link">Shop</a>
+                            <a href="donate-booking.html" class="nav-link">Donate Items</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="story.html" class="nav-link">Our Story</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="donate.html" class="nav-link">Donate</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="impact.html" class="nav-link">Impact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="contact.html" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="cart.html" class="nav-link cart-icon">
-                                🛒
-                                <span class="cart-count">0</span>
+                        <li class="nav-item nav-dropdown">
+                            <a href="mentoring-booking.html" class="nav-link">
+                                Mentoring
+                                <span class="dropdown-arrow">▼</span>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="mentoring-booking.html" class="dropdown-item">Book Mentoring</a></li>
+                                <li><a href="mentor-application.html" class="dropdown-item">Become a Mentor</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Programmes & Resources with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="programmes-resources.html" class="nav-link">
+                                Programmes & Resources
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="programmes-resources.html#mentoring-programs" class="dropdown-item">Mentoring Programs</a></li>
+                                <li><a href="programmes-resources.html#resources" class="dropdown-item">Resources</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Impact & News with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="impact.html" class="nav-link">
+                                Impact & News
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="impact.html" class="dropdown-item">Our Impact</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">Events & News</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Our Story & Contact with Dropdown -->
+                        <li class="nav-item nav-dropdown">
+                            <a href="contact.html" class="nav-link">
+                                About & Contact
+                                <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="story.html" class="dropdown-item">Our Story</a></li>
+                                <li><a href="contact.html" class="dropdown-item">Contact Us</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -92,10 +122,12 @@
                 </div>
                 <div class="col-3">
                     <h5>Quick Links</h5>
-                    <p><a href="shop.html">Shop</a></p>
-                    <p><a href="donate.html">Donate</a></p>
-                    <p><a href="story.html">Our Story</a></p>
-                    <p><a href="impact.html">Impact</a></p>
+                    <p><a href="home.html">Home</a></p>
+                    <p><a href="donate-booking.html">Donate Items</a></p>
+                    <p><a href="mentoring-booking.html">Mentoring</a></p>
+                    <p><a href="programmes-resources.html">Programmes & Resources</a></p>
+                    <p><a href="impact.html">Impact & News</a></p>
+                    <p><a href="contact.html">Contact Us</a></p>
                 </div>
                 <div class="col-3">
                     <h5>Contact Info</h5>
@@ -382,5 +414,6 @@
             utils.addToCartAnimation(button);
         }
     </script>
+    <script src="js/navigation.js?v=1"></script>
 </body>
 </html>

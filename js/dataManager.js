@@ -1045,6 +1045,45 @@ class DataManager {
         const images = await this.getImages();
         return images.find(img => img.id === id);
     }
+
+    // Mentor Applications Management
+    getMentorApplications() {
+        return this.getData('mentorApplications') || [];
+    }
+
+    setMentorApplications(applications) {
+        return this.setData('mentorApplications', applications);
+    }
+
+    addMentorApplication(application) {
+        const applications = this.getMentorApplications();
+        application.id = this.generateId();
+        application.submittedAt = application.submittedAt || Date.now();
+        application.status = application.status || 'pending';
+
+        applications.push(application);
+        if (this.setMentorApplications(applications)) {
+            console.log('✅ Mentor application added:', application.id);
+            return true;
+        }
+        return false;
+    }
+
+    getMentorApplicationById(applicationId) {
+        const applications = this.getMentorApplications();
+        return applications.find(a => a.id === applicationId);
+    }
+
+    updateMentorApplicationStatus(applicationId, status) {
+        const applications = this.getMentorApplications();
+        const application = applications.find(a => a.id === applicationId);
+        if (application) {
+            application.status = status;
+            application.updatedAt = Date.now();
+            return this.setMentorApplications(applications);
+        }
+        return false;
+    }
 }
 
 // Create global instance
