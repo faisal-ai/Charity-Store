@@ -132,19 +132,24 @@
     <!-- About Section -->
     <section class="section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-6">
+            <div class="row">
+                <div class="col-12">
                     <div class="section-title">
-                        <h2>About Charity Store</h2>
+                        <h2>ABOUT BU MENTORING CIC</h2>
                     </div>
-                    <p id="about-content">
-                        Charity Store was founded in 2019 with a simple mission: to provide quality clothing to those in need while promoting sustainable fashion practices. What started as a small community initiative has grown into a thriving charity that has helped thousands of families.
+                    <p id="about-content" style="line-height: 1.8; font-size: 1.05rem;">
+                        BU Mentoring CIC is a community interest company based in Brompton, Medway, Kent. Since 2013, we have supported young people, adults, and vulnerable individuals in rebuilding their confidence, gaining practical skills, and moving into employment, apprenticeships, or self-employment.<br><br>
+
+                        We primarily work with young people aged 16 to 26, including those who are NEET, from disadvantaged backgrounds, or facing social isolation. We also support adults experiencing long term unemployment and vulnerability.<br><br>
+
+                        We believe that within every individual lies untapped potential. Many young people do not lack ability. They lack structured guidance, belief and opportunity.<br><br>
+
+                        Our mentoring model focuses first on confidence and identity development. We then build employability skills, enterprise readiness and academic foundations through tailored one to one mentoring, accredited tuition, work experience and practical career support.<br><br>
+
+                        Alongside skills development, we remove immediate barriers to progress by providing food parcels, clothing support and social care assistance within our community hub.<br><br>
+
+                        We exist to turn vulnerability into capability and isolation into contribution.
                     </p>
-                </div>
-                <div class="col-6">
-                    <img id="story-image"
-                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='400'%3E%3Crect fill='%23f0f0f0' width='500' height='400'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3ELoading...%3C/text%3E%3C/svg%3E"
-                         alt="Our Story" style="width: 100%; border-radius: 8px;">
                 </div>
             </div>
         </div>
@@ -159,7 +164,14 @@
                         <div class="card-body text-center">
                             <h3 style="color: #3b82f6; font-weight: 700;">Our Mission</h3>
                             <p id="mission-content">
-                                To create a world where everyone has access to quality clothing, regardless of their economic situation, while promoting environmental sustainability through clothing reuse and recycling.
+                                Our mission is to equip young people and vulnerable adults with the confidence, skills and structured mentoring required to access employment, apprenticeships or self employment.<br><br>
+                                We achieve this through:<br>
+                                • One to one mentoring<br>
+                                • Career guidance and CV preparation<br>
+                                • Work experience and employer engagement<br>
+                                • Self employment assessment and enterprise support<br>
+                                • GCSE tuition in Maths and English<br>
+                                • Community based practical support that removes barriers to progress.
                             </p>
                         </div>
                     </div>
@@ -169,7 +181,7 @@
                         <div class="card-body text-center">
                             <h3 style="color: #3b82f6; font-weight: 700;">Our Vision</h3>
                             <p id="vision-content">
-                                We envision communities where clothing insecurity is eliminated, and sustainable fashion practices are the norm.
+                                To build a generation of resilient, confident and economically independent young people who actively contribute to their communities and break cycles of dependency.
                             </p>
                         </div>
                     </div>
@@ -407,7 +419,6 @@
             console.log('⏳ Waiting 3 seconds for Firebase initialization...');
             setTimeout(() => {
                 console.log('🔄 Starting image load...');
-                loadStoryImages();
                 loadTeamImages();
             }, 3000);
         }
@@ -444,28 +455,6 @@
                 console.log('✅ Team images displayed');
             } else {
                 console.log('⚠️ No team images found');
-            }
-        }
-
-        async function loadStoryImages() {
-            console.log('📖 Loading story images...');
-            // Get all images from dataManager (Firebase first, then localStorage)
-            const images = await dataManager.getImages() || [];
-            console.log(`📸 Got ${images.length} total images for story`);
-
-            // Filter images for story page
-            const storyImages = images.filter(img => img.category === 'story');
-            console.log(`📖 Filtered ${storyImages.length} story images`);
-
-            if (storyImages.length > 0) {
-                // Use the first story image
-                const storyImg = document.getElementById('story-image');
-                if (storyImg) {
-                    storyImg.src = storyImages[0].data;
-                    console.log('✅ Story image set');
-                }
-            } else {
-                console.log('⚠️ No story images found');
             }
         }
 
