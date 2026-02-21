@@ -262,8 +262,7 @@
                         <h2 id="mission-title">Our Mission</h2>
                     </div>
                     <p id="mission-description">
-                        We believe that everyone deserves access to quality clothing, and that fashion should be sustainable.
-                        Every item you purchase helps provide clothing to families in need while reducing textile waste.
+                        Our mission is to equip young people and vulnerable adults with the confidence, skills and structured mentoring required to access employment, apprenticeships or self employment.
                     </p>
                     <a href="story.html" class="btn btn-primary">Learn More</a>
                 </div>
@@ -557,13 +556,8 @@
             if (homepageContent) {
                 // Hero section now uses hardcoded text, skip loading from dataManager
 
-                // Update mission section
-                if (homepageContent.mission) {
-                    const missionTitle = document.getElementById('mission-title');
-                    const missionDesc = document.getElementById('mission-description');
-                    if (missionTitle) missionTitle.textContent = homepageContent.mission.title;
-                    if (missionDesc) missionDesc.textContent = homepageContent.mission.description;
-                }
+                // Mission section now uses hardcoded text in HTML
+                // Skip loading mission from dataManager to preserve static content
 
                 // Update statistics
                 if (homepageContent.stats) {
