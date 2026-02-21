@@ -394,20 +394,8 @@
             const storyContent = dataManager.getContent('story');
 
             if (storyContent) {
-                // Update about content
-                if (storyContent.about) {
-                    document.getElementById('about-content').textContent = storyContent.about;
-                }
-
-                // Update mission content
-                if (storyContent.mission) {
-                    document.getElementById('mission-content').textContent = storyContent.mission;
-                }
-
-                // Update vision content
-                if (storyContent.vision) {
-                    document.getElementById('vision-content').textContent = storyContent.vision;
-                }
+                // Content is now managed directly in HTML
+                // Only load team members from dataManager
 
                 // Load team members
                 if (storyContent.team) {
