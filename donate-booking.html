@@ -170,6 +170,16 @@
                             <h3>Children's Items</h3>
                             <p>Toys, games, and children's equipment</p>
                         </div>
+                        <div class="type-card">
+                            <div class="type-icon">🍎</div>
+                            <h3>Food</h3>
+                            <p>Non-perishable food items and packaged goods</p>
+                        </div>
+                        <div class="type-card">
+                            <div class="type-icon">📦</div>
+                            <h3>Other Items</h3>
+                            <p>Have something else to donate? Let us know!</p>
+                        </div>
                     </div>
                 </div>
 
@@ -236,6 +246,19 @@
                                         <input type="checkbox" name="donationTypes" value="children">
                                         <span>Children's Items</span>
                                     </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="donationTypes" value="food">
+                                        <span>Food</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="donationTypes" value="other" id="other-checkbox">
+                                        <span>Other</span>
+                                    </label>
+                                </div>
+                                <!-- Text box for "Other" option -->
+                                <div id="other-items-container" style="display: none; margin-top: 15px;">
+                                    <label for="other-items-text">Please specify the items you're donating:</label>
+                                    <textarea id="other-items-text" name="otherItems" rows="3" placeholder="Describe the items you'd like to donate..."></textarea>
                                 </div>
                             </div>
 
@@ -408,7 +431,27 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadHeroContent();
             initializeDonationBooking();
+            setupOtherCheckbox();
         });
+
+        function setupOtherCheckbox() {
+            const otherCheckbox = document.getElementById('other-checkbox');
+            const otherContainer = document.getElementById('other-items-container');
+            const otherTextarea = document.getElementById('other-items-text');
+
+            if (otherCheckbox && otherContainer) {
+                otherCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        otherContainer.style.display = 'block';
+                        otherTextarea.required = true;
+                    } else {
+                        otherContainer.style.display = 'none';
+                        otherTextarea.required = false;
+                        otherTextarea.value = '';
+                    }
+                });
+            }
+        }
 
         function loadHeroContent() {
             const heroContent = dataManager.getContent('donate-hero');
