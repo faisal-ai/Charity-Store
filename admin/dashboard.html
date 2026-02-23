@@ -20,6 +20,7 @@
                 <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
                 <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
                 <li><a href="mentor-applications.html"><span class="icon">📝</span> Mentor Applications</a></li>
+                <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
@@ -61,6 +62,12 @@
                     <div class="card-number" id="total-mentor-applications">0</div>
                     <div class="card-label">Mentor Applications</div>
                     <div class="card-change positive" id="pending-applications-count">0 pending</div>
+                </div>
+
+                <div class="dashboard-card contact-messages">
+                    <div class="card-number" id="total-contact-messages">0</div>
+                    <div class="card-label">Contact Messages</div>
+                    <div class="card-change positive" id="new-messages-count">0 new</div>
                 </div>
 
                 <div class="dashboard-card donations">
@@ -290,6 +297,12 @@
                 const pendingApplications = applications.filter(a => a.status === 'pending').length;
                 updateElement('total-mentor-applications', applications.length);
                 updateElement('pending-applications-count', `${pendingApplications} pending`);
+
+                // Contact messages stats
+                const messages = dataManager.getContactSubmissions ? dataManager.getContactSubmissions() : [];
+                const newMessages = messages.filter(m => m.status === 'new' || !m.read).length;
+                updateElement('total-contact-messages', messages.length);
+                updateElement('new-messages-count', `${newMessages} new`);
 
                 const donationsCount = dataManager.getDonations ? dataManager.getDonations().length : 0;
                 updateElement('total-donations', donationsCount);
