@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Applications - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">BU Mentoring</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
+                <li><a href="mentor-applications.html" class="active"><span class="icon">📝</span> Mentor Applications</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Mentor Applications</h1>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="card-number" id="total-applications">0</div>
+                    <div class="card-label">Total Applications</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="pending-applications">0</div>
+                    <div class="card-label">Pending Review</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="approved-applications">0</div>
+                    <div class="card-label">Approved</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="rejected-applications">0</div>
+                    <div class="card-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- Applications Table -->
+            <div class="admin-table">
+                <div class="table-header">
+                    <h3>All Applications</h3>
+                    <div class="table-actions">
+                        <select id="filter-status" onchange="filterApplications()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        <select id="filter-type" onchange="filterApplications()">
+                            <option value="all">All Types</option>
+                            <option value="Career Mentoring">Career Mentoring</option>
+                            <option value="Education Support">Education Support</option>
+                            <option value="Life Skills">Life Skills</option>
+                            <option value="Family Support">Family Support</option>
+                            <option value="Youth Leadership">Youth Leadership</option>
+                            <option value="Entrepreneurship">Entrepreneurship</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="applications-table" class="table-container">
+                    <p class="text-center">Loading applications...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application Details Modal -->
+    <div id="application-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Application Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be dynamically loaded -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                <button class="btn btn-success" id="approve-btn" onclick="approveApplication()">Approve</button>
+                <button class="btn btn-danger" id="reject-btn" onclick="rejectApplication()">Reject</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/dataManager.js?v=11"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        let currentApplication = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+
+            const adminUser = utils.getSession('admin_user');
+            if (adminUser && adminUser.username) {
+                document.getElementById('admin-name').textContent = adminUser.username;
+            }
+
+            // Wait for Firebase/dataManager before loading applications
+            setTimeout(() => {
+                loadApplications();
+            }, 2000);
+        });
+
+        async function loadApplications() {
+            const applications = await dataManager.getMentorApplications() || [];
+
+            // Update summary cards
+            const pending = applications.filter(a => a.status === 'pending').length;
+            const approved = applications.filter(a => a.status === 'approved').length;
+            const rejected = applications.filter(a => a.status === 'rejected').length;
+
+            document.getElementById('total-applications').textContent = applications.length;
+            document.getElementById('pending-applications').textContent = pending;
+            document.getElementById('approved-applications').textContent = approved;
+            document.getElementById('rejected-applications').textContent = rejected;
+
+            renderApplications(applications);
+        }
+
+        function renderApplications(applications) {
+            const container = document.getElementById('applications-table');
+
+            if (applications.length === 0) {
+                container.innerHTML = '<p class="text-center">No mentor applications found</p>';
+                return;
+            }
+
+            // Sort by submission date (newest first)
+            applications.sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Applicant</th>
+                            <th>Occupation</th>
+                            <th>Experience</th>
+                            <th>Mentoring Type</th>
+                            <th>Availability</th>
+                            <th>Status</th>
+                            <th>Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${applications.map(app => `
+                            <tr>
+                                <td>
+                                    <strong>${app.fullName || 'N/A'}</strong><br>
+                                    <small>${app.email || 'N/A'}</small>
+                                </td>
+                                <td>${app.occupation || 'N/A'}</td>
+                                <td>${app.yearsOfExperience || 'N/A'} years</td>
+                                <td>${app.mentoringType ? app.mentoringType.join(', ') : 'N/A'}</td>
+                                <td>${app.availability || 'N/A'}</td>
+                                <td>
+                                    <span class="status-badge status-${app.status || 'pending'}">
+                                        ${app.status || 'pending'}
+                                    </span>
+                                </td>
+                                <td>${utils.formatDate(app.submittedAt)}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" onclick="viewApplication('${app.id}')">View</button>
+                                        ${app.status === 'pending' ? `
+                                            <button class="btn btn-sm btn-success" onclick="quickApprove('${app.id}')">Approve</button>
+                                            <button class="btn btn-sm btn-danger" onclick="quickReject('${app.id}')">Reject</button>
+                                        ` : ''}
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function filterApplications() {
+            const filterStatus = document.getElementById('filter-status').value;
+            const filterType = document.getElementById('filter-type').value;
+            let applications = dataManager.getMentorApplications() || [];
+
+            if (filterStatus !== 'all') {
+                applications = applications.filter(a => a.status === filterStatus);
+            }
+
+            if (filterType !== 'all') {
+                applications = applications.filter(a =>
+                    a.mentoringType && a.mentoringType.includes(filterType)
+                );
+            }
+
+            renderApplications(applications);
+        }
+
+        function viewApplication(applicationId) {
+            currentApplication = dataManager.getMentorApplicationById(applicationId);
+            if (!currentApplication) {
+                utils.showNotification('Application not found', 'error');
+                return;
+            }
+
+            document.getElementById('modal-title').textContent = `Application - ${currentApplication.fullName}`;
+            document.getElementById('modal-body').innerHTML = `
+                <div class="booking-details">
+                    <h4>Personal Information</h4>
+                    <p><strong>Full Name:</strong> ${currentApplication.fullName || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${currentApplication.email || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${currentApplication.phone || 'N/A'}</p>
+                    <p><strong>Age:</strong> ${currentApplication.age || 'Not specified'}</p>
+
+                    <h4>Professional Background</h4>
+                    <p><strong>Occupation:</strong> ${currentApplication.occupation || 'N/A'}</p>
+                    <p><strong>Years of Experience:</strong> ${currentApplication.yearsOfExperience || 'N/A'} years</p>
+                    ${currentApplication.industryField ? `<p><strong>Industry/Field:</strong> ${currentApplication.industryField}</p>` : ''}
+                    ${currentApplication.areasOfExpertise ? `<p><strong>Areas of Expertise:</strong> ${currentApplication.areasOfExpertise}</p>` : ''}
+
+                    <h4>Mentoring Preferences</h4>
+                    <p><strong>Mentoring Type:</strong> ${currentApplication.mentoringType ? currentApplication.mentoringType.join(', ') : 'N/A'}</p>
+                    <p><strong>Availability:</strong> ${currentApplication.availability || 'N/A'}</p>
+                    <p><strong>Preferred Session Format:</strong> ${currentApplication.sessionFormat || 'N/A'}</p>
+
+                    <h4>Motivation & Experience</h4>
+                    ${currentApplication.motivation ? `<p><strong>Why do you want to become a mentor?</strong><br>${currentApplication.motivation}</p>` : ''}
+                    ${currentApplication.previousExperience ? `<p><strong>Previous Mentoring Experience:</strong><br>${currentApplication.previousExperience}</p>` : ''}
+
+                    <h4>Application Status</h4>
+                    <p><strong>Status:</strong> <span class="status-badge status-${currentApplication.status || 'pending'}">${currentApplication.status || 'pending'}</span></p>
+                    <p><strong>Submitted:</strong> ${utils.formatDate(currentApplication.submittedAt)}</p>
+                    ${currentApplication.reviewedAt ? `<p><strong>Reviewed:</strong> ${utils.formatDate(currentApplication.reviewedAt)}</p>` : ''}
+                    ${currentApplication.reviewedBy ? `<p><strong>Reviewed By:</strong> ${currentApplication.reviewedBy}</p>` : ''}
+                </div>
+            `;
+
+            // Show/hide action buttons based on status
+            const approveBtn = document.getElementById('approve-btn');
+            const rejectBtn = document.getElementById('reject-btn');
+
+            if (currentApplication.status === 'pending') {
+                approveBtn.style.display = 'inline-block';
+                rejectBtn.style.display = 'inline-block';
+            } else {
+                approveBtn.style.display = 'none';
+                rejectBtn.style.display = 'none';
+            }
+
+            document.getElementById('application-modal').classList.add('show');
+        }
+
+        async function quickApprove(applicationId) {
+            if (!confirm('Are you sure you want to approve this application?')) return;
+
+            const adminUser = utils.getSession('admin_user');
+            const success = await dataManager.updateMentorApplicationStatus(
+                applicationId,
+                'approved',
+                adminUser ? adminUser.username : 'Admin'
+            );
+
+            if (success) {
+                utils.showNotification('Application approved successfully!', 'success');
+                await loadApplications();
+            } else {
+                utils.showNotification('Failed to approve application', 'error');
+            }
+        }
+
+        async function quickReject(applicationId) {
+            if (!confirm('Are you sure you want to reject this application?')) return;
+
+            const adminUser = utils.getSession('admin_user');
+            const success = await dataManager.updateMentorApplicationStatus(
+                applicationId,
+                'rejected',
+                adminUser ? adminUser.username : 'Admin'
+            );
+
+            if (success) {
+                utils.showNotification('Application rejected successfully', 'success');
+                await loadApplications();
+            } else {
+                utils.showNotification('Failed to reject application', 'error');
+            }
+        }
+
+        async function approveApplication() {
+            if (!currentApplication) return;
+
+            const adminUser = utils.getSession('admin_user');
+            const success = await dataManager.updateMentorApplicationStatus(
+                currentApplication.id,
+                'approved',
+                adminUser ? adminUser.username : 'Admin'
+            );
+
+            if (success) {
+                utils.showNotification('Application approved successfully!', 'success');
+                closeModal();
+                await loadApplications();
+            } else {
+                utils.showNotification('Failed to approve application', 'error');
+            }
+        }
+
+        async function rejectApplication() {
+            if (!currentApplication || !confirm('Are you sure you want to reject this application?')) return;
+
+            const adminUser = utils.getSession('admin_user');
+            const success = await dataManager.updateMentorApplicationStatus(
+                currentApplication.id,
+                'rejected',
+                adminUser ? adminUser.username : 'Admin'
+            );
+
+            if (success) {
+                utils.showNotification('Application rejected successfully', 'success');
+                closeModal();
+                await loadApplications();
+            } else {
+                utils.showNotification('Failed to reject application', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('application-modal').classList.remove('show');
+            currentApplication = null;
+        }
+    </script>
+</body>
+</html>

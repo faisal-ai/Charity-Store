@@ -107,8 +107,9 @@
                 <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
                 <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
                 <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
+                <li><a href="mentor-applications.html"><span class="icon">📝</span> Mentor Applications</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
-                <li><a href="content.html" class="active"><span class="icon">📝</span> Content</a></li>
+                <li><a href="content.html" class="active"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
             </ul>
         </nav>
@@ -129,6 +130,8 @@
                 <button class="content-tab-btn" onclick="showContentTab('images')">Images</button>
                 <button class="content-tab-btn" onclick="showContentTab('story')">Our Story</button>
                 <button class="content-tab-btn" onclick="showContentTab('impact')">Impact Page</button>
+                <button class="content-tab-btn" onclick="showContentTab('programmes')">Programmes & Resources</button>
+                <button class="content-tab-btn" onclick="showContentTab('events')">Events & News</button>
             </div>
 
             <!-- Homepage Content -->
@@ -266,6 +269,64 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Programmes & Resources Content -->
+            <div id="content-programmes" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Programmes & Resources Page</h3>
+                    </div>
+                    <div class="card-body">
+                        <p style="color: #64748b; margin-bottom: 20px;">
+                            📝 Note: Currently, mentoring programs and resources are hardcoded in programmes-resources.html.
+                            To edit program details, descriptions, or downloadable resources, please edit the HTML file directly.
+                        </p>
+                        <form id="programmes-form">
+                            <div class="form-group">
+                                <label for="programmes-intro">Introduction Text</label>
+                                <textarea id="programmes-intro" rows="4" placeholder="Brief introduction to your programs and resources...">We offer a variety of mentoring programs designed to support individuals at different stages of their personal and professional journeys.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="programmes-contact">Contact Information</label>
+                                <textarea id="programmes-contact" rows="3" placeholder="How can people contact you for more information...">For more information about our programs or to schedule a consultation, please contact us.</textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveProgrammesContent()">Save Changes</button>
+                        </form>
+                        <hr style="margin: 30px 0; border: 1px solid #e0e6ed;">
+                        <h4>Quick Links</h4>
+                        <p><a href="../programmes-resources.html" target="_blank" class="btn btn-outline">View Programmes & Resources Page</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events & News Content -->
+            <div id="content-events" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Events & News Page</h3>
+                    </div>
+                    <div class="card-body">
+                        <p style="color: #64748b; margin-bottom: 20px;">
+                            📅 Note: Currently, events and news items are hardcoded in events-news.html.
+                            To add new events, update event details, or post news announcements, please edit the HTML file directly.
+                        </p>
+                        <form id="events-form">
+                            <div class="form-group">
+                                <label for="events-intro">Introduction Text</label>
+                                <textarea id="events-intro" rows="4" placeholder="Brief introduction to events and news section...">Stay up to date with our latest events, news, and community activities. Join us in making a difference!</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="events-cta">Call to Action Text</label>
+                                <input type="text" id="events-cta" placeholder="Register for upcoming events today!" value="Register for upcoming events today!">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="saveEventsContent()">Save Changes</button>
+                        </form>
+                        <hr style="margin: 30px 0; border: 1px solid #e0e6ed;">
+                        <h4>Quick Links</h4>
+                        <p><a href="../events-news.html" target="_blank" class="btn btn-outline">View Events & News Page</a></p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -333,6 +394,18 @@
                 document.getElementById('impact-description').value = content.impact.description || '';
             }
 
+            // Load programmes content
+            if (content.programmes) {
+                document.getElementById('programmes-intro').value = content.programmes.intro || '';
+                document.getElementById('programmes-contact').value = content.programmes.contact || '';
+            }
+
+            // Load events content
+            if (content.events) {
+                document.getElementById('events-intro').value = content.events.intro || '';
+                document.getElementById('events-cta').value = content.events.cta || '';
+            }
+
             // Load images
             loadImageGallery();
         }
@@ -373,6 +446,32 @@
 
             if (dataManager.updateContent('impact', content)) {
                 utils.showNotification('Impact content saved!', 'success');
+            } else {
+                utils.showNotification('Failed to save content', 'error');
+            }
+        }
+
+        function saveProgrammesContent() {
+            const content = {
+                intro: document.getElementById('programmes-intro').value,
+                contact: document.getElementById('programmes-contact').value
+            };
+
+            if (dataManager.updateContent('programmes', content)) {
+                utils.showNotification('Programmes content saved!', 'success');
+            } else {
+                utils.showNotification('Failed to save content', 'error');
+            }
+        }
+
+        function saveEventsContent() {
+            const content = {
+                intro: document.getElementById('events-intro').value,
+                cta: document.getElementById('events-cta').value
+            };
+
+            if (dataManager.updateContent('events', content)) {
+                utils.showNotification('Events content saved!', 'success');
             } else {
                 utils.showNotification('Failed to save content', 'error');
             }
