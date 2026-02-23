@@ -58,7 +58,8 @@ class DataManager {
             donationBookings: 'charity_store_donation_bookings',
             mentoringBookings: 'charity_store_mentoring_bookings',
             mentors: 'charity_store_mentors',
-            images: 'charity_store_images'
+            images: 'charity_store_images',
+            contactSubmissions: 'charity_store_contact_submissions'
         };
         this.initializeData();
     }
@@ -1074,13 +1075,95 @@ class DataManager {
         return applications.find(a => a.id === applicationId);
     }
 
-    updateMentorApplicationStatus(applicationId, status) {
+    updateMentorApplicationStatus(applicationId, status, reviewedBy = null) {
         const applications = this.getMentorApplications();
         const application = applications.find(a => a.id === applicationId);
         if (application) {
             application.status = status;
             application.updatedAt = Date.now();
+            application.reviewedAt = Date.now();
+            if (reviewedBy) {
+                application.reviewedBy = reviewedBy;
+            }
             return this.setMentorApplications(applications);
+        }
+        return false;
+    }
+
+    // ============================================
+    // Contact Form Submissions Management
+    // ============================================
+
+    getContactSubmissions() {
+        return this.getData(this.storageKeys.contactSubmissions) || [];
+    }
+
+    setContactSubmissions(submissions) {
+        return this.setData(this.storageKeys.contactSubmissions, submissions);
+    }
+
+    async addContactSubmission(submission) {
+        try {
+            // Wait for Firebase to be ready
+            await ensureFirebaseReady();
+
+            const submissions = this.getContactSubmissions();
+            submission.id = this.generateId();
+            submission.submittedAt = submission.submittedAt || Date.now();
+            submission.status = submission.status || 'new';
+            submission.read = false;
+            submissions.push(submission);
+
+            // Try to save to Firebase first
+            if (firebaseDataManager) {
+                try {
+                    await firebaseDataManager.addContactSubmission(submission);
+                    console.log('✅ Contact submission saved to Firebase');
+                } catch (error) {
+                    console.error('❌ Error saving to Firebase:', error);
+                }
+            }
+
+            return this.setContactSubmissions(submissions);
+        } catch (error) {
+            console.error('Error adding contact submission:', error);
+            return false;
+        }
+    }
+
+    getContactSubmissionById(submissionId) {
+        const submissions = this.getContactSubmissions();
+        return submissions.find(s => s.id === submissionId);
+    }
+
+    updateContactSubmissionStatus(submissionId, status) {
+        const submissions = this.getContactSubmissions();
+        const submission = submissions.find(s => s.id === submissionId);
+        if (submission) {
+            submission.status = status;
+            submission.updatedAt = Date.now();
+            return this.setContactSubmissions(submissions);
+        }
+        return false;
+    }
+
+    markContactSubmissionAsRead(submissionId) {
+        const submissions = this.getContactSubmissions();
+        const submission = submissions.find(s => s.id === submissionId);
+        if (submission) {
+            submission.read = true;
+            submission.readAt = Date.now();
+            return this.setContactSubmissions(submissions);
+        }
+        return false;
+    }
+
+    deleteContactSubmission(submissionId) {
+        const submissions = this.getContactSubmissions();
+        const index = submissions.findIndex(s => s.id === submissionId);
+        if (index > -1) {
+            submissions.splice(index, 1);
+            return this.setContactSubmissions(submissions);
         }
         return false;
     }

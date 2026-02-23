@@ -414,19 +414,28 @@
                 phone: document.getElementById('phone').value,
                 subject: document.getElementById('subject').value,
                 message: document.getElementById('message').value,
-                timestamp: new Date().toISOString()
+                submittedAt: Date.now()
             };
 
-            // Simulate sending message
-            utils.showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
+            // Save to database
+            dataManager.addContactSubmission(formData).then(success => {
+                if (success) {
+                    utils.showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
 
-            // Reset form
-            form.reset();
+                    // Reset form
+                    form.reset();
 
-            // Show confirmation
-            setTimeout(() => {
-                alert(`Message Sent Successfully!\n\nName: ${formData.firstName} ${formData.lastName}\nSubject: ${formData.subject}\n\nWe appreciate your interest in Charity Store and will respond soon!`);
-            }, 1500);
+                    // Show confirmation
+                    setTimeout(() => {
+                        alert(`Message Sent Successfully!\n\nName: ${formData.firstName} ${formData.lastName}\nSubject: ${formData.subject}\n\nWe appreciate your interest in BU Mentoring and will respond soon!`);
+                    }, 1500);
+                } else {
+                    utils.showNotification('Error saving your message. Please try again.', 'error');
+                }
+            }).catch(error => {
+                console.error('Error submitting contact form:', error);
+                utils.showNotification('Error sending message. Please try again later.', 'error');
+            });
         }
     </script>
 
