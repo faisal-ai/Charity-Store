@@ -361,7 +361,7 @@ function handleDonationBooking(e) {
     }
 
     // Simulate API call delay
-    setTimeout(() => {
+    setTimeout(async () => {
         try {
             // Save booking
             const success = dataManager.addDonationBooking(bookingData);
@@ -375,8 +375,9 @@ function handleDonationBooking(e) {
                 // Reset form
                 form.reset();
 
-                // Send confirmation email (simulation)
+                // Send confirmation email
                 console.log('Sending confirmation email to:', bookingData.donorEmail);
+                await sendDonationConfirmationEmail(bookingData);
 
                 // Update button text
                 submitBtn.textContent = 'Slot Booked Successfully!';
@@ -460,7 +461,7 @@ function handleMentoringBooking(e) {
     }
 
     // Simulate API call delay
-    setTimeout(() => {
+    setTimeout(async () => {
         try {
             // Save booking
             const success = dataManager.addMentoringBooking(bookingData);
@@ -478,8 +479,9 @@ function handleMentoringBooking(e) {
                 document.getElementById('booking-form-container').style.display = 'none';
                 document.getElementById('availability-section').classList.remove('show');
 
-                // Send confirmation email (simulation)
+                // Send confirmation email
                 console.log('Sending confirmation email to:', bookingData.clientEmail);
+                await sendMentoringConfirmationEmail(bookingData, mentor.name);
 
                 // Update button text
                 submitBtn.textContent = 'Session Booked Successfully!';

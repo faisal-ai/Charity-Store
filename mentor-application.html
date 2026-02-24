@@ -331,6 +331,9 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- EmailJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="js/emailNotifications.js"></script>
     <!-- Firebase SDK -->
     <script type="module">
         import { db } from './js/firebase-config.js';
@@ -407,7 +410,7 @@
                 submitBtn.textContent = 'Submitting Application...';
 
                 // Simulate submission (save to dataManager)
-                setTimeout(() => {
+                setTimeout(async () => {
                     try {
                         // Save application
                         const success = dataManager.addMentorApplication(applicationData);
@@ -421,6 +424,10 @@
 
                             // Reset form
                             form.reset();
+
+                            // Send confirmation email
+                            console.log('Sending confirmation email to:', applicationData.email);
+                            await sendMentorApplicationConfirmationEmail(applicationData);
 
                             // Reset button after delay
                             setTimeout(() => {
