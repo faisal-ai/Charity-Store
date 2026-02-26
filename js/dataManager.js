@@ -453,7 +453,7 @@ class DataManager {
         this.setContent('contact', {
             address: '123 Charity Lane, Helping City, HC 12345',
             phone: '(555) 123-4567',
-            email: 'info@heartsandthreads.org',
+            email: 'info@bumentoring.com',
             hours: 'Monday-Friday: 9AM-6PM, Saturday: 10AM-4PM, Sunday: Closed',
             social: {
                 facebook: 'https://facebook.com/heartsandthreads',
