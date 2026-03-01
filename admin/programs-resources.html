@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs & Resources - Admin Panel</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style>
+        .resource-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+        .resource-info h4 {
+            margin: 0 0 5px 0;
+            color: #1e3a5f;
+        }
+        .resource-info p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        .resource-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">BU Mentoring</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
+                <li><a href="mentor-applications.html"><span class="icon">📝</span> Mentor Applications</a></li>
+                <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="programs-resources.html" class="active"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1>Programs & Resources</h1>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('programs')">Mentoring Programs</button>
+                <button class="tab-btn" onclick="switchTab('resources')">Downloadable Resources</button>
+            </div>
+
+            <!-- Programs Tab -->
+            <div id="programs-tab" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Mentoring Programs</h3>
+                        <button class="btn btn-primary" onclick="showAddProgramModal()">
+                            <span>+</span> Add Program
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="programs-list">
+                            <div class="empty-state">
+                                <p>No programs added yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div id="resources-tab" class="tab-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Downloadable Resources</h3>
+                        <button class="btn btn-primary" onclick="showAddResourceModal()">
+                            <span>+</span> Add Resource
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="resources-list">
+                            <div class="empty-state">
+                                <p>No resources added yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Program Modal -->
+    <div id="program-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="program-modal-title">Add Program</h3>
+                <span class="close" onclick="closeProgramModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="program-form">
+                    <input type="hidden" id="program-id">
+
+                    <div class="form-group">
+                        <label for="program-name">Program Name *</label>
+                        <input type="text" id="program-name" required placeholder="e.g., Career Mentoring">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="program-description">Description *</label>
+                        <textarea id="program-description" rows="4" required placeholder="Describe the program..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="program-icon">Icon (Emoji)</label>
+                            <input type="text" id="program-icon" placeholder="💼" maxlength="2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="program-duration">Duration</label>
+                            <input type="text" id="program-duration" placeholder="e.g., 6 months">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="program-target">Target Audience</label>
+                        <input type="text" id="program-target" placeholder="e.g., Young professionals, Students">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="program-active">
+                            Active (show on website)
+                        </label>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeProgramModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Program</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Resource Modal -->
+    <div id="resource-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="resource-modal-title">Add Resource</h3>
+                <span class="close" onclick="closeResourceModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="resource-form">
+                    <input type="hidden" id="resource-id">
+
+                    <div class="form-group">
+                        <label for="resource-title">Resource Title *</label>
+                        <input type="text" id="resource-title" required placeholder="e.g., Mentorship Guide 2024">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resource-description">Description *</label>
+                        <textarea id="resource-description" rows="3" required placeholder="Brief description of the resource..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resource-type">Resource Type *</label>
+                            <select id="resource-type" required>
+                                <option value="">Select type...</option>
+                                <option value="PDF">PDF Document</option>
+                                <option value="DOC">Word Document</option>
+                                <option value="PPT">Presentation</option>
+                                <option value="VIDEO">Video</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resource-category">Category</label>
+                            <input type="text" id="resource-category" placeholder="e.g., Guides, Templates">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resource-url">Download URL *</label>
+                        <input type="url" id="resource-url" required placeholder="https://example.com/file.pdf">
+                        <small>Paste the direct link to your file (Google Drive, Dropbox, etc.)</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resource-size">File Size</label>
+                            <input type="text" id="resource-size" placeholder="e.g., 2.5 MB">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="resource-active" checked>
+                                Active (show on website)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeResourceModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Resource</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { db } from '../js/firebase-config.js';
+        window.db = db;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
+    <!-- Scripts -->
+    <script src="../js/dataManager.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/admin-programs-resources.js"></script>
+</body>
+</html>
