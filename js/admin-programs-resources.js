@@ -152,11 +152,13 @@ async function loadResources() {
 
 // Show add resource modal
 window.showAddResourceModal = function() {
+    console.log('🎯 showAddResourceModal called');
     document.getElementById('resource-modal-title').textContent = 'Add Resource';
     document.getElementById('resource-form').reset();
     document.getElementById('resource-id').value = '';
     document.getElementById('resource-active').checked = true;
     document.getElementById('resource-modal').style.display = 'flex';
+    console.log('✅ Resource modal opened');
 }
 
 // Close resource modal
