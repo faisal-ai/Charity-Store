@@ -107,6 +107,99 @@ window.deleteProgram = async function(programId, programName) {
     }
 }
 
+// ============= RESOURCES =============
+
+// Load all resources
+async function loadResources() {
+    const resourcesList = document.getElementById('resources-list');
+    const resources = dataManager.getResources();
+
+    if (resources.length === 0) {
+        resourcesList.innerHTML = '<div class="empty-state"><p>No resources added yet</p></div>';
+        return;
+    }
+
+    resourcesList.innerHTML = resources.map(resource => `
+        <div class="resource-item">
+            <div class="resource-info">
+                <h4>📄 ${resource.title}</h4>
+                <p>${resource.description}</p>
+                <small style="color: #3b82f6;">
+                    Type: ${resource.type}
+                    ${resource.category ? `| Category: ${resource.category}` : ''}
+                    ${resource.size ? `| Size: ${resource.size}` : ''}
+                </small>
+                <div style="margin-top: 5px;">
+                    <span class="badge ${resource.active ? 'badge-success' : 'badge-danger'}">
+                        ${resource.active ? 'Active' : 'Inactive'}
+                    </span>
+                </div>
+            </div>
+            <div class="resource-actions">
+                <a href="${resource.url}" target="_blank" class="btn btn-sm btn-outline">
+                    View
+                </a>
+                <button class="btn btn-sm btn-outline" onclick="editResource('${resource.id}')">
+                    Edit
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="deleteResource('${resource.id}', '${resource.title.replace(/'/g, "\\'")}')">
+                    Delete
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Show add resource modal
+window.showAddResourceModal = function() {
+    document.getElementById('resource-modal-title').textContent = 'Add Resource';
+    document.getElementById('resource-form').reset();
+    document.getElementById('resource-id').value = '';
+    document.getElementById('resource-active').checked = true;
+    document.getElementById('resource-modal').style.display = 'flex';
+}
+
+// Close resource modal
+window.closeResourceModal = function() {
+    document.getElementById('resource-modal').style.display = 'none';
+}
+
+// Edit resource
+window.editResource = async function(resourceId) {
+    const resource = dataManager.getResourceById(resourceId);
+    if (!resource) {
+        alert('Resource not found');
+        return;
+    }
+
+    document.getElementById('resource-modal-title').textContent = 'Edit Resource';
+    document.getElementById('resource-id').value = resource.id;
+    document.getElementById('resource-title').value = resource.title;
+    document.getElementById('resource-description').value = resource.description;
+    document.getElementById('resource-type').value = resource.type;
+    document.getElementById('resource-category').value = resource.category || '';
+    document.getElementById('resource-url').value = resource.url;
+    document.getElementById('resource-size').value = resource.size || '';
+    document.getElementById('resource-active').checked = resource.active !== false;
+
+    document.getElementById('resource-modal').style.display = 'flex';
+}
+
+// Delete resource
+window.deleteResource = async function(resourceId, resourceTitle) {
+    if (!confirm(`Are you sure you want to delete "${resourceTitle}"?`)) {
+        return;
+    }
+
+    const success = await dataManager.deleteResource(resourceId);
+    if (success) {
+        alert('Resource deleted successfully');
+        loadResources();
+    } else {
+        alert('Failed to delete resource');
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Admin Programs & Resources initialized');
