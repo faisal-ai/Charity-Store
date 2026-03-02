@@ -59,7 +59,9 @@ class DataManager {
             mentoringBookings: 'charity_store_mentoring_bookings',
             mentors: 'charity_store_mentors',
             images: 'charity_store_images',
-            contactSubmissions: 'charity_store_contact_submissions'
+            contactSubmissions: 'charity_store_contact_submissions',
+            programs: 'charity_store_programs',
+            resources: 'charity_store_resources'
         };
         this.initializeData();
     }
@@ -1166,6 +1168,136 @@ class DataManager {
             return this.setContactSubmissions(submissions);
         }
         return false;
+    }
+
+    // =================== PROGRAMS ===================
+
+    getPrograms() {
+        return this.getData(this.storageKeys.programs) || [];
+    }
+
+    setPrograms(programs) {
+        return this.setData(this.storageKeys.programs, programs);
+    }
+
+    async addProgram(programData) {
+        try {
+            const programs = this.getPrograms();
+            const newProgram = {
+                id: this.generateId(),
+                ...programData,
+                createdAt: Date.now()
+            };
+            programs.push(newProgram);
+            return this.setPrograms(programs);
+        } catch (error) {
+            console.error('Error adding program:', error);
+            return false;
+        }
+    }
+
+    getProgramById(programId) {
+        const programs = this.getPrograms();
+        return programs.find(p => p.id === programId);
+    }
+
+    async updateProgram(programId, programData) {
+        try {
+            const programs = this.getPrograms();
+            const index = programs.findIndex(p => p.id === programId);
+            if (index > -1) {
+                programs[index] = {
+                    ...programs[index],
+                    ...programData,
+                    updatedAt: Date.now()
+                };
+                return this.setPrograms(programs);
+            }
+            return false;
+        } catch (error) {
+            console.error('Error updating program:', error);
+            return false;
+        }
+    }
+
+    async deleteProgram(programId) {
+        try {
+            const programs = this.getPrograms();
+            const index = programs.findIndex(p => p.id === programId);
+            if (index > -1) {
+                programs.splice(index, 1);
+                return this.setPrograms(programs);
+            }
+            return false;
+        } catch (error) {
+            console.error('Error deleting program:', error);
+            return false;
+        }
+    }
+
+    // =================== RESOURCES ===================
+
+    getResources() {
+        return this.getData(this.storageKeys.resources) || [];
+    }
+
+    setResources(resources) {
+        return this.setData(this.storageKeys.resources, resources);
+    }
+
+    async addResource(resourceData) {
+        try {
+            const resources = this.getResources();
+            const newResource = {
+                id: this.generateId(),
+                ...resourceData,
+                createdAt: Date.now()
+            };
+            resources.push(newResource);
+            return this.setResources(resources);
+        } catch (error) {
+            console.error('Error adding resource:', error);
+            return false;
+        }
+    }
+
+    getResourceById(resourceId) {
+        const resources = this.getResources();
+        return resources.find(r => r.id === resourceId);
+    }
+
+    async updateResource(resourceId, resourceData) {
+        try {
+            const resources = this.getResources();
+            const index = resources.findIndex(r => r.id === resourceId);
+            if (index > -1) {
+                resources[index] = {
+                    ...resources[index],
+                    ...resourceData,
+                    updatedAt: Date.now()
+                };
+                return this.setResources(resources);
+            }
+            return false;
+        } catch (error) {
+            console.error('Error updating resource:', error);
+            return false;
+        }
+    }
+
+    async deleteResource(resourceId) {
+        try {
+            const resources = this.getResources();
+            const index = resources.findIndex(r => r.id === resourceId);
+            if (index > -1) {
+                resources.splice(index, 1);
+                return this.setResources(resources);
+            }
+            return false;
+        } catch (error) {
+            console.error('Error deleting resource:', error);
+            return false;
+        }
     }
 }
 
