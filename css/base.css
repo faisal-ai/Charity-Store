@@ -731,9 +731,6 @@ textarea {
         height: 60px;
     }
 
-    .navbar-brand {
-        padding: 5px 8px;
-    }
 
     /* Make all column layouts stack on mobile */
     .col, .col-1, .col-2, .col-3, .col-4, .col-6, .col-8, .col-9, .col-12,
