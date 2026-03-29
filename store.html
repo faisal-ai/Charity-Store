@@ -3,105 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programmes & Resources - BU Mentoring</title>
-
+    <title>Store - BU Mentoring</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
-
-    <!-- CACHE BUSTER -->
-    <script>
-    (function() {
-        const V = '20260221-v1';
-        const stored = sessionStorage.getItem('site_v');
-        if (stored !== V && !location.search.includes('v=')) {
-            sessionStorage.setItem('site_v', V);
-            location.href = location.pathname + '?v=' + V;
-        }
-    })();
-    </script>
-
     <link rel="stylesheet" href="css/base.css?v=19">
+    <link rel="stylesheet" href="css/shop.css?v=8">
     <style>
-        /* Hero Text Animations */
         .hero h1 {
             animation: slideInDown 1s ease-out;
             font-family: 'Oooh Baby', cursive;
             font-size: 4rem;
         }
-
         .hero p {
             animation: slideInUp 1s ease-out 0.3s both;
         }
-
         @keyframes slideInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Resource card styling */
-        .resource-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .coming-soon-container {
+            text-align: center;
+            padding: 80px 20px;
         }
-
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.2);
+        .coming-soon-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
         }
-
-        /* Program cards text color fix */
-        #mentoring-programs .card p,
-        #resources .card p {
-            color: #4a5568 !important;
+        .coming-soon-container h2 {
+            font-size: 2.5rem;
+            color: #1e3a5f;
+            margin-bottom: 15px;
         }
-
-        #mentoring-programs .card h4,
-        #resources .card h4 {
-            color: #3b82f6 !important;
-        }
-
-        #mentoring-programs .card strong,
-        #resources .card strong {
-            color: #1e3a5f !important;
-        }
-
-        /* Download button styling */
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .download-btn:hover {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-            color: white;
+        .coming-soon-container p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 500px;
+            margin: 0 auto 30px;
         }
     </style>
 </head>
@@ -131,7 +74,7 @@
                             </ul>
                         </li>
                         <li class="nav-item nav-dropdown">
-                            <a href="programmes-resources.html" class="nav-link active">
+                            <a href="programmes-resources.html" class="nav-link">
                                 Programmes & Resources
                                 <span class="dropdown-arrow">▼</span>
                             </a>
@@ -141,7 +84,7 @@
                             </ul>
                         </li>
                         <li class="nav-item nav-dropdown">
-                            <a href="store.html" class="nav-link">
+                            <a href="store.html" class="nav-link active">
                                 Community
                                 <span class="dropdown-arrow">▼</span>
                             </a>
@@ -174,64 +117,20 @@
     <section class="hero">
         <div class="container">
             <div class="text-center">
-                <h1>Programmes & Resources</h1>
-                <p>Empowering our community through mentoring and education</p>
-            </div>
-        </div>
-        <!-- Decorative wave at bottom -->
-        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                  style="fill: #f8f9fa; opacity: 0.3;"></path>
-        </svg>
-    </section>
-
-    <!-- Mentoring Programs Section -->
-    <section id="mentoring-programs" class="section anchor-target">
-        <div class="container">
-            <div class="section-title">
-                <h2>Mentoring Programs</h2>
-                <p>Comprehensive support for personal and professional growth</p>
-            </div>
-
-            <!-- Programs will be loaded dynamically from admin system -->
-            <div id="programs-container" class="row">
-                <div class="col-12 text-center" style="padding: 40px;">
-                    <p style="color: #7f8c8d; font-size: 1.1rem;">Loading programs...</p>
-                </div>
+                <h1>Community Store</h1>
+                <p>Supporting our community through every purchase</p>
             </div>
         </div>
     </section>
 
-    <!-- Resources Section -->
-    <section id="resources" class="section anchor-target" style="background: white;">
+    <!-- Coming Soon Section -->
+    <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>Downloadable Resources & Researches</h2>
-                <p>Free resources to support your journey</p>
-            </div>
-
-            <!-- Resources will be loaded dynamically from admin system -->
-            <div id="resources-container" class="row">
-                <div class="col-12 text-center" style="padding: 40px;">
-                    <p style="color: #7f8c8d; font-size: 1.1rem;">Loading resources...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="section" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 50%, #3b82f6 100%); color: white;">
-        <div class="container">
-            <div class="text-center">
-                <h2 style="color: white;">Ready to Get Started?</h2>
-                <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem;">
-                    Book a mentoring session or make a donation to support our programs
-                </p>
-                <div class="mt-4">
-                    <a href="donate-booking.html" class="btn btn-secondary btn-lg">Make a Donation</a>
-                    <a href="mentoring-booking.html" class="btn btn-outline btn-lg">Book Mentoring</a>
-                    <a href="mentor-application.html" class="btn btn-outline btn-lg">Volunteer</a>
-                </div>
+            <div class="coming-soon-container">
+                <div class="coming-soon-icon">🛍️</div>
+                <h2>Coming Soon</h2>
+                <p>We're working hard to bring you an amazing community store experience. Check back soon!</p>
+                <a href="home.html" class="btn btn-primary">Back to Home</a>
             </div>
         </div>
     </section>
@@ -239,7 +138,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div id="programs-container" class="row">
+            <div class="row">
                 <div class="col-3">
                     <h5>BU Mentoring</h5>
                     <p>Empowering Youth. Transforming Communities.</p>
@@ -247,10 +146,9 @@
                 <div class="col-3">
                     <h5>Quick Links</h5>
                     <p><a href="home.html">Home</a></p>
-                    <p><a href="donate-booking.html">Donate Items</a></p>
                     <p><a href="mentoring-booking.html">Mentoring</a></p>
                     <p><a href="programmes-resources.html">Programmes & Resources</a></p>
-                    <p><a href="impact.html">Impact & News</a></p>
+                    <p><a href="impact.html">Impact</a></p>
                     <p><a href="contact.html">Contact Us</a></p>
                 </div>
                 <div class="col-3">
@@ -271,22 +169,14 @@
             </div>
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p>&copy; 2026 BU Mentoring. All rights reserved. | Made with ❤️ for our community</p>
+                    <p>&copy; 2026 BU Mentoring. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script type="module">
-        import { db } from './js/firebase-config.js';
-        window.dispatchEvent(new Event('firebaseReady'));
-        console.log('Firebase initialized on programmes-resources page');
-    </script>
-
     <script src="js/dataManager.js?v=11"></script>
-    <script src="js/utils.js?v=9"></script>
-    <script src="js/programmes-resources.js?v=1"></script>
-    <script src="js/navigation.js?v=1"></script>
+    <script src="js/utils.js"></script>
 </body>
 </html>

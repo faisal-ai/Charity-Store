@@ -68,7 +68,7 @@ function loadResources() {
                         <p><strong>Type:</strong> ${resource.type}${resource.size ? ` | <strong>Size:</strong> ${resource.size}` : ''}</p>
                         ${resource.category ? `<p><strong>Category:</strong> ${resource.category}</p>` : ''}
                         <a href="${resource.url}" target="_blank" class="download-btn">
-                            <span>⬇</span> Download ${resource.type}
+                            <span>⬇</span> View ${resource.type}
                         </a>
                     </div>
                 </div>
