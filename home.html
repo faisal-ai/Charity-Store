@@ -394,11 +394,11 @@
                                     </div>
 
                                     <button type="submit" class="btn btn-primary btn-lg donate-btn">
-                                        Donate Now
+                                        Donate Securely via Stripe
                                     </button>
 
                                     <p class="donation-note">
-                                        Secure payment processing. Your information is protected.
+                                        🔒 Secure payment powered by Stripe. You'll be redirected to complete payment.
                                     </p>
                                 </form>
                             </div>
@@ -542,10 +542,32 @@
                 loadContent();
                 setupNewsletterForm();
                 setupDonationForm();
+                checkDonationSuccess();
             } catch (error) {
                 console.error('❌ Error during initialization:', error);
             }
         });
+
+        // Show success message if redirected back from Stripe after payment
+        function checkDonationSuccess() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('donation') === 'success') {
+                // Remove the query param from URL without reload
+                window.history.replaceState({}, '', window.location.pathname);
+
+                // Scroll to donation section and show message
+                setTimeout(() => {
+                    const donationSection = document.getElementById('donation-form');
+                    if (donationSection) {
+                        donationSection.closest('section').scrollIntoView({ behavior: 'smooth' });
+                    }
+                    utils.showNotification(
+                        'Thank you for your generous donation! Your payment was successful. We\'ll send a confirmation to your email shortly.',
+                        'success'
+                    );
+                }, 500);
+            }
+        }
 
         function loadContent() {
             console.log('📄 loadContent() called');
@@ -765,15 +787,13 @@
                 });
             }
 
-            // Form submission
+            // Form submission — redirect to Stripe Payment Link
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const formData = new FormData(form);
                 const donorName = formData.get('donorName');
                 const donorEmail = formData.get('donorEmail');
-                const isAnonymous = formData.get('anonymous') === 'on';
-                const message = formData.get('donationMessage');
 
                 // Get final amount
                 const finalAmount = selectedAmount || parseFloat(customAmountInput.value);
@@ -796,64 +816,19 @@
 
                 // Show loading state
                 const submitBtn = form.querySelector('.donate-btn');
-                const originalText = submitBtn.textContent;
                 submitBtn.disabled = true;
-                submitBtn.textContent = 'Processing...';
+                submitBtn.textContent = 'Redirecting to secure payment...';
 
-                // Simulate donation processing
-                setTimeout(() => {
-                    try {
-                        // Save donation to data manager
-                        const donation = {
-                            type: 'monetary',
-                            donorName: isAnonymous ? 'Anonymous' : donorName,
-                            donorEmail: donorEmail,
-                            amount: finalAmount,
-                            currency: 'GBP',
-                            message: message || '',
-                            anonymous: isAnonymous,
-                            paymentMethod: 'online',
-                            status: 'completed',
-                            date: Date.now()
-                        };
+                // Build Stripe Payment Link URL
+                // Amount must be in pence (smallest currency unit)
+                const amountInPence = Math.round(finalAmount * 100);
+                const stripeBaseUrl = 'https://buy.stripe.com/test_eVq4gtglN0RZgnn4uD9Zm00';
+                const stripeUrl = new URL(stripeBaseUrl);
+                stripeUrl.searchParams.set('prefilled_amount', amountInPence);
+                stripeUrl.searchParams.set('prefilled_email', donorEmail);
 
-                        const success = dataManager.addDonation(donation);
-
-                        if (success) {
-                            // Show success message
-                            utils.showNotification(
-                                `Thank you for your generous donation of £${finalAmount.toFixed(2)}! You will receive a confirmation email shortly.`,
-                                'success'
-                            );
-
-                            // Reset form
-                            form.reset();
-                            amountButtons.forEach(btn => btn.classList.remove('selected'));
-                            selectedAmount = null;
-
-                            // Update button
-                            submitBtn.textContent = 'Donation Complete!';
-                            submitBtn.style.background = '#2ecc71';
-
-                            // Reset button after delay
-                            setTimeout(() => {
-                                submitBtn.disabled = false;
-                                submitBtn.textContent = originalText;
-                                submitBtn.style.background = '';
-                            }, 3000);
-
-                        } else {
-                            throw new Error('Failed to process donation');
-                        }
-                    } catch (error) {
-                        console.error('Donation error:', error);
-                        utils.showNotification('There was an error processing your donation. Please try again.', 'error');
-
-                        // Reset button
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalText;
-                    }
-                }, 2000);
+                // Redirect to Stripe
+                window.location.href = stripeUrl.toString();
             });
 
             console.log('✅ Donation form setup complete!');

@@ -20,3 +20,4 @@ admin/fix-cache.html
 
 # Scripts
 start-server.sh
+node_modules
