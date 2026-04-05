@@ -268,6 +268,7 @@ textarea {
     width: auto;
     transition: all 0.4s ease;
     filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.3));
+    mix-blend-mode: multiply;
 }
 
 .navbar-brand:hover .navbar-logo {
@@ -511,31 +512,55 @@ textarea {
 
 /* Mobile-specific dropdown behavior */
 @media (max-width: 768px) {
-    /* Show hamburger, hide nav by default */
+    /* Show hamburger, position it to the right */
     .hamburger-btn {
         display: flex;
+        margin-left: auto;
+        order: 3;
     }
 
+    /* Hide nav col content but keep it in DOM for absolute positioning context */
     .navbar .col:last-child {
-        display: none;
+        display: block !important;
+        flex: 0 0 0;
+        padding: 0;
+        overflow: visible;
+        width: 0;
     }
 
+    /* Navbar row: logo left, hamburger right */
+    .navbar .row {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: relative;
+    }
+
+    .navbar .col:first-child {
+        flex: 0 0 auto;
+        order: 1;
+    }
+
+    /* The navbar-nav dropdown */
     .navbar-nav {
         display: none;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 96px;
         left: 0;
         right: 0;
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
         flex-direction: column;
         padding: 10px 0;
-        z-index: 999;
+        z-index: 9999;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100vw;
+        margin: 0;
     }
 
     .navbar-nav.open {
-        display: flex;
+        display: flex !important;
     }
 
     .nav-item {
