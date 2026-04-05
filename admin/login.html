@@ -216,12 +216,12 @@
             <form id="login-form">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter your username" value="admin">
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter your password" value="admin123">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
                 </div>
 
                 <div class="checkbox-group">
@@ -234,9 +234,7 @@
                 </button>
 
                 <div class="text-center mt-3">
-                    <small class="text-muted">
-                        Demo credentials: <strong>admin</strong> / <strong>admin123</strong>
-                    </small>
+                    <small class="text-muted">Contact your administrator if you have forgotten your credentials.</small>
                 </div>
             </form>
 
@@ -268,19 +266,10 @@
                 console.log('DataManager not found, creating fallback...');
                 updateDebugInfo('Creating fallback DataManager...');
 
-                // Simple fallback authentication
+                // Simple fallback authentication - no hardcoded credentials
                 window.dataManager = {
                     authenticateAdmin: function(username, password) {
-                        // Default admin credentials
-                        if (username === 'admin' && password === 'admin123') {
-                            return {
-                                id: 'admin-1',
-                                username: 'admin',
-                                email: 'admin@charitystore.com',
-                                role: 'admin'
-                            };
-                        }
-                        return null;
+                        return null; // No fallback credentials; auth requires dataManager.js
                     }
                 };
                 updateDebugInfo('Fallback DataManager created');

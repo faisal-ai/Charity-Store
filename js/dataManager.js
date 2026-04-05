@@ -70,14 +70,8 @@ class DataManager {
     initializeData() {
         // Initialize admin users
         if (!this.getAdminUsers().length) {
-            this.setAdminUsers([{
-                id: this.generateId(),
-                username: 'admin',
-                password: 'admin123', // In production, this should be hashed
-                email: 'admin@charitystore.com',
-                role: 'admin',
-                createdAt: Date.now()
-            }]);
+            // Admin users must be configured via Firebase Authentication
+            // Do not seed default credentials here
         }
 
         // Initialize site settings

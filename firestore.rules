@@ -2,38 +2,37 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read access to everyone (public website)
-    // Allow write access to everyone (since we don't have authentication yet)
-    // TODO: Add proper authentication and restrict writes
 
+    // Public read-only collections (website content)
     match /images/{document=**} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
     match /mentors/{document=**} {
       allow read: if true;
-      allow write: if true;
-    }
-
-    match /donation_bookings/{document=**} {
-      allow read: if true;
-      allow write: if true;
-    }
-
-    match /mentoring_bookings/{document=**} {
-      allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
     match /content/{document=**} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
     match /settings/{document=**} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
+    }
+
+    // Booking collections: anyone can submit (create), but cannot read or delete others' bookings
+    match /donation_bookings/{document} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+
+    match /mentoring_bookings/{document} {
+      allow create: if true;
+      allow read, update, delete: if false;
     }
   }
 }
