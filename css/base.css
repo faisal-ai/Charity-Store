@@ -473,8 +473,95 @@ textarea {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* =============================================
+   HAMBURGER BUTTON (hidden on desktop)
+   ============================================= */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1100;
+    flex-shrink: 0;
+}
+
+.hamburger-btn span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-btn.open span:nth-child(1) {
+    transform: translateY(9.5px) rotate(45deg);
+}
+.hamburger-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-btn.open span:nth-child(3) {
+    transform: translateY(-9.5px) rotate(-45deg);
+}
+
 /* Mobile-specific dropdown behavior */
 @media (max-width: 768px) {
+    /* Show hamburger, hide nav by default */
+    .hamburger-btn {
+        display: flex;
+    }
+
+    .navbar .col:last-child {
+        display: none;
+    }
+
+    .navbar-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+        flex-direction: column;
+        padding: 10px 0;
+        z-index: 999;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-nav.open {
+        display: flex;
+    }
+
+    .nav-item {
+        width: 100%;
+        margin: 0;
+        flex: none;
+    }
+
+    .nav-link {
+        border-radius: 0;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 20px;
+        font-size: 1rem;
+        white-space: normal;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: rgba(59, 130, 246, 0.3);
+        transform: none;
+        box-shadow: none;
+        border-left: 3px solid #3b82f6;
+    }
+
     /* Make dropdown toggle on tap instead of hover */
     .nav-dropdown .dropdown-menu {
         position: static;
@@ -484,8 +571,11 @@ textarea {
         overflow: hidden;
         transform: none;
         transition: all 0.3s ease, max-height 0.4s ease;
-        border-radius: 8px;
-        margin: 4px 8px;
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+        border: none;
+        background: rgba(0, 0, 0, 0.2);
     }
 
     /* Show dropdown when parent has 'open' class */
@@ -493,28 +583,23 @@ textarea {
         opacity: 1;
         visibility: visible;
         max-height: 400px;
-        padding: 8px 0;
+        padding: 4px 0;
     }
 
     /* Adjust dropdown items for mobile */
     .dropdown-item {
-        padding: 10px 16px;
-        font-size: 0.85rem;
+        padding: 12px 20px 12px 36px;
+        font-size: 0.9rem;
     }
 
     .dropdown-item:hover {
-        padding-left: 20px;
+        padding-left: 40px;
     }
 
     /* Reduce arrow size on mobile */
     .dropdown-arrow {
         font-size: 0.6rem;
         margin-left: 3px;
-    }
-
-    /* Adjust nav-link padding when it contains dropdown */
-    .nav-dropdown > .nav-link {
-        padding: 8px 10px;
     }
 }
 
@@ -762,32 +847,12 @@ textarea {
         padding: 40px 0;
     }
 
-    .navbar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .nav-item {
-        margin: 0;
-        flex: none;
-    }
-
-    .nav-link {
-        padding: 8px 10px;
-        font-size: 0.8rem;
-        min-width: auto;
-    }
-
-    /* Prevent "Our Story" from wrapping */
-    .nav-item .nav-link {
-        white-space: nowrap;
+    .navbar-logo {
+        height: 60px;
     }
 
     .navbar-brand {
         font-size: 1.5rem;
-        margin-bottom: 10px;
     }
 }
 
@@ -1061,5 +1126,15 @@ textarea {
         flex: 0 0 100%;
         max-width: 100%;
         margin-bottom: 1rem;
+    }
+
+    /* Typography scale down */
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.2rem; }
+
+    /* Card padding override for inline-styled cards */
+    .card {
+        padding: 20px 15px !important;
     }
 }

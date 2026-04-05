@@ -447,7 +447,7 @@
 
     .booking-container {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 20px;
     }
 
     .donation-types {
@@ -478,7 +478,7 @@
 
     .booking-form-container,
     .donation-types {
-        padding: 25px;
+        padding: 15px;
     }
 }
 
