@@ -1,7 +1,25 @@
 /* Base styles and CSS framework for Charity Clothes Store */
 
 /* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;600;700;900&display=swap');
+
+/* CSS Theme Variables */
+:root {
+    --primary: #8b5cf6;
+    --primary-dark: #7c3aed;
+    --primary-deeper: #6d28d9;
+    --primary-deep: #5b21b6;
+    --foreground: #312e81;
+    --foreground-mid: #4338ca;
+    --background: #ffffff;
+    --secondary: #f5f3ff;
+    --border: #e0e7ff;
+    --muted: #ddd6fe;
+    --dark-bg: #0f172a;
+    --dark-mid: #1e1b4b;
+    --dark-deep: #2e1065;
+    --radius: 0.625rem;
+}
 
 /* Reset and base styles */
 * {
@@ -11,17 +29,18 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-    color: #2c3e50;
-    background: linear-gradient(135deg, #0a1929 0%, #1a2332 50%, #2a3542 100%);
-    background-attachment: fixed;
+    color: #312e81;
+    background: #ffffff;
+    padding-top: 96px;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
-    color: #1e3a5f;
+    color: #312e81;
+    font-family: 'Playfair Display', serif;
 }
 
 h1 {
@@ -41,17 +60,17 @@ h3 {
 
 p {
     margin-bottom: 1rem;
-    color: #4a5568;
+    color: #4338ca;
 }
 
 a {
-    color: #e74c3c;
+    color: #8b5cf6;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #c0392b;
+    color: #7c3aed;
 }
 
 /* Layout utilities */
@@ -118,16 +137,16 @@ a:hover {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: white;
     border: none;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
     color: white;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
     transform: translateY(-2px);
 }
 
@@ -145,15 +164,15 @@ a:hover {
 }
 
 .btn-outline {
-    border: 2px solid #3b82f6;
-    color: #3b82f6;
+    border: 2px solid #8b5cf6;
+    color: #8b5cf6;
     background-color: transparent;
 }
 
 .btn-outline:hover {
-    background-color: #3b82f6;
+    background-color: #8b5cf6;
     color: white;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .btn-sm {
@@ -175,13 +194,13 @@ label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 input, textarea, select {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #cbd5e0;
+    border: 2px solid #e0e7ff;
     border-radius: 5px;
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -190,8 +209,8 @@ input, textarea, select {
 
 input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 textarea {
@@ -201,31 +220,31 @@ textarea {
 
 /* Cards */
 .card {
-    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(30, 58, 95, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.1);
 }
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(30, 58, 95, 0.25);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
 }
 
 .card h1, .card h2, .card h3, .card h4, .card h5, .card h6 {
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .card p {
-    color: #4a5568;
+    color: #4338ca;
 }
 
 .card-header {
     padding: 20px;
-    border-bottom: 1px solid rgba(30, 58, 95, 0.15);
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+    background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
     color: white;
 }
 
@@ -241,18 +260,23 @@ textarea {
 
 .card-footer {
     padding: 15px 20px;
-    border-top: 1px solid rgba(30, 58, 95, 0.15);
-    background: linear-gradient(135deg, #f8fafc 0%, #e8f0f8 100%);
+    border-top: 1px solid rgba(139, 92, 246, 0.15);
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
 }
 
 /* Navigation */
 .navbar {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    position: sticky;
+    background: rgba(13, 13, 24, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 0 0 15px 15px;
 }
 
 .navbar-brand {
@@ -296,21 +320,21 @@ textarea {
 }
 
 .nav-link {
-    padding: 12px 16px;
-    color: #ffffff !important;
+    padding: 10px 14px;
+    color: rgba(255, 255, 255, 0.8) !important;
     font-weight: 500;
     display: block;
     transition: all 0.3s ease;
     border-radius: 25px;
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     backdrop-filter: blur(10px);
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     white-space: nowrap;
     position: relative;
     overflow: hidden;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .nav-link::before {
@@ -329,18 +353,18 @@ textarea {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: white;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    color: white !important;
+    background: rgba(139, 92, 246, 0.25);
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .nav-link.active {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: rgba(139, 92, 246, 0.3);
     color: white !important;
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
-    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    border-color: rgba(139, 92, 246, 0.5);
 }
 
 /* Override browser default visited link colors */
@@ -417,9 +441,10 @@ textarea {
     top: 100%;
     left: 0;
     min-width: 220px;
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+    background: rgba(13, 13, 24, 0.95);
+    backdrop-filter: blur(12px);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     padding: 8px 0;
     margin-top: 8px;
     opacity: 0;
@@ -428,8 +453,7 @@ textarea {
     transition: all 0.3s ease;
     z-index: 1001;
     list-style: none;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 /* Show dropdown on hover (desktop) */
@@ -455,16 +479,16 @@ textarea {
 
 /* Dropdown item hover effect */
 .dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), transparent);
-    border-left-color: #3b82f6;
+    background: rgba(139, 92, 246, 0.2);
+    border-left-color: #8b5cf6;
     padding-left: 24px;
     color: #ffffff;
 }
 
 /* Active dropdown item */
 .dropdown-item.active {
-    background: linear-gradient(90deg, rgba(59, 130, 246, 0.5), transparent);
-    border-left-color: #3b82f6;
+    background: rgba(139, 92, 246, 0.3);
+    border-left-color: #8b5cf6;
     color: #ffffff;
     font-weight: 600;
 }
@@ -549,12 +573,13 @@ textarea {
         top: 96px;
         left: 0;
         right: 0;
-        background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+        background: rgba(13, 13, 24, 0.97);
+        backdrop-filter: blur(12px);
         flex-direction: column;
         padding: 10px 0;
         z-index: 9999;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        border-top: 1px solid rgba(139, 92, 246, 0.2);
         width: 100vw;
         margin: 0;
     }
@@ -581,10 +606,10 @@ textarea {
 
     .nav-link:hover,
     .nav-link.active {
-        background: rgba(59, 130, 246, 0.3);
+        background: rgba(139, 92, 246, 0.2);
         transform: none;
         box-shadow: none;
-        border-left: 3px solid #3b82f6;
+        border-left: 3px solid #8b5cf6;
     }
 
     /* Make dropdown toggle on tap instead of hover */
@@ -644,11 +669,11 @@ textarea {
     scroll-margin-top: 100px;
 }
 
-/* Hero section */
+/* Hero section (used on inner pages) */
 .hero {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 50%, #3b82f6 100%);
+    background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #8b5cf6 100%);
     color: white;
-    padding: 80px 0;
+    padding: 60px 0 80px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -662,12 +687,122 @@ textarea {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
     animation: pulse 15s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
+}
+
+/* ===== SPLINE HERO (home page) ===== */
+.hero-spline {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin-top: -96px;
+}
+
+.hero-spline spline-viewer {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.hero-spline .hero-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to right, rgba(0,0,0,0.75), transparent 35%, transparent 65%, rgba(0,0,0,0.75)),
+        linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.85));
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-spline .hero-text-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    pointer-events: none;
+    padding-top: 80px;
+}
+
+.hero-spline .hero-text-inner {
+    max-width: 680px;
+    pointer-events: auto;
+}
+
+.hero-spline h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-spline .hero-subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.hero-spline .hero-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    pointer-events: auto;
+}
+
+.hero-btn-primary {
+    background: rgba(130, 0, 219, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.6);
+    color: white;
+    font-weight: 600;
+    padding: 13px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, box-shadow 0.2s;
+    font-size: 0.95rem;
+    display: inline-block;
+}
+
+.hero-btn-primary:hover {
+    background: rgba(139, 92, 246, 0.4);
+    color: white;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+.hero-btn-secondary {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(156, 163, 175, 0.4);
+    color: rgba(229,231,235,0.9);
+    font-weight: 500;
+    padding: 13px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, color 0.2s;
+    font-size: 0.95rem;
+    backdrop-filter: blur(8px);
+}
+
+.hero-btn-secondary:hover {
+    border-color: rgba(156, 163, 175, 0.7);
+    color: white;
+}
+
+@media (max-width: 576px) {
+    .hero-spline .hero-buttons { flex-direction: column; }
+    .hero-btn-primary, .hero-btn-secondary { text-align: center; justify-content: center; }
 }
 
 @keyframes pulse {
@@ -712,13 +847,13 @@ textarea {
     padding: 60px 0;
 }
 
-/* Default text colors for sections on dark backgrounds */
+/* Default text colors for sections — white bg by default */
 .section h1, .section h2, .section h3, .section h4, .section h5, .section h6 {
-    color: white;
+    color: #312e81;
 }
 
 .section p {
-    color: rgba(255, 255, 255, 0.9);
+    color: #4338ca;
 }
 
 /* Override for sections with white/light backgrounds */
@@ -733,11 +868,11 @@ textarea {
 .section[style*="background: white"] h4,
 .section[style*="background: white"] h5,
 .section[style*="background: white"] h6 {
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .section[style*="background: white"] p {
-    color: #4a5568;
+    color: #4338ca;
 }
 
 .section-title {
@@ -748,7 +883,7 @@ textarea {
 .section-title h2 {
     position: relative;
     display: inline-block;
-    color: white;
+    color: #312e81;
 }
 
 .section-title h2::after {
@@ -759,46 +894,46 @@ textarea {
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
 }
 
 /* Override for section-title on white backgrounds */
 .section[style*="background: white"] .section-title h2 {
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 /* Footer */
 .footer {
-    background: linear-gradient(135deg, #0f1d2e 0%, #1e3a5f 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
     color: white;
     padding: 40px 0 20px;
-    border-top: 3px solid #3b82f6;
+    border-top: 3px solid #8b5cf6;
 }
 
 .footer h5 {
-    color: #ffd700;
+    color: #c4b5fd;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
 .footer a {
-    color: #a0c4e8;
+    color: #c4b5fd;
     transition: color 0.3s ease;
 }
 
 .footer a:hover {
-    color: #3b82f6;
+    color: #a78bfa;
 }
 
 .footer p {
-    color: #cbd5e0;
+    color: #ddd6fe;
 }
 
 /* Utility classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
-.text-primary { color: #3b82f6; }
+.text-primary { color: #8b5cf6; }
 .text-muted { color: #64748b; }
 .text-white { color: white !important; }
 
@@ -925,7 +1060,7 @@ textarea {
 }
 
 .donation-info h3 {
-    color: #1e3a5f;
+    color: #312e81;
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
 }
@@ -938,13 +1073,13 @@ textarea {
 
 .donation-benefits li {
     padding: 0.75rem 0;
-    color: #4a5568;
+    color: #4338ca;
     font-size: 1rem;
 }
 
 .donation-card {
     border: none;
-    box-shadow: 0 10px 30px rgba(30, 58, 95, 0.15);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
     border-radius: 15px;
     background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
 }
@@ -962,28 +1097,28 @@ textarea {
 
 .amount-btn {
     padding: 15px;
-    border: 2px solid #cbd5e0;
+    border: 2px solid #e0e7ff;
     background: white;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .amount-btn:hover {
-    border-color: #3b82f6;
-    background: #eff6ff;
+    border-color: #8b5cf6;
+    background: #f5f3ff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
 .amount-btn.selected {
-    border-color: #3b82f6;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-color: #8b5cf6;
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: white;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
 .custom-amount {
@@ -994,7 +1129,7 @@ textarea {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .input-group {
@@ -1003,19 +1138,19 @@ textarea {
 }
 
 .input-prefix {
-    background: #f1f5f9;
-    border: 2px solid #cbd5e0;
+    background: #f5f3ff;
+    border: 2px solid #e0e7ff;
     border-right: none;
     padding: 15px;
     border-radius: 8px 0 0 8px;
     font-weight: 600;
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .input-group input {
     flex: 1;
     padding: 15px;
-    border: 2px solid #cbd5e0;
+    border: 2px solid #e0e7ff;
     border-left: none;
     border-radius: 0 8px 8px 0;
     font-size: 1rem;
@@ -1023,12 +1158,12 @@ textarea {
 
 .input-group input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .input-group input:focus + .input-prefix {
-    border-color: #3b82f6;
+    border-color: #8b5cf6;
 }
 
 .donor-info {
@@ -1043,7 +1178,7 @@ textarea {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #1e3a5f;
+    color: #312e81;
 }
 
 .donor-info input[type="text"],
@@ -1051,7 +1186,7 @@ textarea {
 .donor-info textarea {
     width: 100%;
     padding: 15px;
-    border: 2px solid #cbd5e0;
+    border: 2px solid #e0e7ff;
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -1060,8 +1195,8 @@ textarea {
 .donor-info input:focus,
 .donor-info textarea:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .donor-info input[type="checkbox"] {
