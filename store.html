@@ -7,26 +7,10 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/base.css?v=21">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css?v=38">
     <link rel="stylesheet" href="css/shop.css?v=8">
     <style>
-        .hero h1 {
-            animation: slideInDown 1s ease-out;
-            font-family: 'Oooh Baby', cursive;
-            font-size: 4rem;
-        }
-        .hero p {
-            animation: slideInUp 1s ease-out 0.3s both;
-        }
-        @keyframes slideInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         .coming-soon-container {
             text-align: center;
             padding: 80px 20px;
@@ -55,7 +39,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <a href="home.html" class="navbar-brand">
-                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                        <img src="images/logo.png?v=3" alt="BU Mentoring" class="navbar-logo">
                     </a>
                 </div>
                 <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation">
@@ -94,9 +78,8 @@
                                 <span class="dropdown-arrow">▼</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="store.html" class="dropdown-item">Store</a></li>
                                 <li><a href="donate-booking.html" class="dropdown-item">Donate Items</a></li>
-                                <li><a href="events-news.html" class="dropdown-item">Events</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">News &amp; Events</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -120,6 +103,13 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-orbs">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-orb hero-orb-4"></div>
+            <div class="hero-orb hero-orb-5"></div>
+        </div>
         <div class="container">
             <div class="text-center">
                 <h1>Community Store</h1>
@@ -129,7 +119,7 @@
     </section>
 
     <!-- Coming Soon Section -->
-    <section class="section">
+    <section class="section section-white">
         <div class="container">
             <div class="coming-soon-container">
                 <div class="coming-soon-icon">🛍️</div>
@@ -183,5 +173,6 @@
     <!-- Scripts -->
     <script src="js/dataManager.js?v=11"></script>
     <script src="js/utils.js"></script>
+    <script src="js/navigation.js?v=1"></script>
 </body>
 </html>

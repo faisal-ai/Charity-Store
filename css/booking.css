@@ -1,34 +1,18 @@
 /* Booking Pages Specific Styles */
 
-/* Hero Section */
+/* Hero Section — background controlled by base.css */
 .hero-section {
-    background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #8b5cf6 100%);
     color: white;
-    padding: 100px 0 60px;
+    padding: 60px 0 80px;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
 .hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
-    animation: pulse 15s ease-in-out infinite;
-    z-index: 1;
+    content: none;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-}
 
 .hero-content {
     position: relative;

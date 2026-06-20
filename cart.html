@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Charity Store</title>
-    <link rel="stylesheet" href="css/base.css?v=23">
-    <link rel="stylesheet" href="css/shop.css">
+    <title>Shopping Cart - BU Mentoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css?v=38">
+    <link rel="stylesheet" href="css/shop.css?v=8">
 </head>
 <body>
     <!-- Navigation -->
@@ -14,7 +17,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <a href="home.html" class="navbar-brand">
-                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                        <img src="images/logo.png?v=3" alt="BU Mentoring" class="navbar-logo">
                     </a>
                 </div>
                 <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation">
@@ -53,9 +56,8 @@
                                 <span class="dropdown-arrow">▼</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="store.html" class="dropdown-item">Store</a></li>
                                 <li><a href="donate-booking.html" class="dropdown-item">Donate Items</a></li>
-                                <li><a href="events-news.html" class="dropdown-item">Events</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">News &amp; Events</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -79,6 +81,13 @@
 
     <!-- Page Header -->
     <section class="hero" style="padding: 40px 0;">
+        <div class="hero-orbs">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-orb hero-orb-4"></div>
+            <div class="hero-orb hero-orb-5"></div>
+        </div>
         <div class="container">
             <div class="text-center">
                 <h1>Shopping Cart</h1>
@@ -88,7 +97,7 @@
     </section>
 
     <!-- Cart Content -->
-    <section class="section">
+    <section class="section section-white">
         <div class="container">
             <!-- Empty Cart Message -->
             <div id="empty-cart" class="text-center" style="display: none;">

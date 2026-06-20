@@ -20,7 +20,10 @@
       "data-sync-tool.html",
       "*.py",
       ".git/**",
-      ".firebase/**"
+      ".firebase/**",
+      "nav-demo.html",
+      "test.html",
+      "index.html"
     ],
     "rewrites": [
       {

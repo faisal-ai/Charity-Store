@@ -13,7 +13,7 @@
     <!-- CACHE BUSTER -->
     <script>
     (function() {
-        const V = '20260221-v1';
+        const V = '20260517-v14';
         const stored = sessionStorage.getItem('site_v');
         if (stored !== V && !location.search.includes('v=')) {
             sessionStorage.setItem('site_v', V);
@@ -22,7 +22,7 @@
     })();
     </script>
 
-    <link rel="stylesheet" href="css/base.css?v=23">
+    <link rel="stylesheet" href="css/base.css?v=38">
     <style>
         /* Hero Text Animations */
         .hero h1 {
@@ -111,7 +111,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <a href="home.html" class="navbar-brand">
-                        <img src="images/logo.png" alt="BU Mentoring" class="navbar-logo">
+                        <img src="images/logo.png?v=3" alt="BU Mentoring" class="navbar-logo">
                     </a>
                 </div>
                 <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle navigation">
@@ -150,9 +150,8 @@
                                 <span class="dropdown-arrow">▼</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="store.html" class="dropdown-item">Store</a></li>
                                 <li><a href="donate-booking.html" class="dropdown-item">Donate Items</a></li>
-                                <li><a href="events-news.html" class="dropdown-item">Events</a></li>
+                                <li><a href="events-news.html" class="dropdown-item">News &amp; Events</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -176,6 +175,13 @@
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-orbs">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-orb hero-orb-3"></div>
+            <div class="hero-orb hero-orb-4"></div>
+            <div class="hero-orb hero-orb-5"></div>
+        </div>
         <div class="container">
             <div class="text-center">
                 <h1>Programmes & Resources</h1>
@@ -190,7 +196,7 @@
     </section>
 
     <!-- Core Principles: Identify. Develop. Unleash. -->
-    <section class="section" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 60%, #8b5cf6 100%); color: white; padding: 70px 0;">
+    <section class="section section-purple">
         <div class="container">
             <div class="text-center" style="margin-bottom: 50px;">
                 <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-bottom: 12px;">The BU Mentoring programme is built around three core principles:</p>
@@ -249,7 +255,7 @@
     </section>
 
     <!-- Resources Section -->
-    <section id="resources" class="section anchor-target" style="background: white;">
+    <section id="resources" class="section section-white anchor-target">
         <div class="container">
             <div class="section-title">
                 <h2>Downloadable Resources & Researches</h2>
@@ -266,7 +272,7 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="section" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #8b5cf6 100%); color: white;">
+    <section class="section section-purple">
         <div class="container">
             <div class="text-center">
                 <h2 style="color: white;">Ready to Get Started?</h2>
