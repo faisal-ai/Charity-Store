@@ -4,28 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - BU Mentoring</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #8b5cf6 100%);
-            min-height: 100vh;
-        }
-
-        /* Login container */
-        .login-container {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -33,482 +20,398 @@
             padding: 20px;
         }
 
-        .login-card {
+        .card {
             background: white;
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
-            text-align: center;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
 
-        .login-header {
+        .logo {
             text-align: center;
             margin-bottom: 30px;
         }
+        .logo h2 {
+            font-family: 'Playfair Display', serif;
+            color: #312e81;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        .logo p { color: #64748b; font-size: 0.9rem; }
 
-        .login-header h2 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: #312e81;
+            border-bottom-color: #8b5cf6;
         }
 
-        .login-header p {
-            color: #7f8c8d;
-            margin: 0;
-        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
 
-        /* Form styles */
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
+        .form-group { margin-bottom: 18px; }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            color: #2c3e50;
+            color: #374151;
+            font-size: 0.9rem;
         }
 
-        .form-group input {
+        .input-wrap { position: relative; }
+        .input-wrap input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e6ed;
+            padding: 13px 44px 13px 14px;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background-color: white;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            font-family: inherit;
         }
-
-        .form-group input:focus {
+        .input-wrap input:focus {
             outline: none;
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+        }
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            padding: 2px;
+        }
+        .eye-btn:hover { color: #8b5cf6; }
+
+        .hint {
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #166534;
         }
 
-        /* Button styles */
         .btn {
-            display: inline-block;
-            padding: 15px 30px;
+            width: 100%;
+            padding: 14px;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 10px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
         }
-
         .btn-primary {
-            background-color: #e74c3c;
+            background: linear-gradient(135deg, #312e81, #8b5cf6);
             color: white;
         }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        .btn-primary:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        .btn-outline {
+            background: white;
+            color: #312e81;
+            border: 2px solid #8b5cf6;
+            margin-top: 10px;
         }
+        .btn-outline:hover { background: #f5f3ff; }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .msg {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 14px;
+            text-align: center;
         }
+        .msg.error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .msg.info    { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
 
-        /* Checkbox styling */
-        .checkbox-group {
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .back-link a { color: #8b5cf6; text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
+
+        .accounts-list {
+            margin-top: 12px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .account-row {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            margin: 20px 0;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
         }
-
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            transform: scale(1.2);
+        .account-row span { color: #374151; }
+        .del-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
-
-        /* Text styles */
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-3 {
-            margin-top: 20px;
-        }
-
-        .text-muted {
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-
-        /* Link styles */
-        a {
-            color: #7f8c8d;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #e74c3c;
-        }
-
-        /* Loading state */
-        .btn:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Message styles */
-        .login-message {
-            padding: 10px 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .login-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .login-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        /* Debug info */
-        .debug-info {
-            margin-top: 20px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            font-size: 12px;
-            color: #6c757d;
-            display: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 30px 20px;
-                margin: 10px;
-            }
-
-            .login-header h2 {
-                font-size: 1.75rem;
-            }
-        }
+        .del-btn:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <h2>BU Mentoring</h2>
-                <p>Admin Panel Login</p>
-            </div>
-
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter your username">
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter your password">
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="remember-me">
-                    <label for="remember-me">Remember me</label>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="login-btn">
-                    Login
-                </button>
-
-                <div class="text-center mt-3">
-                    <small class="text-muted">Contact your administrator if you have forgotten your credentials.</small>
-                </div>
-            </form>
-
-            <div class="debug-info" id="debug-info">
-                <strong>Debug Information:</strong><br>
-                <span id="debug-text"></span>
-            </div>
-
-            <div class="text-center mt-3">
-                <a href="../index.html">← Back to Website</a> |
-                <a href="debug.html" style="color: #e74c3c;">Debug Page</a>
-            </div>
-        </div>
+<div class="card">
+    <div class="logo">
+        <h2>BU Mentoring</h2>
+        <p>Admin Panel</p>
     </div>
 
-    <!-- Scripts -->
-    <script src="../js/dataManager.js?v=12" onerror="console.error('Failed to load dataManager.js?v=12"></script>
-    <script src="../js/utils.js" onerror="console.error('Failed to load utils.js')"></script>
-    <script>
-        console.log('Login script starting...');
-        console.log('DataManager available:', typeof dataManager);
-        console.log('Utils available:', typeof utils);
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" onclick="switchTab('create')">Create Account</button>
+    </div>
 
-        let debugMode = false;
+    <!-- ── LOGIN PANEL ── -->
+    <div id="tab-login" class="tab-panel active">
+        <div id="login-msg"></div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-wrap">
+                <input type="text" id="username" placeholder="Enter username" autocomplete="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+                <button class="eye-btn" type="button" onclick="togglePwd('password', this)" title="Show/hide password">👁</button>
+            </div>
+            <div class="hint">Default: <strong>admin</strong> / <strong>BUMentoring2024!</strong></div>
+        </div>
+        <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+    </div>
 
-        // Initialize DataManager if it's not available
-        function initializeDataManager() {
-            if (typeof dataManager === 'undefined') {
-                console.log('DataManager not found, creating fallback...');
-                updateDebugInfo('Creating fallback DataManager...');
+    <!-- ── CREATE ACCOUNT PANEL ── -->
+    <div id="tab-create" class="tab-panel">
+        <div id="create-msg"></div>
+        <div class="form-group">
+            <label for="new-username">Username *</label>
+            <div class="input-wrap">
+                <input type="text" id="new-username" placeholder="Choose a username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="new-password">Password *</label>
+            <div class="input-wrap">
+                <input type="password" id="new-password" placeholder="Min 8 characters">
+                <button class="eye-btn" type="button" onclick="togglePwd('new-password', this)" title="Show/hide password">👁</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="new-password2">Confirm Password *</label>
+            <div class="input-wrap">
+                <input type="password" id="new-password2" placeholder="Repeat password">
+                <button class="eye-btn" type="button" onclick="togglePwd('new-password2', this)" title="Show/hide password">👁</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="new-name">Display Name</label>
+            <div class="input-wrap">
+                <input type="text" id="new-name" placeholder="e.g. Site Admin">
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="createAccount()">Create Account</button>
 
-                // Simple fallback authentication - no hardcoded credentials
-                window.dataManager = {
-                    authenticateAdmin: function(username, password) {
-                        return null; // No fallback credentials; auth requires dataManager.js
-                    }
-                };
-                updateDebugInfo('Fallback DataManager created');
-            }
-        }
+        <!-- Existing accounts list -->
+        <div style="margin-top:24px;">
+            <strong style="font-size:0.88rem;color:#64748b;">EXISTING ACCOUNTS</strong>
+            <div id="accounts-list" class="accounts-list"></div>
+        </div>
+    </div>
+</div>
 
-        // Initialize Utils if it's not available
-        function initializeUtils() {
-            if (typeof utils === 'undefined') {
-                console.log('Utils not found, creating fallback...');
-                updateDebugInfo('Creating fallback Utils...');
+<div class="back-link">
+    <a href="../home.html">← Back to Website</a>
+</div>
 
-                window.utils = {
-                    setSession: function(key, data) {
-                        sessionStorage.setItem(key, JSON.stringify(data));
-                    },
-                    isAuthenticated: function() {
-                        return sessionStorage.getItem('admin_user') !== null;
-                    }
-                };
-                updateDebugInfo('Fallback Utils created');
-            }
-        }
+<script>
+    // ── Storage key ──────────────────────────────────────────────────────────
+    const ACCOUNTS_KEY = 'bu_admin_accounts';
 
-        // Wait for all scripts to load with fallback
-        function waitForScripts() {
-            return new Promise((resolve) => {
-                let attempts = 0;
-                const maxAttempts = 20; // 1 second max wait
+    // ── Built-in fallback credentials (always accepted) ──────────────────────
+    const BUILTIN = [
+        { username: 'admin', password: 'BUMentoring2024!', role: 'admin', name: 'Administrator' }
+    ];
 
-                const checkScripts = () => {
-                    attempts++;
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    function getAccounts() {
+        try {
+            return JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || '[]');
+        } catch { return []; }
+    }
+    function saveAccounts(list) {
+        localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(list));
+    }
+    function showMsg(id, text, type) {
+        const el = document.getElementById(id);
+        el.innerHTML = `<div class="msg ${type}">${text}</div>`;
+    }
+    function clearMsg(id) {
+        document.getElementById(id).innerHTML = '';
+    }
 
-                    if (typeof dataManager !== 'undefined' && typeof utils !== 'undefined') {
-                        updateDebugInfo('All scripts loaded successfully');
-                        resolve();
-                    } else if (attempts >= maxAttempts) {
-                        updateDebugInfo('Scripts not loaded, using fallbacks');
-                        initializeDataManager();
-                        initializeUtils();
-                        resolve();
-                    } else {
-                        setTimeout(checkScripts, 50);
-                    }
-                };
-                checkScripts();
-            });
-        }
-
-        // Check if already logged in
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log('DOM Content Loaded - Starting login page...');
-
-            // Show debug info if needed
-            if (window.location.search.includes('debug=true')) {
-                debugMode = true;
-                document.getElementById('debug-info').style.display = 'block';
-                updateDebugInfo('Debug mode enabled');
-            }
-
-            try {
-                // Wait for scripts to load
-                updateDebugInfo('Waiting for scripts to load...');
-                await waitForScripts();
-
-                updateDebugInfo(`DataManager loaded: ${typeof dataManager !== 'undefined'}`);
-                updateDebugInfo(`Utils loaded: ${typeof utils !== 'undefined'}`);
-
-                // Initialize dataManager if needed
-                if (typeof dataManager !== 'undefined' && dataManager.initializeData) {
-                    dataManager.initializeData();
-                    updateDebugInfo('DataManager initialized');
-                }
-
-                if (typeof utils !== 'undefined' && utils.isAuthenticated && utils.isAuthenticated()) {
-                    updateDebugInfo('User already authenticated, redirecting...');
-                    window.location.href = 'dashboard.html';
-                    return;
-                }
-
-                setupLoginForm();
-            } catch (error) {
-                console.error('Error during initialization:', error);
-                updateDebugInfo(`Error: ${error.message}`);
-                showMessage('Error loading system. Please refresh the page.', 'error');
-            }
+    // ── Tab switching ─────────────────────────────────────────────────────────
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach((b, i) => {
+            b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'create'));
         });
+        document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+        document.getElementById('tab-create').classList.toggle('active', tab === 'create');
+        if (tab === 'create') renderAccountsList();
+    }
 
-        function updateDebugInfo(message) {
-            if (!debugMode) return;
-            const debugText = document.getElementById('debug-text');
-            const currentText = debugText.innerHTML;
-            debugText.innerHTML = currentText + '<br>' + message;
-            console.log('DEBUG:', message);
+    // ── Show / hide password ──────────────────────────────────────────────────
+    function togglePwd(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.textContent = show ? '🙈' : '👁';
+    }
+
+    // ── Login ─────────────────────────────────────────────────────────────────
+    function doLogin() {
+        clearMsg('login-msg');
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!username || !password) {
+            showMsg('login-msg', 'Please enter both username and password.', 'error');
+            return;
         }
 
-        function setupLoginForm() {
-            updateDebugInfo('Setting up login form...');
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                handleLogin();
-            });
-        }
+        const btn = document.getElementById('login-btn');
+        btn.disabled = true;
+        btn.textContent = 'Signing in…';
 
-        function handleLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const loginBtn = document.getElementById('login-btn');
+        setTimeout(() => {
+            // Check built-in accounts first, then localStorage accounts
+            const all = [...BUILTIN, ...getAccounts()];
+            const user = all.find(u => u.username === username && u.password === password);
 
-            updateDebugInfo(`Attempting login with username: ${username}`);
-
-            // Validate inputs
-            if (!username || !password) {
-                showMessage('Please enter both username and password', 'error');
-                return;
+            if (user) {
+                sessionStorage.setItem('admin_user', JSON.stringify({
+                    username: user.username,
+                    name: user.name || user.username,
+                    role: user.role || 'admin',
+                    loginTime: Date.now()
+                }));
+                showMsg('login-msg', '✅ Login successful! Redirecting…', 'success');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+            } else {
+                showMsg('login-msg', 'Invalid username or password. Try <strong>admin</strong> / <strong>BUMentoring2024!</strong>', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
             }
+        }, 400);
+    }
 
-            // Show loading state
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging in...';
+    // ── Create account ────────────────────────────────────────────────────────
+    function createAccount() {
+        clearMsg('create-msg');
+        const username  = document.getElementById('new-username').value.trim();
+        const password  = document.getElementById('new-password').value;
+        const password2 = document.getElementById('new-password2').value;
+        const name      = document.getElementById('new-name').value.trim();
 
-            // Simulate brief loading delay
-            setTimeout(() => {
-                try {
-                    // Check if dataManager is available
-                    if (typeof dataManager === 'undefined') {
-                        console.error('DataManager not loaded');
-                        updateDebugInfo('ERROR: DataManager not loaded');
-                        showMessage('System error: DataManager not loaded. Please refresh the page.', 'error');
-                        resetButton();
-                        return;
-                    }
-
-                    // Ensure dataManager has required methods
-                    if (!dataManager.authenticateAdmin || typeof dataManager.authenticateAdmin !== 'function') {
-                        console.error('DataManager authenticateAdmin method not available');
-                        updateDebugInfo('ERROR: DataManager authenticateAdmin method not available');
-                        showMessage('System error: DataManager not properly loaded. Please refresh the page.', 'error');
-                        resetButton();
-                        return;
-                    }
-
-                    updateDebugInfo('DataManager authentication method available');
-
-                    // Initialize data if method exists
-                    if (dataManager.initializeData && typeof dataManager.initializeData === 'function') {
-                        try {
-                            dataManager.initializeData();
-                            updateDebugInfo('DataManager initialized');
-                        } catch (error) {
-                            updateDebugInfo(`DataManager initialization error: ${error.message}`);
-                        }
-                    }
-
-                    updateDebugInfo('Attempting authentication...');
-
-                    // Authenticate user
-                    const user = dataManager.authenticateAdmin(username, password);
-                    updateDebugInfo(`Authentication result: ${user ? 'SUCCESS' : 'FAILED'}`);
-
-                    if (user) {
-                        updateDebugInfo(`User found: ${JSON.stringify(user)}`);
-
-                        // Store session
-                        const sessionData = {
-                            id: user.id,
-                            username: user.username,
-                            email: user.email,
-                            role: user.role,
-                            loginTime: Date.now()
-                        };
-
-                        if (typeof utils !== 'undefined' && utils.setSession) {
-                            utils.setSession('admin_user', sessionData);
-                            updateDebugInfo('Session set using utils.setSession');
-                        } else {
-                            // Fallback to sessionStorage
-                            sessionStorage.setItem('admin_user', JSON.stringify(sessionData));
-                            updateDebugInfo('Session set using sessionStorage fallback');
-                        }
-
-                        showMessage('Login successful! Redirecting...', 'success');
-
-                        // Redirect to dashboard
-                        setTimeout(() => {
-                            updateDebugInfo('Redirecting to dashboard...');
-                            window.location.href = 'dashboard.html';
-                        }, 1000);
-                    } else {
-                        updateDebugInfo('Authentication failed - invalid credentials');
-                        showMessage('Invalid username or password', 'error');
-                        resetButton();
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    updateDebugInfo(`ERROR: ${error.message}`);
-                    showMessage('Login failed. Please try again.', 'error');
-                    resetButton();
-                }
-            }, 500);
+        if (!username || !password) {
+            showMsg('create-msg', 'Username and password are required.', 'error'); return;
+        }
+        if (password.length < 8) {
+            showMsg('create-msg', 'Password must be at least 8 characters.', 'error'); return;
+        }
+        if (password !== password2) {
+            showMsg('create-msg', 'Passwords do not match.', 'error'); return;
         }
 
-        function resetButton() {
-            const loginBtn = document.getElementById('login-btn');
-            loginBtn.disabled = false;
-            loginBtn.textContent = 'Login';
+        const all = [...BUILTIN, ...getAccounts()];
+        if (all.find(u => u.username === username)) {
+            showMsg('create-msg', `Username "${username}" is already taken.`, 'error'); return;
         }
 
-        function showMessage(message, type) {
-            updateDebugInfo(`Showing message: ${type} - ${message}`);
+        const accounts = getAccounts();
+        accounts.push({ username, password, name: name || username, role: 'admin', createdAt: Date.now() });
+        saveAccounts(accounts);
 
-            // Remove existing message
-            const existingMessage = document.querySelector('.login-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
+        showMsg('create-msg', `✅ Account "<strong>${username}</strong>" created! You can now sign in.`, 'success');
+        document.getElementById('new-username').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('new-password2').value = '';
+        document.getElementById('new-name').value = '';
+        renderAccountsList();
+    }
 
-            // Create message element
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `login-message ${type}`;
-            messageDiv.textContent = message;
+    // ── Accounts list (manage panel) ──────────────────────────────────────────
+    function renderAccountsList() {
+        const list = document.getElementById('accounts-list');
+        const accounts = getAccounts();
 
-            // Insert message after form
-            const form = document.getElementById('login-form');
-            form.parentNode.insertBefore(messageDiv, form.nextSibling);
-
-            // Auto-remove success messages
-            if (type === 'success') {
-                setTimeout(() => {
-                    if (messageDiv.parentNode) {
-                        messageDiv.remove();
-                    }
-                }, 3000);
-            }
+        if (!accounts.length) {
+            list.innerHTML = '<p style="font-size:0.82rem;color:#94a3b8;padding:8px 0;">No custom accounts yet.</p>';
+            return;
         }
-    </script>
+
+        list.innerHTML = accounts.map((a, i) => `
+            <div class="account-row">
+                <span>👤 <strong>${a.username}</strong>${a.name && a.name !== a.username ? ` (${a.name})` : ''}</span>
+                <button class="del-btn" onclick="deleteAccount(${i})">Delete</button>
+            </div>`).join('');
+    }
+
+    function deleteAccount(index) {
+        const accounts = getAccounts();
+        const u = accounts[index];
+        if (!u) return;
+        if (!confirm(`Delete account "${u.username}"?`)) return;
+        accounts.splice(index, 1);
+        saveAccounts(accounts);
+        renderAccountsList();
+    }
+
+    // ── Auto-redirect if already logged in ───────────────────────────────────
+    if (sessionStorage.getItem('admin_user')) {
+        window.location.href = 'dashboard.html';
+    }
+</script>
 </body>
 </html>
