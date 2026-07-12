@@ -58,6 +58,7 @@
                 <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="programs-resources.html" class="active"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="blog.html"><span class="icon">📰</span> Blog & News</a></li>
                 <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
             </ul>
@@ -198,7 +199,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="resource-type">Resource Type *</label>
-                            <select id="resource-type" required>
+                            <select id="resource-type" required onchange="toggleResourceInput()">
                                 <option value="">Select type...</option>
                                 <option value="PDF">PDF Document</option>
                                 <option value="DOC">Word Document</option>
@@ -214,10 +215,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="resource-url">Download URL *</label>
-                        <input type="url" id="resource-url" required placeholder="https://example.com/file.pdf">
-                        <small>Paste the direct link to your file (Google Drive, Dropbox, etc.)</small>
+                    <div class="form-group" id="resource-file-group" style="display:none;">
+                        <label for="resource-file">Upload File (PDF, DOC, PPT)</label>
+                        <input type="file" id="resource-file" accept=".pdf,.doc,.docx,.ppt,.pptx">
+                        <small style="color:#64748b;">File will be uploaded to secure cloud storage. Size calculated automatically.</small>
+                    </div>
+
+                    <div class="form-group" id="resource-url-group">
+                        <label for="resource-url">External URL</label>
+                        <input type="url" id="resource-url" placeholder="https://example.com/file.pdf">
+                        <small>Paste a direct link to your file (YouTube, Google Drive, etc.)</small>
                     </div>
 
                     <div class="form-row">
@@ -245,14 +252,14 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        import { db } from '../js/firebase-config.js';
-        window.db = db;
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
         window.dispatchEvent(new Event('firebaseReady'));
     </script>
 
     <!-- Scripts -->
-    <script src="../js/dataManager.js?v=2"></script>
-    <script src="../js/utils.js?v=2"></script>
-    <script src="../js/admin-programs-resources.js?v=2"></script>
+    <script src="../js/dataManager.js?v=11"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/admin-programs-resources.js?v=3"></script>
 </body>
 </html>

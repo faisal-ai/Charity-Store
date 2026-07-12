@@ -23,6 +23,7 @@
                 <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="programs-resources.html"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="blog.html"><span class="icon">📰</span> Blog &amp; News</a></li>
                 <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html" class="active"><span class="icon">⚙️</span> Settings</a></li>
             </ul>
@@ -33,29 +34,43 @@
             <div class="admin-header">
                 <h1>Settings</h1>
                 <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
                     <button class="logout-btn" onclick="utils.logout()">Logout</button>
                 </div>
             </div>
 
             <div class="row">
+                <!-- Organisation Settings -->
                 <div class="col-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Site Settings</h3>
+                            <h3>Organisation Details</h3>
                         </div>
                         <div class="card-body">
                             <form id="settings-form">
                                 <div class="form-group">
-                                    <label for="site-name">Site Name</label>
-                                    <input type="text" id="site-name" value="Charity Store">
+                                    <label for="org-name">Organisation Name</label>
+                                    <input type="text" id="org-name" placeholder="BU Mentoring CIC" value="BU Mentoring CIC">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tax-rate">Tax Rate (%)</label>
-                                    <input type="number" id="tax-rate" value="8" min="0" max="100" step="0.1">
+                                    <label for="org-email">Contact Email</label>
+                                    <input type="email" id="org-email" placeholder="info@bumentoring.com">
                                 </div>
                                 <div class="form-group">
-                                    <label for="free-shipping">Free Shipping Threshold ($)</label>
-                                    <input type="number" id="free-shipping" value="50" min="0" step="0.01">
+                                    <label for="org-phone">Contact Phone</label>
+                                    <input type="tel" id="org-phone" placeholder="+44 ...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="org-address">Address</label>
+                                    <textarea id="org-address" rows="2" placeholder="6 High Street, Brompton Gillingham, Kent, ME7 5AE"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="org-hours">Opening Hours</label>
+                                    <input type="text" id="org-hours" placeholder="Mon–Fri: 9AM–5PM">
+                                </div>
+                                <div class="form-group">
+                                    <label for="org-social">Website URL</label>
+                                    <input type="url" id="org-social" placeholder="https://bumentoring.com">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save Settings</button>
                             </form>
@@ -63,22 +78,43 @@
                     </div>
                 </div>
 
+                <!-- Data Management -->
                 <div class="col-6">
                     <div class="card">
                         <div class="card-header">
                             <h3>Data Management</h3>
                         </div>
                         <div class="card-body">
-                            <p>Manage your data and system settings.</p>
-                            <button class="btn btn-outline" onclick="exportAllData()" style="width: 100%; margin-bottom: 10px;">
-                                Export All Data
+                            <p style="color:#64748b;margin-bottom:20px;">Export or manage system data. Changes here are irreversible.</p>
+                            <button class="btn btn-outline" onclick="exportDonations()" style="width:100%;margin-bottom:10px;">
+                                ⬇ Export Donations (JSON)
                             </button>
-                            <button class="btn btn-outline" onclick="clearCache()" style="width: 100%; margin-bottom: 10px;">
-                                Clear Cache
+                            <button class="btn btn-outline" onclick="exportBookings()" style="width:100%;margin-bottom:10px;">
+                                ⬇ Export Bookings (JSON)
                             </button>
-                            <button class="btn btn-outline" onclick="resetToDefaults()" style="width: 100%;">
-                                Reset to Defaults
+                            <button class="btn btn-outline" onclick="clearLocalCache()" style="width:100%;margin-bottom:10px;">
+                                🔄 Clear Local Cache
                             </button>
+                            <hr style="margin:20px 0;border-color:#e2e8f0;">
+                            <p style="color:#ef4444;font-size:0.85rem;margin-bottom:10px;">Danger zone — cannot be undone:</p>
+                            <button class="btn" style="background:#ef4444;color:white;width:100%;" onclick="resetLocalData()">
+                                Reset Local Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top:20px;">
+                        <div class="card-header">
+                            <h3>System Info</h3>
+                        </div>
+                        <div class="card-body">
+                            <p style="color:#64748b;font-size:0.9rem;line-height:1.8;">
+                                <strong>Firebase Project:</strong> bu-mentoring<br>
+                                <strong>Hosting:</strong> GitHub Pages<br>
+                                <strong>Storage:</strong> Firebase Storage<br>
+                                <strong>Database:</strong> Firestore<br>
+                                <strong>Admin Version:</strong> 2.0
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -86,57 +122,75 @@
         </main>
     </div>
 
+    <script type="module">
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
     <script src="../js/dataManager.js?v=11"></script>
     <script src="../js/utils.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (!utils.requireAuth()) return;
+            const u = utils.getSession('admin_user');
+            if (u && u.username) document.getElementById('admin-name').textContent = u.username;
             loadSettings();
         });
 
-        function loadSettings() {
-            const settings = dataManager.getSettings() || {};
-            document.getElementById('tax-rate').value = (settings.taxRate || 0.08) * 100;
-            document.getElementById('free-shipping').value = settings.freeShippingThreshold || 50;
+        async function loadSettings() {
+            let settings = null;
+            if (window._fbDM) settings = await window._fbDM.getSettings();
+            if (!settings) settings = dataManager.getSettings() || {};
 
-            document.getElementById('settings-form').addEventListener('submit', function(e) {
+            if (settings.orgName)    document.getElementById('org-name').value    = settings.orgName;
+            if (settings.orgEmail)   document.getElementById('org-email').value   = settings.orgEmail;
+            if (settings.orgPhone)   document.getElementById('org-phone').value   = settings.orgPhone;
+            if (settings.orgAddress) document.getElementById('org-address').value = settings.orgAddress;
+            if (settings.orgHours)   document.getElementById('org-hours').value   = settings.orgHours;
+            if (settings.orgSocial)  document.getElementById('org-social').value  = settings.orgSocial;
+
+            document.getElementById('settings-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                saveSettings();
+                await saveSettings();
             });
         }
 
-        function saveSettings() {
-            const settings = {
-                siteName: document.getElementById('site-name').value,
-                taxRate: parseFloat(document.getElementById('tax-rate').value) / 100,
-                freeShippingThreshold: parseFloat(document.getElementById('free-shipping').value)
+        async function saveSettings() {
+            const data = {
+                orgName:    document.getElementById('org-name').value.trim(),
+                orgEmail:   document.getElementById('org-email').value.trim(),
+                orgPhone:   document.getElementById('org-phone').value.trim(),
+                orgAddress: document.getElementById('org-address').value.trim(),
+                orgHours:   document.getElementById('org-hours').value.trim(),
+                orgSocial:  document.getElementById('org-social').value.trim(),
+                updatedAt:  Date.now()
             };
+            let ok = false;
+            if (window._fbDM) ok = await window._fbDM.saveSettings(data);
+            else ok = dataManager.updateSettings(data);
+            utils.showNotification(ok ? 'Settings saved!' : 'Failed to save settings', ok ? 'success' : 'error');
+        }
 
-            if (dataManager.updateSettings(settings)) {
-                utils.showNotification('Settings saved successfully!', 'success');
-            } else {
-                utils.showNotification('Failed to save settings', 'error');
+        async function exportDonations() {
+            let donations = window._fbDM ? await window._fbDM.getDonations() : dataManager.getDonations() || [];
+            utils.exportDataAsJSON({ donations, exportedAt: new Date().toISOString() }, `bu_donations_${new Date().toISOString().split('T')[0]}.json`);
+        }
+
+        async function exportBookings() {
+            let donationBookings = window._fbDM ? await window._fbDM.getDonationBookings() : dataManager.getDonationBookings() || [];
+            let mentoringBookings = window._fbDM ? await window._fbDM.getMentoringBookings() : dataManager.getMentoringBookings() || [];
+            utils.exportDataAsJSON({ donationBookings, mentoringBookings, exportedAt: new Date().toISOString() }, `bu_bookings_${new Date().toISOString().split('T')[0]}.json`);
+        }
+
+        function clearLocalCache() {
+            if (confirm('Clear all cached data from this browser? Firebase data will not be affected.')) {
+                Object.keys(localStorage).filter(k => k.startsWith('charity_store_')).forEach(k => localStorage.removeItem(k));
+                utils.showNotification('Local cache cleared!', 'success');
             }
         }
 
-        function exportAllData() {
-            const allData = {
-                products: dataManager.getProducts(),
-                orders: dataManager.getOrders(),
-                donations: dataManager.getDonations(),
-                settings: dataManager.getSettings()
-            };
-            utils.exportDataAsJSON(allData, `charity_store_backup_${new Date().toISOString().split('T')[0]}.json`);
-        }
-
-        function clearCache() {
-            if (confirm('Are you sure you want to clear the cache?')) {
-                utils.showNotification('Cache cleared successfully!', 'success');
-            }
-        }
-
-        function resetToDefaults() {
-            if (confirm('Are you sure you want to reset all data to defaults? This cannot be undone.')) {
+        function resetLocalData() {
+            if (confirm('Reset ALL local data? This cannot be undone.')) {
                 utils.clearAllData();
             }
         }

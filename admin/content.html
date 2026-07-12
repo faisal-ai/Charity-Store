@@ -334,10 +334,9 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        import { db } from '../js/firebase-config.js';
-        // Dispatch event when Firebase is ready
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
         window.dispatchEvent(new Event('firebaseReady'));
-        console.log('Firebase initialized and ready');
     </script>
 
     <script src="../js/dataManager.js?v=11"></script>
@@ -528,37 +527,32 @@
 
                 const reader = new FileReader();
                 reader.onload = async function(e) {
-                    console.log('File loaded, data length:', e.target.result.length);
-
-                    const imageData = {
-                        name: file.name,
-                        data: e.target.result,
-                        size: file.size,
-                        type: file.type,
-                        category: category,
-                        uploadedAt: Date.now()
-                    };
-
-                    console.log('Attempting to save image:', imageData.name, 'Category:', category);
-
+                    // Upload to Firebase Storage via firebaseDataManager
                     try {
-                        const result = await dataManager.addImage(imageData);
-                        console.log('Save result:', result);
+                        const imageData = {
+                            file,          // firebaseDataManager.saveImage handles Storage upload
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            category,
+                            uploadedAt: Date.now()
+                        };
+
+                        let result;
+                        if (window._fbDM) {
+                            result = await window._fbDM.saveImage(imageData);
+                        } else {
+                            // Fallback: base64 to dataManager
+                            imageData.data = e.target.result;
+                            delete imageData.file;
+                            result = await dataManager.addImage(imageData);
+                        }
 
                         if (result) {
-                            utils.showNotification(`Image "${file.name}" uploaded to "${getCategoryLabel(category)}"!`, 'success');
+                            utils.showNotification(`Image "${file.name}" uploaded successfully!`, 'success');
                             await loadImageGallery();
                         } else {
-                            // Check localStorage usage
-                            let totalSize = 0;
-                            for (let key in localStorage) {
-                                if (localStorage.hasOwnProperty(key)) {
-                                    totalSize += localStorage[key].length + key.length;
-                                }
-                            }
-                            const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-
-                            utils.showNotification(`Failed to upload image. Storage may be full (${sizeMB}MB used). Try smaller images or delete old ones.`, 'error');
+                            utils.showNotification('Failed to upload image. Please try again.', 'error');
                         }
                     } catch (error) {
                         console.error('Error saving image:', error);
@@ -612,32 +606,28 @@
 
             console.log('Images to display:', filteredImages.length);
 
-            gallery.innerHTML = filteredImages.map((img, originalIndex) => {
-                // Find the original index in the full images array
-                const fullIndex = images.findIndex(i => i.id === img.id);
+            gallery.innerHTML = filteredImages.map((img) => {
                 const imageId = img.id || '';
-                console.log('Rendering image', fullIndex, ':', img.name, 'Category:', img.category, 'ID:', imageId);
-
-                // Escape any special characters in the image ID and data
-                const safeImageId = imageId.replace(/'/g, "\\'");
-                const safeImageData = img.data.replace(/'/g, "\\'");
+                const safeId = imageId.replace(/'/g, "\\'");
+                // Support both Storage URL and legacy base64
+                const imgSrc = img.url || img.data || '';
+                const sizeKB = img.size ? (img.size / 1024).toFixed(1) + ' KB' : '';
 
                 return `
                 <div class="image-item" data-image-id="${imageId}">
-                    <img src="${img.data}" alt="${img.name}">
+                    <img src="${imgSrc}" alt="${img.name}" style="object-fit:cover;">
                     <div class="image-item-info">
                         <strong>${img.name}</strong><br>
-                        <small>${(img.size / 1024).toFixed(1)} KB</small><br>
-                        <span style="color: #e74c3c; font-weight: 600; font-size: 12px; display: inline-block; margin-top: 5px;">
+                        ${sizeKB ? `<small>${sizeKB}</small><br>` : ''}
+                        <span style="color:#8b5cf6;font-weight:600;font-size:12px;display:inline-block;margin-top:5px;">
                             📍 ${getCategoryLabel(img.category || 'general')}
                         </span>
                     </div>
                     <div class="image-item-actions">
-                        <button class="btn btn-sm btn-primary" onclick="copyImageUrl('${safeImageData}')">Copy URL</button>
-                        <button class="btn btn-sm btn-outline delete-image-btn" data-image-id="${imageId}">Delete</button>
+                        <button class="btn btn-sm btn-primary" onclick="copyImageUrl('${imgSrc.replace(/'/g, "\\'")}')">Copy URL</button>
+                        <button class="btn btn-sm btn-outline delete-image-btn" data-image-id="${safeId}">Delete</button>
                     </div>
-                </div>
-                `;
+                </div>`;
             }).join('');
 
             // Add event listeners to delete buttons after HTML is inserted

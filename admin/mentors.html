@@ -23,6 +23,7 @@
                 <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
                 <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="programs-resources.html"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="blog.html"><span class="icon">📰</span> Blog & News</a></li>
                 <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
             </ul>
@@ -30,7 +31,6 @@
 
         <!-- Main Content -->
         <main class="admin-content">
-            <!-- Header -->
             <div class="admin-header">
                 <h1>Mentors</h1>
                 <div class="admin-user">
@@ -59,47 +59,47 @@
                 </div>
             </div>
 
-            <!-- Mentors Grid -->
+            <!-- Mentors Table -->
             <div class="admin-table">
                 <div class="table-header">
                     <h3>All Mentors</h3>
                     <div class="table-actions">
-                        <button class="btn btn-primary" onclick="openAddMentorModal()">+ Add New Mentor</button>
                         <select id="filter-specialty" onchange="filterMentors()">
                             <option value="">All Specialties</option>
                             <option value="Career Development">Career Development</option>
                             <option value="Life Skills">Life Skills</option>
                             <option value="Financial Literacy">Financial Literacy</option>
                             <option value="Education">Education</option>
+                            <option value="Mental Health">Mental Health</option>
+                            <option value="Business & Entrepreneurship">Business &amp; Entrepreneurship</option>
                         </select>
+                        <button class="btn btn-primary" onclick="openAddMentorModal()">+ Add New Mentor</button>
                     </div>
                 </div>
                 <div id="mentors-grid" class="table-container">
-                    <p class="text-center">Loading...</p>
+                    <p class="text-center">Loading mentors...</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modal for Mentor Details -->
+    <!-- View Mentor Modal -->
     <div id="mentor-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modal-title">Mentor Details</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div class="modal-body" id="modal-body">
-                <!-- Content will be dynamically loaded -->
-            </div>
+            <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Adding/Editing Mentor -->
+    <!-- Add / Edit Mentor Modal -->
     <div id="add-mentor-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
                 <h3 id="add-mentor-title">Add New Mentor</h3>
                 <button class="modal-close" onclick="closeAddMentorModal()">&times;</button>
@@ -116,7 +116,6 @@
                             <input type="email" id="mentor-email" required>
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
                             <label for="mentor-phone">Phone</label>
@@ -131,34 +130,31 @@
                                 <option value="Financial Literacy">Financial Literacy</option>
                                 <option value="Education">Education</option>
                                 <option value="Mental Health">Mental Health</option>
-                                <option value="Business & Entrepreneurship">Business & Entrepreneurship</option>
+                                <option value="Business & Entrepreneurship">Business &amp; Entrepreneurship</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="mentor-experience">Years of Experience *</label>
                         <input type="number" id="mentor-experience" min="0" required>
                     </div>
-
                     <div class="form-group">
                         <label for="mentor-bio">Bio</label>
                         <textarea id="mentor-bio" rows="4" placeholder="Brief background and expertise..."></textarea>
                     </div>
-
                     <div class="form-group">
-                        <label for="mentor-image">Profile Image</label>
+                        <label for="mentor-image">Profile Photo</label>
                         <input type="file" id="mentor-image" accept="image/*" onchange="previewMentorImage(event)">
-                        <div id="image-preview" style="margin-top: 10px; display: none;">
-                            <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #3b82f6;">
-                            <button type="button" class="btn btn-sm btn-outline" onclick="removeMentorImage()" style="display: block; margin-top: 10px;">Remove Image</button>
+                        <div id="image-preview" style="margin-top:10px; display:none;">
+                            <img id="preview-img" src="" alt="Preview" style="max-width:160px; max-height:160px; border-radius:50%; border:3px solid #8b5cf6; object-fit:cover;">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="removeMentorImage()" style="display:block; margin-top:8px;">Remove Photo</button>
                         </div>
-                        <small style="color: #64748b;">Upload a professional photo of the mentor (JPG, PNG, or GIF)</small>
+                        <small style="color:#64748b;">Photo will be uploaded to secure cloud storage (JPG, PNG)</small>
+                        <div id="upload-progress" style="display:none; margin-top:8px; color:#8b5cf6; font-size:0.85rem;">⏳ Uploading photo...</div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="mentor-availability">Availability Status</label>
+                            <label for="mentor-availability">Availability</label>
                             <select id="mentor-availability">
                                 <option value="available">Available</option>
                                 <option value="busy">Busy</option>
@@ -173,237 +169,197 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label>Available Days</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-monday" value="Monday">
-                                <label for="day-monday">Monday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-tuesday" value="Tuesday">
-                                <label for="day-tuesday">Tuesday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-wednesday" value="Wednesday">
-                                <label for="day-wednesday">Wednesday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-thursday" value="Thursday">
-                                <label for="day-thursday">Thursday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-friday" value="Friday">
-                                <label for="day-friday">Friday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-saturday" value="Saturday">
-                                <label for="day-saturday">Saturday</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="day-sunday" value="Sunday">
-                                <label for="day-sunday">Sunday</label>
-                            </div>
+                        <div class="checkbox-group" style="display:flex; flex-wrap:wrap; gap:10px;">
+                            <div class="checkbox-item"><input type="checkbox" id="day-monday" value="Monday"><label for="day-monday">Mon</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-tuesday" value="Tuesday"><label for="day-tuesday">Tue</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-wednesday" value="Wednesday"><label for="day-wednesday">Wed</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-thursday" value="Thursday"><label for="day-thursday">Thu</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-friday" value="Friday"><label for="day-friday">Fri</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-saturday" value="Saturday"><label for="day-saturday">Sat</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="day-sunday" value="Sunday"><label for="day-sunday">Sun</label></div>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="mentor-hours">Available Hours (e.g., 9 AM - 5 PM)</label>
-                        <input type="text" id="mentor-hours" placeholder="9 AM - 5 PM">
+                        <label for="mentor-hours">Available Hours</label>
+                        <input type="text" id="mentor-hours" placeholder="e.g. 9 AM - 5 PM">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeAddMentorModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="saveMentor()">Save Mentor</button>
+                <button class="btn btn-primary" id="save-mentor-btn" onclick="saveMentor()">Save Mentor</button>
             </div>
         </div>
     </div>
 
     <script src="../js/dataManager.js?v=11"></script>
     <script src="../js/utils.js"></script>
-    <!-- Firebase SDK -->
     <script type="module">
-        import { db } from '../js/firebase-config.js';
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
         window.dispatchEvent(new Event('firebaseReady'));
-        console.log('✅ Firebase initialized in admin mentors panel');
     </script>
     <script>
+        let allMentors = [];
+
         document.addEventListener('DOMContentLoaded', function() {
             if (!utils.requireAuth()) return;
-
             const adminUser = utils.getSession('admin_user');
             if (adminUser && adminUser.username) {
                 document.getElementById('admin-name').textContent = adminUser.username;
             }
-
-            // Wait for Firebase before loading mentors
-            console.log('⏰ Waiting for Firebase in admin mentors...');
-            setTimeout(async () => {
-                console.log('🚀 Loading mentors from Firebase');
-                await loadMentors();
-            }, 3000); // Increased to 3 seconds like other pages
+            setTimeout(loadMentors, 1500);
         });
 
         async function loadMentors() {
-            const mentors = await dataManager.getMentors() || [];
+            let mentors = [];
+            if (window._fbDM) {
+                mentors = await window._fbDM.getMentors();
+            } else {
+                mentors = dataManager.getMentors() || [];
+            }
+            allMentors = mentors;
+
             const sessions = dataManager.getMentoringBookings() || [];
-
-            // Update summary
-            const activeMentors = mentors.filter(m => m.status === 'active').length;
-            const availableMentors = mentors.filter(m => m.status === 'active' && m.availability === 'available').length;
-
             document.getElementById('total-mentors').textContent = mentors.length;
-            document.getElementById('active-mentors').textContent = activeMentors;
-            document.getElementById('available-mentors').textContent = availableMentors;
+            document.getElementById('active-mentors').textContent = mentors.filter(m => m.status === 'active').length;
+            document.getElementById('available-mentors').textContent = mentors.filter(m => m.status === 'active' && m.availability === 'available').length;
             document.getElementById('total-sessions').textContent = sessions.length;
-
             renderMentors(mentors);
         }
 
         function renderMentors(mentors) {
             const container = document.getElementById('mentors-grid');
-
-            if (mentors.length === 0) {
-                container.innerHTML = '<p class="text-center">No mentors found</p>';
+            if (!mentors.length) {
+                container.innerHTML = '<p class="text-center" style="padding:40px;">No mentors found. Click "+ Add New Mentor" to get started.</p>';
                 return;
             }
-
+            const sessions = dataManager.getMentoringBookings() || [];
             container.innerHTML = `
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>Mentor</th>
                             <th>Specialty</th>
                             <th>Experience</th>
-                            <th>Rating</th>
                             <th>Availability</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${mentors.map(mentor => {
-                            const sessions = dataManager.getMentoringBookings().filter(b => b.mentorId === mentor.id);
-                            const completedSessions = sessions.filter(b => b.status === 'completed').length;
-
+                        ${mentors.map(m => {
+                            const completed = sessions.filter(s => s.mentorId === m.id && s.status === 'completed').length;
+                            const photo = m.photoURL || m.image || '';
+                            const avatar = photo
+                                ? `<img src="${photo}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:8px;vertical-align:middle;">`
+                                : `<span style="display:inline-flex;width:36px;height:36px;border-radius:50%;background:#8b5cf6;color:white;align-items:center;justify-content:center;font-weight:700;margin-right:8px;font-size:0.85rem;">${m.name ? m.name[0].toUpperCase() : '?'}</span>`;
                             return `
                                 <tr>
-                                    <td>
-                                        <strong>${mentor.name}</strong><br>
-                                        <small>${mentor.email}</small>
-                                    </td>
-                                    <td>${mentor.specialty}</td>
-                                    <td>${mentor.experience} years<br><small>${completedSessions} sessions</small></td>
-                                    <td>
-                                        ${mentor.rating ? `⭐ ${mentor.rating.toFixed(1)}` : 'N/A'}
-                                    </td>
-                                    <td>
-                                        <span class="status-badge ${mentor.availability === 'available' ? 'status-active' : 'status-inactive'}">
-                                            ${mentor.availability || 'N/A'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="status-badge status-${mentor.status}">
-                                            ${mentor.status}
-                                        </span>
-                                    </td>
+                                    <td>${avatar}<strong>${m.name}</strong><br><small>${m.email}</small></td>
+                                    <td>${m.specialty || '-'}</td>
+                                    <td>${m.experience || 0} yrs<br><small>${completed} sessions</small></td>
+                                    <td><span class="status-badge ${m.availability === 'available' ? 'status-active' : 'status-inactive'}">${m.availability || 'N/A'}</span></td>
+                                    <td><span class="status-badge status-${m.status}">${m.status}</span></td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-sm btn-primary" onclick="viewMentor('${mentor.id}')">View</button>
-                                            <button class="btn btn-sm btn-outline" onclick="openEditMentorModal('${mentor.id}')">Edit</button>
-                                            ${mentor.status === 'active' ?
-                                                `<button class="btn btn-sm btn-outline" onclick="toggleStatus('${mentor.id}', 'inactive')">Deactivate</button>` :
-                                                `<button class="btn btn-sm btn-success" onclick="toggleStatus('${mentor.id}', 'active')">Activate</button>`
-                                            }
+                                            <button class="btn btn-sm btn-primary" onclick="viewMentor('${m.id}')">View</button>
+                                            <button class="btn btn-sm btn-outline" onclick="openEditMentorModal('${m.id}')">Edit</button>
+                                            ${m.status === 'active'
+                                                ? `<button class="btn btn-sm btn-outline" onclick="toggleStatus('${m.id}','inactive')">Deactivate</button>`
+                                                : `<button class="btn btn-sm" style="background:#10b981;color:white;" onclick="toggleStatus('${m.id}','active')">Activate</button>`}
+                                            <button class="btn btn-sm" style="background:#ef4444;color:white;" onclick="deleteMentor('${m.id}')">Delete</button>
                                         </div>
                                     </td>
-                                </tr>
-                            `;
+                                </tr>`;
                         }).join('')}
                     </tbody>
-                </table>
-            `;
+                </table>`;
         }
 
         function filterMentors() {
-            const filterSpecialty = document.getElementById('filter-specialty').value;
-            let mentors = dataManager.getMentors() || [];
-
-            if (filterSpecialty) {
-                mentors = mentors.filter(m => m.specialty === filterSpecialty);
-            }
-
-            renderMentors(mentors);
+            const spec = document.getElementById('filter-specialty').value;
+            renderMentors(spec ? allMentors.filter(m => m.specialty === spec) : allMentors);
         }
 
         function viewMentor(mentorId) {
-            const mentor = dataManager.getMentorById(mentorId);
-            if (!mentor) return;
+            const m = allMentors.find(x => x.id === mentorId);
+            if (!m) return;
+            const sessions = dataManager.getMentoringBookings() || [];
+            const completed = sessions.filter(s => s.mentorId === mentorId && s.status === 'completed').length;
+            const upcoming  = sessions.filter(s => s.mentorId === mentorId && s.status === 'confirmed').length;
+            const photo = m.photoURL || m.image || '';
 
-            const sessions = dataManager.getMentoringBookings().filter(b => b.mentorId === mentorId);
-            const completedSessions = sessions.filter(b => b.status === 'completed').length;
-            const upcomingSessions = sessions.filter(b => b.status === 'confirmed').length;
-
-            document.getElementById('modal-title').textContent = mentor.name;
+            document.getElementById('modal-title').textContent = m.name;
             document.getElementById('modal-body').innerHTML = `
-                <div class="booking-details">
-                    <h4>Contact Information</h4>
-                    <p><strong>Email:</strong> ${mentor.email}</p>
-                    <p><strong>Phone:</strong> ${mentor.phone || 'N/A'}</p>
-
-                    <h4>Professional Details</h4>
-                    <p><strong>Specialty:</strong> ${mentor.specialty}</p>
-                    <p><strong>Experience:</strong> ${mentor.experience} years</p>
-                    <p><strong>Rating:</strong> ${mentor.rating ? `⭐ ${mentor.rating.toFixed(1)} / 5.0` : 'Not rated yet'}</p>
-                    <p><strong>Bio:</strong> ${mentor.bio || 'No bio available'}</p>
-
-                    <h4>Availability</h4>
-                    <p><strong>Status:</strong> <span class="status-badge ${mentor.availability === 'available' ? 'status-active' : 'status-inactive'}">${mentor.availability || 'N/A'}</span></p>
-                    ${mentor.availableDays ? `<p><strong>Available Days:</strong> ${mentor.availableDays.join(', ')}</p>` : ''}
-                    ${mentor.availableHours ? `<p><strong>Available Hours:</strong> ${mentor.availableHours}</p>` : ''}
-
-                    <h4>Session Statistics</h4>
-                    <p><strong>Total Sessions:</strong> ${sessions.length}</p>
-                    <p><strong>Completed:</strong> ${completedSessions}</p>
-                    <p><strong>Upcoming:</strong> ${upcomingSessions}</p>
-
-                    <h4>Account Status</h4>
-                    <p><strong>Status:</strong> <span class="status-badge status-${mentor.status}">${mentor.status}</span></p>
-                    <p><strong>Joined:</strong> ${utils.formatDate(mentor.createdAt)}</p>
+                <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:20px;">
+                    ${photo ? `<img src="${photo}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #8b5cf6;">` : `<div style="width:80px;height:80px;border-radius:50%;background:#8b5cf6;color:white;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;">${m.name[0]}</div>`}
+                    <div>
+                        <h3 style="margin:0 0 4px;">${m.name}</h3>
+                        <p style="margin:0;color:#8b5cf6;">${m.specialty}</p>
+                        <span class="status-badge status-${m.status}">${m.status}</span>
+                    </div>
                 </div>
-            `;
-
+                <div class="booking-details">
+                    <p><strong>Email:</strong> ${m.email}</p>
+                    <p><strong>Phone:</strong> ${m.phone || 'N/A'}</p>
+                    <p><strong>Experience:</strong> ${m.experience} years</p>
+                    <p><strong>Bio:</strong> ${m.bio || 'No bio available'}</p>
+                    <p><strong>Availability:</strong> <span class="status-badge ${m.availability === 'available' ? 'status-active' : 'status-inactive'}">${m.availability || 'N/A'}</span></p>
+                    ${m.availableDays && m.availableDays.length ? `<p><strong>Days:</strong> ${m.availableDays.join(', ')}</p>` : ''}
+                    ${m.availableHours ? `<p><strong>Hours:</strong> ${m.availableHours}</p>` : ''}
+                    <p><strong>Completed Sessions:</strong> ${completed} &nbsp; <strong>Upcoming:</strong> ${upcoming}</p>
+                    <p><strong>Added:</strong> ${m.createdAt ? new Date(m.createdAt).toLocaleDateString() : 'N/A'}</p>
+                </div>`;
             document.getElementById('mentor-modal').classList.add('show');
         }
 
-        function toggleStatus(mentorId, newStatus) {
-            const success = dataManager.updateMentorStatus(mentorId, newStatus);
-
-            if (success) {
-                utils.showNotification(`Mentor ${newStatus === 'active' ? 'activated' : 'deactivated'} successfully!`, 'success');
-                loadMentors();
+        async function toggleStatus(mentorId, newStatus) {
+            const mentor = allMentors.find(m => m.id === mentorId);
+            if (!mentor) return;
+            const updated = { ...mentor, status: newStatus, updatedAt: Date.now() };
+            let ok = false;
+            if (window._fbDM) {
+                const result = await window._fbDM.saveMentor(updated);
+                ok = !!result;
             } else {
-                utils.showNotification('Failed to update mentor status', 'error');
+                ok = dataManager.updateMentor(mentorId, updated);
+            }
+            if (ok) {
+                utils.showNotification(`Mentor ${newStatus === 'active' ? 'activated' : 'deactivated'}!`, 'success');
+                await loadMentors();
+            } else {
+                utils.showNotification('Failed to update status', 'error');
             }
         }
 
-        function closeModal() {
-            document.getElementById('mentor-modal').classList.remove('show');
+        async function deleteMentor(mentorId) {
+            const mentor = allMentors.find(m => m.id === mentorId);
+            if (!mentor) return;
+            if (!confirm(`Delete mentor "${mentor.name}"? This cannot be undone.`)) return;
+            let ok = false;
+            if (window._fbDM) {
+                ok = await window._fbDM.deleteMentor(mentorId);
+            } else {
+                ok = dataManager.deleteMentor(mentorId);
+            }
+            if (ok) {
+                utils.showNotification('Mentor deleted successfully', 'success');
+                await loadMentors();
+            } else {
+                utils.showNotification('Failed to delete mentor', 'error');
+            }
         }
 
-        // Add Mentor Modal Functions
+        function closeModal() { document.getElementById('mentor-modal').classList.remove('show'); }
+
         function openAddMentorModal() {
-            // Reset modal title
             document.getElementById('add-mentor-title').textContent = 'Add New Mentor';
-
-            // Clear mentor ID from form dataset
             delete document.getElementById('add-mentor-form').dataset.mentorId;
-
-            // Reset form
             document.getElementById('add-mentor-form').reset();
-
+            document.getElementById('image-preview').style.display = 'none';
             document.getElementById('add-mentor-modal').classList.add('show');
         }
 
@@ -411,18 +367,18 @@
             document.getElementById('add-mentor-modal').classList.remove('show');
             document.getElementById('add-mentor-form').reset();
             delete document.getElementById('add-mentor-form').dataset.mentorId;
+            document.getElementById('image-preview').style.display = 'none';
         }
 
         function previewMentorImage(event) {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('preview-img').src = e.target.result;
-                    document.getElementById('image-preview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('image-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
         }
 
         function removeMentorImage() {
@@ -432,144 +388,113 @@
         }
 
         async function saveMentor() {
-            console.log('💾 saveMentor() called');
-            const mentorId = document.getElementById('add-mentor-form').dataset.mentorId;
-            console.log('📝 Mentor ID:', mentorId ? mentorId : 'NEW MENTOR');
+            const form = document.getElementById('add-mentor-form');
+            const mentorId = form.dataset.mentorId;
 
-            // Get form values
-            const name = document.getElementById('mentor-name').value.trim();
-            const email = document.getElementById('mentor-email').value.trim();
-            const phone = document.getElementById('mentor-phone').value.trim();
-            const specialty = document.getElementById('mentor-specialty').value;
+            const name       = document.getElementById('mentor-name').value.trim();
+            const email      = document.getElementById('mentor-email').value.trim();
+            const phone      = document.getElementById('mentor-phone').value.trim();
+            const specialty  = document.getElementById('mentor-specialty').value;
             const experience = parseInt(document.getElementById('mentor-experience').value);
-            const bio = document.getElementById('mentor-bio').value.trim();
+            const bio        = document.getElementById('mentor-bio').value.trim();
             const availability = document.getElementById('mentor-availability').value;
-            const status = document.getElementById('mentor-status').value;
+            const status     = document.getElementById('mentor-status').value;
             const availableHours = document.getElementById('mentor-hours').value.trim();
 
-            // Validate required fields
             if (!name || !email || !specialty || isNaN(experience)) {
                 utils.showNotification('Please fill in all required fields', 'error');
                 return;
             }
 
-            // Get selected days
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
             const availableDays = days
-                .filter(day => document.getElementById(`day-${day}`).checked)
-                .map(day => day.charAt(0).toUpperCase() + day.slice(1));
+                .filter(d => document.getElementById(`day-${d}`).checked)
+                .map(d => d.charAt(0).toUpperCase() + d.slice(1));
 
-            // Handle image upload
-            const imageFile = document.getElementById('mentor-image').files[0];
-            let imageData = null;
-
-            if (imageFile) {
-                // Convert image to base64
-                imageData = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.readAsDataURL(imageFile);
-                });
-            } else if (mentorId) {
-                // If editing and no new image, keep existing image
-                const existingMentor = await dataManager.getMentorById(mentorId);
-                if (existingMentor && existingMentor.image) {
-                    imageData = existingMentor.image;
-                }
-            }
-
-            // Create mentor object
             const mentorData = {
-                name: name,
-                email: email,
-                phone: phone || '',
-                specialty: specialty,
-                experience: experience,
-                bio: bio || '',
-                availability: availability,
-                status: status,
-                availableDays: availableDays,
-                availableHours: availableHours || '',
-                image: imageData || null
+                name, email, phone, specialty, experience, bio,
+                availability, status, availableDays, availableHours,
+                updatedAt: Date.now()
             };
 
-            console.log('📊 Mentor data to save:', mentorData);
+            if (mentorId) mentorData.id = mentorId;
+            else mentorData.createdAt = Date.now();
 
-            let success;
-            if (mentorId) {
-                // Update existing mentor
-                console.log('🔄 Updating existing mentor...');
-                success = await dataManager.updateMentor(mentorId, mentorData);
-                if (success) {
-                    console.log('✅ Mentor updated successfully in Firebase');
-                    utils.showNotification('Mentor updated successfully!', 'success');
-                } else {
-                    console.error('❌ Failed to update mentor in Firebase');
-                    utils.showNotification('Failed to update mentor', 'error');
-                }
-            } else {
-                // Add new mentor
-                console.log('➕ Adding new mentor...');
-                mentorData.rating = null;
-                mentorData.createdAt = Date.now();
-                success = await dataManager.addMentor(mentorData);
-                if (success) {
-                    console.log('✅ Mentor added successfully to Firebase');
-                    utils.showNotification('Mentor added successfully!', 'success');
-                } else {
-                    console.error('❌ Failed to add mentor to Firebase');
-                    utils.showNotification('Failed to add mentor', 'error');
+            // Attach photo file for Storage upload (handled by firebaseDataManager.saveMentor)
+            const photoFile = document.getElementById('mentor-image').files[0];
+            if (photoFile) {
+                mentorData.photoFile = photoFile;
+            } else if (mentorId) {
+                // Keep existing photo
+                const existing = allMentors.find(m => m.id === mentorId);
+                if (existing) {
+                    if (existing.photoURL) mentorData.photoURL = existing.photoURL;
+                    if (existing.photoStoragePath) mentorData.photoStoragePath = existing.photoStoragePath;
                 }
             }
 
-            if (success) {
+            const btn = document.getElementById('save-mentor-btn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            if (photoFile) document.getElementById('upload-progress').style.display = 'block';
+
+            let result;
+            try {
+                if (window._fbDM) {
+                    result = await window._fbDM.saveMentor(mentorData);
+                } else {
+                    result = mentorId ? dataManager.updateMentor(mentorId, mentorData) : dataManager.addMentor(mentorData);
+                }
+            } catch (e) {
+                utils.showNotification('Error saving mentor: ' + e.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Save Mentor';
+                document.getElementById('upload-progress').style.display = 'none';
+                return;
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Save Mentor';
+            document.getElementById('upload-progress').style.display = 'none';
+
+            if (result) {
+                utils.showNotification(mentorId ? 'Mentor updated!' : 'Mentor added!', 'success');
                 closeAddMentorModal();
-                console.log('🔄 Reloading mentors list...');
                 await loadMentors();
+            } else {
+                utils.showNotification('Failed to save mentor', 'error');
             }
         }
 
         async function openEditMentorModal(mentorId) {
-            const mentor = await dataManager.getMentorById(mentorId);
-            if (!mentor) {
-                utils.showNotification('Mentor not found', 'error');
-                return;
-            }
+            const m = allMentors.find(x => x.id === mentorId);
+            if (!m) { utils.showNotification('Mentor not found', 'error'); return; }
 
-            // Set modal title
             document.getElementById('add-mentor-title').textContent = 'Edit Mentor';
-
-            // Store mentor ID in form dataset
             document.getElementById('add-mentor-form').dataset.mentorId = mentorId;
+            document.getElementById('mentor-name').value = m.name || '';
+            document.getElementById('mentor-email').value = m.email || '';
+            document.getElementById('mentor-phone').value = m.phone || '';
+            document.getElementById('mentor-specialty').value = m.specialty || '';
+            document.getElementById('mentor-experience').value = m.experience || 0;
+            document.getElementById('mentor-bio').value = m.bio || '';
+            document.getElementById('mentor-availability').value = m.availability || 'available';
+            document.getElementById('mentor-status').value = m.status || 'active';
+            document.getElementById('mentor-hours').value = m.availableHours || '';
 
-            // Pre-fill form with mentor data
-            document.getElementById('mentor-name').value = mentor.name || '';
-            document.getElementById('mentor-email').value = mentor.email || '';
-            document.getElementById('mentor-phone').value = mentor.phone || '';
-            document.getElementById('mentor-specialty').value = mentor.specialty || '';
-            document.getElementById('mentor-experience').value = mentor.experience || 0;
-            document.getElementById('mentor-bio').value = mentor.bio || '';
-            document.getElementById('mentor-availability').value = mentor.availability || 'available';
-            document.getElementById('mentor-status').value = mentor.status || 'active';
-            document.getElementById('mentor-hours').value = mentor.availableHours || '';
-
-            // Show existing image if available
-            if (mentor.image) {
-                document.getElementById('preview-img').src = mentor.image;
+            const photo = m.photoURL || m.image || '';
+            if (photo) {
+                document.getElementById('preview-img').src = photo;
                 document.getElementById('image-preview').style.display = 'block';
             } else {
                 document.getElementById('image-preview').style.display = 'none';
             }
 
-            // Pre-check available days
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-            days.forEach(day => {
-                const checkbox = document.getElementById(`day-${day}`);
-                const dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
-                checkbox.checked = mentor.availableDays && mentor.availableDays.includes(dayCapitalized);
+            const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+            days.forEach(d => {
+                document.getElementById(`day-${d}`).checked = !!(m.availableDays && m.availableDays.includes(d.charAt(0).toUpperCase() + d.slice(1)));
             });
 
-            // Show modal
             document.getElementById('add-mentor-modal').classList.add('show');
         }
     </script>

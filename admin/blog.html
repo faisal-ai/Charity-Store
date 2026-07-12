@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & News - BU Mentoring Admin</title>
+    <link rel="stylesheet" href="../css/base.css?v=38">
+    <link rel="stylesheet" href="../css/admin.css?v=1">
+    <style>
+        .post-body-preview {
+            max-height: 3em;
+            overflow: hidden;
+            color: #64748b;
+            font-size: 0.88rem;
+        }
+        .cover-thumb {
+            width: 56px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">BU Mentoring</a>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="dashboard.html"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="donation-bookings.html"><span class="icon">📅</span> Donation Bookings</a></li>
+                <li><a href="mentoring-bookings.html"><span class="icon">🎓</span> Mentoring Sessions</a></li>
+                <li><a href="mentors.html"><span class="icon">👥</span> Mentors</a></li>
+                <li><a href="mentor-applications.html"><span class="icon">📝</span> Mentor Applications</a></li>
+                <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
+                <li><a href="donations.html"><span class="icon">💝</span> Donations</a></li>
+                <li><a href="programs-resources.html"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="blog.html" class="active"><span class="icon">📰</span> Blog & News</a></li>
+                <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
+                <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Blog & News</h1>
+                <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
+                    <button class="logout-btn" onclick="utils.logout()">Logout</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="card-number" id="total-posts">0</div>
+                    <div class="card-label">Total Posts</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="published-posts">0</div>
+                    <div class="card-label">Published</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="draft-posts">0</div>
+                    <div class="card-label">Drafts</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="this-month-posts">0</div>
+                    <div class="card-label">This Month</div>
+                </div>
+            </div>
+
+            <!-- Posts Table -->
+            <div class="admin-table">
+                <div class="table-header">
+                    <h3>All Posts</h3>
+                    <div class="table-actions">
+                        <select id="filter-category" onchange="applyFilter()">
+                            <option value="">All Categories</option>
+                            <option value="News">News</option>
+                            <option value="Events">Events</option>
+                            <option value="Announcement">Announcement</option>
+                            <option value="Story">Story</option>
+                        </select>
+                        <select id="filter-status" onchange="applyFilter()">
+                            <option value="">All Statuses</option>
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openPostModal()">+ New Post</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="posts-table">
+                            <tr><td colspan="6" class="text-center" style="padding:30px;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create / Edit Post Modal -->
+    <div id="post-modal" class="modal">
+        <div class="modal-content" style="max-width:720px;">
+            <div class="modal-header">
+                <h3 id="post-modal-title">New Post</h3>
+                <button class="modal-close" onclick="closePostModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form">
+                    <div class="form-group">
+                        <label for="post-title">Title *</label>
+                        <input type="text" id="post-title" required placeholder="Post title...">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="post-category">Category *</label>
+                            <select id="post-category" required>
+                                <option value="">Select category...</option>
+                                <option value="News">News</option>
+                                <option value="Events">Events</option>
+                                <option value="Announcement">Announcement</option>
+                                <option value="Story">Story</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-date">Date *</label>
+                            <input type="date" id="post-date" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="post-status">Status</label>
+                            <select id="post-status">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-cover">Cover Image</label>
+                            <input type="file" id="post-cover" accept="image/*" onchange="previewCover(event)">
+                        </div>
+                    </div>
+                    <div id="cover-preview-wrap" style="display:none; margin-bottom:14px;">
+                        <img id="cover-preview-img" src="" alt="Cover preview" style="max-height:140px; border-radius:8px; border:2px solid #8b5cf6;">
+                        <button type="button" class="btn btn-sm btn-outline" style="display:block;margin-top:6px;" onclick="removeCover()">Remove</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-excerpt">Excerpt <small style="font-weight:normal;color:#64748b;">(short summary shown in listings)</small></label>
+                        <textarea id="post-excerpt" rows="2" placeholder="A brief description of this post..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-body">Body *</label>
+                        <textarea id="post-body" rows="10" required placeholder="Write your post content here..."></textarea>
+                        <small style="color:#64748b;">Plain text. Use double line-breaks for paragraphs.</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closePostModal()">Cancel</button>
+                <button class="btn btn-primary" id="save-post-btn" onclick="savePost()">Save Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+    <script src="../js/dataManager.js?v=11"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        let allPosts = [];
+        let editingPostId = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!utils.requireAuth()) return;
+            const u = utils.getSession('admin_user');
+            if (u && u.username) document.getElementById('admin-name').textContent = u.username;
+            document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+            setTimeout(loadPosts, 1500);
+        });
+
+        async function loadPosts() {
+            let posts = [];
+            if (window._fbDM) posts = await window._fbDM.getBlogPosts();
+            allPosts = posts;
+            updateKPIs(posts);
+            renderTable(posts);
+        }
+
+        function updateKPIs(posts) {
+            const now = new Date();
+            document.getElementById('total-posts').textContent = posts.length;
+            document.getElementById('published-posts').textContent = posts.filter(p => p.status === 'published').length;
+            document.getElementById('draft-posts').textContent = posts.filter(p => p.status === 'draft').length;
+            document.getElementById('this-month-posts').textContent = posts.filter(p => {
+                const d = new Date(p.date || p.createdAt || 0);
+                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+            }).length;
+        }
+
+        function renderTable(posts) {
+            const tbody = document.getElementById('posts-table');
+            if (!posts.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:30px;">No posts yet. Click "+ New Post" to create one.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = posts.map(p => {
+                const statusClass = p.status === 'published' ? 'status-active' : 'status-inactive';
+                const cover = p.coverImageURL ? `<img src="${p.coverImageURL}" class="cover-thumb" alt="">` : '<span style="color:#cbd5e1;font-size:1.5rem;">🖼</span>';
+                return `<tr>
+                    <td>${cover}</td>
+                    <td>
+                        <strong>${p.title || '-'}</strong>
+                        ${p.excerpt ? `<div class="post-body-preview">${p.excerpt}</div>` : ''}
+                    </td>
+                    <td><span style="background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:12px;font-size:0.8rem;">${p.category || '-'}</span></td>
+                    <td>${p.date || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${p.status || 'draft'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="editPost('${p.id}')">Edit</button>
+                            ${p.status === 'draft'
+                                ? `<button class="btn btn-sm" style="background:#10b981;color:white;" onclick="quickPublish('${p.id}')">Publish</button>`
+                                : `<button class="btn btn-sm btn-outline" onclick="quickUnpublish('${p.id}')">Unpublish</button>`}
+                            <button class="btn btn-sm" style="background:#ef4444;color:white;" onclick="deletePost('${p.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function applyFilter() {
+            const cat    = document.getElementById('filter-category').value;
+            const status = document.getElementById('filter-status').value;
+            let filtered = allPosts;
+            if (cat)    filtered = filtered.filter(p => p.category === cat);
+            if (status) filtered = filtered.filter(p => p.status === status);
+            renderTable(filtered);
+        }
+
+        function openPostModal() {
+            editingPostId = null;
+            document.getElementById('post-modal-title').textContent = 'New Post';
+            document.getElementById('post-form').reset();
+            document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('cover-preview-wrap').style.display = 'none';
+            document.getElementById('post-modal').classList.add('show');
+        }
+
+        function closePostModal() {
+            document.getElementById('post-modal').classList.remove('show');
+            editingPostId = null;
+        }
+
+        function previewCover(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('cover-preview-img').src = e.target.result;
+                document.getElementById('cover-preview-wrap').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeCover() {
+            document.getElementById('post-cover').value = '';
+            document.getElementById('cover-preview-wrap').style.display = 'none';
+        }
+
+        function editPost(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p) return;
+            editingPostId = id;
+            document.getElementById('post-modal-title').textContent = 'Edit Post';
+            document.getElementById('post-title').value    = p.title || '';
+            document.getElementById('post-category').value = p.category || '';
+            document.getElementById('post-date').value     = p.date || '';
+            document.getElementById('post-status').value   = p.status || 'draft';
+            document.getElementById('post-excerpt').value  = p.excerpt || '';
+            document.getElementById('post-body').value     = p.body || '';
+            if (p.coverImageURL) {
+                document.getElementById('cover-preview-img').src = p.coverImageURL;
+                document.getElementById('cover-preview-wrap').style.display = 'block';
+            } else {
+                document.getElementById('cover-preview-wrap').style.display = 'none';
+            }
+            document.getElementById('post-modal').classList.add('show');
+        }
+
+        async function quickPublish(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p || !window._fbDM) return;
+            await window._fbDM.saveBlogPost({ ...p, status: 'published' });
+            utils.showNotification('Post published!', 'success');
+            await loadPosts();
+        }
+
+        async function quickUnpublish(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p || !window._fbDM) return;
+            await window._fbDM.saveBlogPost({ ...p, status: 'draft' });
+            utils.showNotification('Post moved to drafts', 'success');
+            await loadPosts();
+        }
+
+        async function deletePost(id) {
+            const p = allPosts.find(x => x.id === id);
+            if (!p) return;
+            if (!confirm(`Delete post "${p.title}"? This cannot be undone.`)) return;
+            if (window._fbDM) await window._fbDM.deleteBlogPost(id);
+            utils.showNotification('Post deleted', 'success');
+            await loadPosts();
+        }
+
+        async function savePost() {
+            const title    = document.getElementById('post-title').value.trim();
+            const category = document.getElementById('post-category').value;
+            const date     = document.getElementById('post-date').value;
+            const body     = document.getElementById('post-body').value.trim();
+            if (!title || !category || !date || !body) {
+                utils.showNotification('Please fill in all required fields', 'error'); return;
+            }
+
+            const data = {
+                title, category, date,
+                status:  document.getElementById('post-status').value,
+                excerpt: document.getElementById('post-excerpt').value.trim(),
+                body
+            };
+            if (editingPostId) data.id = editingPostId;
+
+            // Attach cover file if selected
+            const coverFile = document.getElementById('post-cover').files[0];
+            if (coverFile) {
+                data.coverImageFile = coverFile;
+            } else if (editingPostId) {
+                const existing = allPosts.find(p => p.id === editingPostId);
+                if (existing && existing.coverImageURL) {
+                    data.coverImageURL = existing.coverImageURL;
+                    data.coverImageStoragePath = existing.coverImageStoragePath;
+                }
+            }
+
+            const btn = document.getElementById('save-post-btn');
+            btn.disabled = true; btn.textContent = 'Saving...';
+
+            let result;
+            try {
+                result = window._fbDM ? await window._fbDM.saveBlogPost(data) : null;
+            } catch(e) {
+                utils.showNotification('Error: ' + e.message, 'error');
+                btn.disabled = false; btn.textContent = 'Save Post';
+                return;
+            }
+
+            btn.disabled = false; btn.textContent = 'Save Post';
+            if (result) {
+                utils.showNotification(editingPostId ? 'Post updated!' : 'Post created!', 'success');
+                closePostModal();
+                await loadPosts();
+            } else {
+                utils.showNotification('Could not save — Firebase not ready', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

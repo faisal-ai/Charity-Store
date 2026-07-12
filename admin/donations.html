@@ -23,6 +23,7 @@
                 <li><a href="contact-submissions.html"><span class="icon">✉️</span> Contact Messages</a></li>
                 <li><a href="donations.html" class="active"><span class="icon">💝</span> Donations</a></li>
                 <li><a href="programs-resources.html"><span class="icon">📚</span> Programs & Resources</a></li>
+                <li><a href="blog.html"><span class="icon">📰</span> Blog & News</a></li>
                 <li><a href="content.html"><span class="icon">🎨</span> Content</a></li>
                 <li><a href="settings.html"><span class="icon">⚙️</span> Settings</a></li>
             </ul>
@@ -30,39 +31,31 @@
 
         <!-- Main Content -->
         <main class="admin-content">
-            <!-- Header -->
             <div class="admin-header">
-                <h1>Donation Management</h1>
+                <h1>Donation Tracking</h1>
                 <div class="admin-user">
+                    <span>Welcome, <strong id="admin-name">Admin</strong></span>
                     <button class="logout-btn" onclick="utils.logout()">Logout</button>
                 </div>
             </div>
 
-            <!-- Summary Cards -->
-            <div class="row mb-4">
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 id="monetary-total">$0</h3>
-                            <p>Monetary Donations</p>
-                        </div>
-                    </div>
+            <!-- KPI Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="card-number" id="monetary-total">£0</div>
+                    <div class="card-label">Total Monetary</div>
                 </div>
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 id="clothing-total">0</h3>
-                            <p>Clothing Donations</p>
-                        </div>
-                    </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="clothing-total">0</div>
+                    <div class="card-label">Clothing Donations</div>
                 </div>
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 id="pickup-requests">0</h3>
-                            <p>Pending Pickups</p>
-                        </div>
-                    </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="pending-pickups">0</div>
+                    <div class="card-label">Pending Pickups</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-number" id="this-month">0</div>
+                    <div class="card-label">This Month</div>
                 </div>
             </div>
 
@@ -71,11 +64,19 @@
                 <div class="table-header">
                     <h3>All Donations</h3>
                     <div class="table-actions">
-                        <select id="filter-type">
+                        <select id="filter-type" onchange="applyFilter()">
                             <option value="">All Types</option>
-                            <option value="monetary">Monetary</option>
-                            <option value="clothing">Clothing</option>
+                            <option value="monetary">💰 Monetary</option>
+                            <option value="clothing">👕 Clothing</option>
                         </select>
+                        <select id="filter-status" onchange="applyFilter()">
+                            <option value="">All Statuses</option>
+                            <option value="received">Received</option>
+                            <option value="pickup_requested">Pickup Requested</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <button class="btn btn-outline" onclick="exportCSV()">⬇ Export CSV</button>
+                        <button class="btn btn-primary" onclick="openRecordModal()">+ Record Donation</button>
                     </div>
                 </div>
                 <div class="table-container">
@@ -85,13 +86,13 @@
                                 <th>Date</th>
                                 <th>Donor</th>
                                 <th>Type</th>
-                                <th>Amount/Items</th>
+                                <th>Amount / Items</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="donations-table">
-                            <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                            <tr><td colspan="6" class="text-center" style="padding:30px;">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -99,57 +100,269 @@
         </main>
     </div>
 
+    <!-- Record / Edit Donation Modal -->
+    <div id="donation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="donation-modal-title">Record Donation</h3>
+                <button class="modal-close" onclick="closeDonationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="donation-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="donor-name">Donor Name *</label>
+                            <input type="text" id="donor-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-email">Email</label>
+                            <input type="email" id="donor-email">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="donation-type">Type *</label>
+                            <select id="donation-type" required onchange="toggleDonationFields()">
+                                <option value="">Select type...</option>
+                                <option value="monetary">💰 Monetary</option>
+                                <option value="clothing">👕 Clothing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="donation-date">Date *</label>
+                            <input type="date" id="donation-date" required>
+                        </div>
+                    </div>
+                    <div class="form-group" id="amount-group" style="display:none;">
+                        <label for="donation-amount">Amount (£) *</label>
+                        <input type="number" id="donation-amount" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group" id="items-group" style="display:none;">
+                        <label for="donation-items">Items Description *</label>
+                        <textarea id="donation-items" rows="2" placeholder="e.g. 3 bags of clothing, shoes, coats..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="donation-status">Status</label>
+                        <select id="donation-status">
+                            <option value="received">Received</option>
+                            <option value="pickup_requested">Pickup Requested</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="donation-notes">Notes</label>
+                        <textarea id="donation-notes" rows="2" placeholder="Any additional notes..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeDonationModal()">Cancel</button>
+                <button class="btn btn-primary" id="save-donation-btn" onclick="saveDonation()">Save Donation</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import firebaseDataManager from '../js/firebaseDataManager.js';
+        window._fbDM = firebaseDataManager;
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
     <script src="../js/dataManager.js?v=11"></script>
     <script src="../js/utils.js"></script>
     <script>
+        let allDonations = [];
+        let editingDonationId = null;
+
         document.addEventListener('DOMContentLoaded', function() {
             if (!utils.requireAuth()) return;
-            loadDonations();
+            const u = utils.getSession('admin_user');
+            if (u && u.username) document.getElementById('admin-name').textContent = u.username;
+            // Set today's date as default
+            document.getElementById('donation-date').value = new Date().toISOString().split('T')[0];
+            setTimeout(loadDonations, 1500);
         });
 
-        function loadDonations() {
-            const donations = dataManager.getDonations();
+        async function loadDonations() {
+            let donations = [];
+            if (window._fbDM) {
+                donations = await window._fbDM.getDonations();
+            }
+            // Fallback: merge with localStorage donations
+            const local = dataManager.getDonations() || [];
+            // Prefer Firebase; if empty fall back to local
+            if (!donations.length && local.length) donations = local;
 
-            // Update summary
+            allDonations = donations;
+            updateKPIs(donations);
+            renderTable(donations);
+        }
+
+        function updateKPIs(donations) {
             const monetary = donations.filter(d => d.type === 'monetary');
-            const clothing = donations.filter(d => d.type === 'clothing');
-            const pickups = donations.filter(d => d.status === 'pickup_requested');
-
-            const monetaryTotal = monetary.reduce((sum, d) => sum + (d.amount || 0), 0);
-            document.getElementById('monetary-total').textContent = utils.formatCurrency(monetaryTotal);
+            const clothing  = donations.filter(d => d.type === 'clothing');
+            const pending   = donations.filter(d => d.status === 'pickup_requested');
+            const now = new Date();
+            const thisMonth = donations.filter(d => {
+                const dd = new Date(d.date || d.createdAt || 0);
+                return dd.getMonth() === now.getMonth() && dd.getFullYear() === now.getFullYear();
+            });
+            const total = monetary.reduce((s, d) => s + parseFloat(d.amount || 0), 0);
+            document.getElementById('monetary-total').textContent = '£' + total.toFixed(2);
             document.getElementById('clothing-total').textContent = clothing.length;
-            document.getElementById('pickup-requests').textContent = pickups.length;
+            document.getElementById('pending-pickups').textContent = pending.length;
+            document.getElementById('this-month').textContent = thisMonth.length;
+        }
 
-            // Render table
-            const tableBody = document.getElementById('donations-table');
-            if (donations.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No donations yet</td></tr>';
+        function renderTable(donations) {
+            const tbody = document.getElementById('donations-table');
+            if (!donations.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:30px;">No donations recorded yet. Click "+ Record Donation" to add one.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = donations.map(d => {
+                const date = d.date || (d.createdAt ? new Date(d.createdAt).toLocaleDateString() : '-');
+                const statusClass = d.status === 'completed' ? 'status-active' : d.status === 'pickup_requested' ? 'status-pending' : 'status-inactive';
+                return `<tr>
+                    <td>${date}</td>
+                    <td><strong>${d.donorName || '-'}</strong><br><small>${d.donorEmail || ''}</small></td>
+                    <td>${d.type === 'monetary' ? '💰 Monetary' : '👕 Clothing'}</td>
+                    <td>${d.type === 'monetary' ? '£' + parseFloat(d.amount || 0).toFixed(2) : (d.items || '-')}</td>
+                    <td><span class="status-badge ${statusClass}">${d.status || 'received'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="editDonation('${d.id}')">Edit</button>
+                            <button class="btn btn-sm" style="background:#ef4444;color:white;" onclick="deleteDonation('${d.id}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function applyFilter() {
+            const type   = document.getElementById('filter-type').value;
+            const status = document.getElementById('filter-status').value;
+            let filtered = allDonations;
+            if (type)   filtered = filtered.filter(d => d.type === type);
+            if (status) filtered = filtered.filter(d => d.status === status);
+            renderTable(filtered);
+        }
+
+        function exportCSV() {
+            if (!allDonations.length) { utils.showNotification('No donations to export', 'info'); return; }
+            const headers = ['Date','Donor Name','Email','Type','Amount','Items','Status','Notes'];
+            const rows = allDonations.map(d => [
+                d.date || '', d.donorName || '', d.donorEmail || '', d.type || '',
+                d.amount || '', d.items || '', d.status || '', d.notes || ''
+            ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+            const csv = [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'donations_' + new Date().toISOString().split('T')[0] + '.csv';
+            a.click();
+            utils.showNotification('CSV exported!', 'success');
+        }
+
+        function openRecordModal() {
+            editingDonationId = null;
+            document.getElementById('donation-modal-title').textContent = 'Record Donation';
+            document.getElementById('donation-form').reset();
+            document.getElementById('donation-date').value = new Date().toISOString().split('T')[0];
+            toggleDonationFields();
+            document.getElementById('donation-modal').classList.add('show');
+        }
+
+        function editDonation(id) {
+            const d = allDonations.find(x => x.id === id);
+            if (!d) return;
+            editingDonationId = id;
+            document.getElementById('donation-modal-title').textContent = 'Edit Donation';
+            document.getElementById('donor-name').value = d.donorName || '';
+            document.getElementById('donor-email').value = d.donorEmail || '';
+            document.getElementById('donation-type').value = d.type || '';
+            document.getElementById('donation-date').value = d.date || '';
+            document.getElementById('donation-amount').value = d.amount || '';
+            document.getElementById('donation-items').value = d.items || '';
+            document.getElementById('donation-status').value = d.status || 'received';
+            document.getElementById('donation-notes').value = d.notes || '';
+            toggleDonationFields();
+            document.getElementById('donation-modal').classList.add('show');
+        }
+
+        async function deleteDonation(id) {
+            const d = allDonations.find(x => x.id === id);
+            if (!d) return;
+            if (!confirm(`Delete donation from "${d.donorName}"?`)) return;
+            if (window._fbDM) {
+                // Use Firestore delete
+                const { db, doc, deleteDoc } = await import('../js/firebase-config.js');
+                await deleteDoc(doc(db, 'donations', id));
+            }
+            utils.showNotification('Donation deleted', 'success');
+            await loadDonations();
+        }
+
+        function closeDonationModal() {
+            document.getElementById('donation-modal').classList.remove('show');
+            editingDonationId = null;
+        }
+
+        function toggleDonationFields() {
+            const type = document.getElementById('donation-type').value;
+            document.getElementById('amount-group').style.display = type === 'monetary' ? 'block' : 'none';
+            document.getElementById('items-group').style.display  = type === 'clothing'  ? 'block' : 'none';
+        }
+
+        async function saveDonation() {
+            const type = document.getElementById('donation-type').value;
+            const name = document.getElementById('donor-name').value.trim();
+            const date = document.getElementById('donation-date').value;
+            if (!name || !type || !date) {
+                utils.showNotification('Please fill in all required fields', 'error'); return;
+            }
+            if (type === 'monetary' && !document.getElementById('donation-amount').value) {
+                utils.showNotification('Please enter the donation amount', 'error'); return;
+            }
+            if (type === 'clothing' && !document.getElementById('donation-items').value.trim()) {
+                utils.showNotification('Please describe the donated items', 'error'); return;
+            }
+
+            const data = {
+                donorName:  name,
+                donorEmail: document.getElementById('donor-email').value.trim(),
+                type, date,
+                amount: type === 'monetary' ? parseFloat(document.getElementById('donation-amount').value) : null,
+                items:  type === 'clothing'  ? document.getElementById('donation-items').value.trim() : null,
+                status: document.getElementById('donation-status').value,
+                notes:  document.getElementById('donation-notes').value.trim()
+            };
+            if (editingDonationId) data.id = editingDonationId;
+
+            const btn = document.getElementById('save-donation-btn');
+            btn.disabled = true; btn.textContent = 'Saving...';
+
+            let ok = false;
+            try {
+                if (window._fbDM) {
+                    const result = await window._fbDM.saveDonation(data);
+                    ok = !!result;
+                } else {
+                    ok = editingDonationId ? dataManager.updateDonation(editingDonationId, data) : dataManager.addDonation(data);
+                }
+            } catch(e) {
+                utils.showNotification('Error: ' + e.message, 'error');
+                btn.disabled = false; btn.textContent = 'Save Donation';
                 return;
             }
 
-            tableBody.innerHTML = donations.map(donation => `
-                <tr>
-                    <td>${utils.formatDate(donation.date)}</td>
-                    <td>
-                        <strong>${donation.donorName}</strong><br>
-                        <small>${donation.donorEmail}</small>
-                    </td>
-                    <td>${donation.type === 'monetary' ? '💰 Monetary' : '👕 Clothing'}</td>
-                    <td>${donation.type === 'monetary' ? utils.formatCurrency(donation.amount) : (donation.items || 'Items')}</td>
-                    <td><span class="status-badge">${donation.status}</span></td>
-                    <td>
-                        ${donation.status === 'pickup_requested' ?
-                            `<button class="btn btn-sm btn-primary" onclick="schedulePickup('${donation.id}')">Schedule</button>` :
-                            '<span class="text-muted">-</span>'
-                        }
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function schedulePickup(donationId) {
-            // Simplified pickup scheduling
-            utils.showNotification('Pickup scheduled! Donor will be contacted.', 'success');
+            btn.disabled = false; btn.textContent = 'Save Donation';
+            if (ok) {
+                utils.showNotification(editingDonationId ? 'Donation updated!' : 'Donation recorded!', 'success');
+                closeDonationModal();
+                await loadDonations();
+            } else {
+                utils.showNotification('Failed to save donation', 'error');
+            }
         }
     </script>
 </body>

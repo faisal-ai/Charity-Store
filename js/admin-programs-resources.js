@@ -1,293 +1,280 @@
-// Admin Programs & Resources Management
+// Admin Programs & Resources Management — Firebase-backed
 console.log('🚀 Admin Programs & Resources script loaded');
 
-// Switch between tabs
+// Helper: get firebaseDataManager when ready
+function getFB() { return window._fbDM || null; }
+
+// ── Tab switching ──────────────────────────────────────────────────────────
+
 window.switchTab = function(tab) {
-    // Update tab buttons
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-
-    // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
     document.getElementById(`${tab}-tab`).style.display = 'block';
+    if (tab === 'programs') loadPrograms();
+    else loadResources();
+};
 
-    // Load data for the selected tab
-    if (tab === 'programs') {
-        loadPrograms();
-    } else if (tab === 'resources') {
-        loadResources();
-    }
-}
+// ── PROGRAMS ──────────────────────────────────────────────────────────────
 
-// ============= PROGRAMS =============
-
-// Load all programs
 async function loadPrograms() {
-    const programsList = document.getElementById('programs-list');
-    const programs = dataManager.getPrograms();
+    const list = document.getElementById('programs-list');
+    list.innerHTML = '<p style="padding:20px;color:#64748b;">Loading...</p>';
 
-    if (programs.length === 0) {
-        programsList.innerHTML = '<div class="empty-state"><p>No programs added yet</p></div>';
+    let programs = [];
+    const fb = getFB();
+    if (fb) {
+        programs = await fb.getPrograms();
+    } else {
+        programs = dataManager.getPrograms() || [];
+    }
+
+    if (!programs.length) {
+        list.innerHTML = '<div class="empty-state"><p>No programs yet. Click "Add Program" to create one.</p></div>';
         return;
     }
 
-    programsList.innerHTML = programs.map(program => `
+    list.innerHTML = programs.map(p => `
         <div class="resource-item">
             <div class="resource-info">
-                <h4>${program.icon || '📚'} ${program.name}</h4>
-                <p>${program.description}</p>
-                <small style="color: #3b82f6;">
-                    ${program.duration ? `Duration: ${program.duration}` : ''}
-                    ${program.target ? `| Target: ${program.target}` : ''}
+                <h4>${p.icon || '📚'} ${p.name}</h4>
+                <p>${p.description || ''}</p>
+                <small style="color:#3b82f6;">
+                    ${p.duration ? `Duration: ${p.duration}` : ''}
+                    ${p.target ? `| Target: ${p.target}` : ''}
                 </small>
-                <div style="margin-top: 5px;">
-                    <span class="badge ${program.active ? 'badge-success' : 'badge-danger'}">
-                        ${program.active ? 'Active' : 'Inactive'}
-                    </span>
+                <div style="margin-top:5px;">
+                    <span class="badge ${p.active ? 'badge-success' : 'badge-danger'}">${p.active ? 'Active' : 'Inactive'}</span>
                 </div>
             </div>
             <div class="resource-actions">
-                <button class="btn btn-sm btn-outline" onclick="editProgram('${program.id}')">
-                    Edit
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteProgram('${program.id}', '${program.name.replace(/'/g, "\\'")}')">
-                    Delete
-                </button>
+                <button class="btn btn-sm btn-outline" onclick="editProgram('${p.id}')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteProgram('${p.id}', '${(p.name || '').replace(/'/g, "\\'")}')">Delete</button>
             </div>
-        </div>
-    `).join('');
+        </div>`).join('');
 }
 
-// Show add program modal
 window.showAddProgramModal = function() {
     document.getElementById('program-modal-title').textContent = 'Add Program';
     document.getElementById('program-form').reset();
     document.getElementById('program-id').value = '';
     document.getElementById('program-active').checked = true;
     document.getElementById('program-modal').style.display = 'flex';
-}
+};
 
-// Close program modal
 window.closeProgramModal = function() {
     document.getElementById('program-modal').style.display = 'none';
-}
+};
 
-// Edit program
 window.editProgram = async function(programId) {
-    const program = dataManager.getProgramById(programId);
-    if (!program) {
-        alert('Program not found');
-        return;
+    const fb = getFB();
+    let program = null;
+    if (fb) {
+        const all = await fb.getPrograms();
+        program = all.find(p => p.id === programId);
+    } else {
+        program = dataManager.getProgramById(programId);
     }
+    if (!program) { alert('Program not found'); return; }
 
     document.getElementById('program-modal-title').textContent = 'Edit Program';
     document.getElementById('program-id').value = program.id;
-    document.getElementById('program-name').value = program.name;
-    document.getElementById('program-description').value = program.description;
+    document.getElementById('program-name').value = program.name || '';
+    document.getElementById('program-description').value = program.description || '';
     document.getElementById('program-icon').value = program.icon || '';
     document.getElementById('program-duration').value = program.duration || '';
     document.getElementById('program-target').value = program.target || '';
     document.getElementById('program-active').checked = program.active !== false;
-
     document.getElementById('program-modal').style.display = 'flex';
-}
+};
 
-// Delete program
 window.deleteProgram = async function(programId, programName) {
-    if (!confirm(`Are you sure you want to delete "${programName}"?`)) {
-        return;
-    }
+    if (!confirm(`Delete "${programName}"? This cannot be undone.`)) return;
+    const fb = getFB();
+    let ok = fb ? await fb.deleteProgram(programId) : await dataManager.deleteProgram(programId);
+    if (ok) { utils.showNotification('Program deleted', 'success'); loadPrograms(); }
+    else utils.showNotification('Failed to delete program', 'error');
+};
 
-    const success = await dataManager.deleteProgram(programId);
-    if (success) {
-        alert('Program deleted successfully');
-        loadPrograms();
-    } else {
-        alert('Failed to delete program');
-    }
-}
+// ── RESOURCES ─────────────────────────────────────────────────────────────
 
-// ============= RESOURCES =============
-
-// Load all resources
 async function loadResources() {
-    const resourcesList = document.getElementById('resources-list');
-    const resources = dataManager.getResources();
+    const list = document.getElementById('resources-list');
+    list.innerHTML = '<p style="padding:20px;color:#64748b;">Loading...</p>';
 
-    if (resources.length === 0) {
-        resourcesList.innerHTML = '<div class="empty-state"><p>No resources added yet</p></div>';
+    let resources = [];
+    const fb = getFB();
+    if (fb) {
+        resources = await fb.getResources();
+    } else {
+        resources = dataManager.getResources() || [];
+    }
+
+    if (!resources.length) {
+        list.innerHTML = '<div class="empty-state"><p>No resources yet. Click "Add Resource" to upload one.</p></div>';
         return;
     }
 
-    resourcesList.innerHTML = resources.map(resource => `
+    list.innerHTML = resources.map(r => `
         <div class="resource-item">
             <div class="resource-info">
-                <h4>📄 ${resource.title}</h4>
-                <p>${resource.description}</p>
-                <small style="color: #3b82f6;">
-                    Type: ${resource.type}
-                    ${resource.category ? `| Category: ${resource.category}` : ''}
-                    ${resource.size ? `| Size: ${resource.size}` : ''}
+                <h4>📄 ${r.title}</h4>
+                <p>${r.description || ''}</p>
+                <small style="color:#3b82f6;">
+                    Type: ${r.type}
+                    ${r.category ? `| Category: ${r.category}` : ''}
+                    ${r.size ? `| Size: ${r.size}` : ''}
                 </small>
-                <div style="margin-top: 5px;">
-                    <span class="badge ${resource.active ? 'badge-success' : 'badge-danger'}">
-                        ${resource.active ? 'Active' : 'Inactive'}
-                    </span>
+                <div style="margin-top:5px;">
+                    <span class="badge ${r.active ? 'badge-success' : 'badge-danger'}">${r.active ? 'Active' : 'Inactive'}</span>
                 </div>
             </div>
             <div class="resource-actions">
-                <a href="${resource.url}" target="_blank" class="btn btn-sm btn-outline">
-                    View
-                </a>
-                <button class="btn btn-sm btn-outline" onclick="editResource('${resource.id}')">
-                    Edit
-                </button>
-                <button class="btn btn-sm btn-danger" onclick="deleteResource('${resource.id}', '${resource.title.replace(/'/g, "\\'")}')">
-                    Delete
-                </button>
+                ${r.url ? `<a href="${r.url}" target="_blank" class="btn btn-sm btn-outline">View</a>` : ''}
+                <button class="btn btn-sm btn-outline" onclick="editResource('${r.id}')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteResource('${r.id}', '${(r.title || '').replace(/'/g, "\\'")}')">Delete</button>
             </div>
-        </div>
-    `).join('');
+        </div>`).join('');
 }
 
-// Show add resource modal
 window.showAddResourceModal = function() {
-    console.log('🎯 showAddResourceModal called');
     document.getElementById('resource-modal-title').textContent = 'Add Resource';
     document.getElementById('resource-form').reset();
     document.getElementById('resource-id').value = '';
     document.getElementById('resource-active').checked = true;
+    // Show/hide URL vs file input based on type
+    toggleResourceInput();
     document.getElementById('resource-modal').style.display = 'flex';
-    console.log('✅ Resource modal opened');
-}
+};
 
-// Close resource modal
 window.closeResourceModal = function() {
     document.getElementById('resource-modal').style.display = 'none';
-}
+};
 
-// Edit resource
+window.toggleResourceInput = function() {
+    const fileGroup = document.getElementById('resource-file-group');
+    const urlGroup  = document.getElementById('resource-url-group');
+    const type = document.getElementById('resource-type') && document.getElementById('resource-type').value;
+    const isUploadable = ['PDF','DOC','PPT'].includes(type);
+    if (fileGroup) fileGroup.style.display = isUploadable ? 'block' : 'none';
+    if (urlGroup)  urlGroup.style.display  = isUploadable ? 'none'  : 'block';
+};
+
 window.editResource = async function(resourceId) {
-    const resource = dataManager.getResourceById(resourceId);
-    if (!resource) {
-        alert('Resource not found');
-        return;
+    const fb = getFB();
+    let resource = null;
+    if (fb) {
+        const all = await fb.getResources();
+        resource = all.find(r => r.id === resourceId);
+    } else {
+        resource = dataManager.getResourceById(resourceId);
     }
+    if (!resource) { alert('Resource not found'); return; }
 
     document.getElementById('resource-modal-title').textContent = 'Edit Resource';
     document.getElementById('resource-id').value = resource.id;
-    document.getElementById('resource-title').value = resource.title;
-    document.getElementById('resource-description').value = resource.description;
-    document.getElementById('resource-type').value = resource.type;
+    document.getElementById('resource-title').value = resource.title || '';
+    document.getElementById('resource-description').value = resource.description || '';
+    document.getElementById('resource-type').value = resource.type || '';
     document.getElementById('resource-category').value = resource.category || '';
-    document.getElementById('resource-url').value = resource.url;
+    document.getElementById('resource-url').value = resource.url || '';
     document.getElementById('resource-size').value = resource.size || '';
     document.getElementById('resource-active').checked = resource.active !== false;
-
+    toggleResourceInput();
     document.getElementById('resource-modal').style.display = 'flex';
-}
+};
 
-// Delete resource
 window.deleteResource = async function(resourceId, resourceTitle) {
-    if (!confirm(`Are you sure you want to delete "${resourceTitle}"?`)) {
-        return;
-    }
+    if (!confirm(`Delete "${resourceTitle}"?`)) return;
+    const fb = getFB();
+    let ok = fb ? await fb.deleteResource(resourceId) : await dataManager.deleteResource(resourceId);
+    if (ok) { utils.showNotification('Resource deleted', 'success'); loadResources(); }
+    else utils.showNotification('Failed to delete resource', 'error');
+};
 
-    const success = await dataManager.deleteResource(resourceId);
-    if (success) {
-        alert('Resource deleted successfully');
-        loadResources();
-    } else {
-        alert('Failed to delete resource');
-    }
-}
+// ── Init & form handlers ───────────────────────────────────────────────────
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ Admin Programs & Resources initialized');
-
-    // Load programs by default
     loadPrograms();
 
-    // Handle program form submission
-    const programForm = document.getElementById('program-form');
-    if (programForm) {
-        programForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    // Program form
+    document.getElementById('program-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const programId = document.getElementById('program-id').value;
+        const data = {
+            name:        document.getElementById('program-name').value,
+            description: document.getElementById('program-description').value,
+            icon:        document.getElementById('program-icon').value,
+            duration:    document.getElementById('program-duration').value,
+            target:      document.getElementById('program-target').value,
+            active:      document.getElementById('program-active').checked,
+            updatedAt:   Date.now()
+        };
+        if (programId) data.id = programId;
+        else data.createdAt = Date.now();
 
-            const programId = document.getElementById('program-id').value;
-            const programData = {
-                name: document.getElementById('program-name').value,
-                description: document.getElementById('program-description').value,
-                icon: document.getElementById('program-icon').value,
-                duration: document.getElementById('program-duration').value,
-                target: document.getElementById('program-target').value,
-                active: document.getElementById('program-active').checked,
-                updatedAt: Date.now()
-            };
-
-            let success;
-            if (programId) {
-                // Update existing program
-                success = await dataManager.updateProgram(programId, programData);
-            } else {
-                // Add new program
-                programData.createdAt = Date.now();
-                success = await dataManager.addProgram(programData);
-            }
-
-            if (success) {
-                alert(programId ? 'Program updated successfully' : 'Program added successfully');
-                closeProgramModal();
-                loadPrograms();
-            } else {
-                alert('Failed to save program');
-            }
-        });
-    }
-
-    // Handle resource form submission
-    const resourceForm = document.getElementById('resource-form');
-    if (resourceForm) {
-        resourceForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const resourceId = document.getElementById('resource-id').value;
-            const resourceData = {
-                title: document.getElementById('resource-title').value,
-                description: document.getElementById('resource-description').value,
-                type: document.getElementById('resource-type').value,
-                category: document.getElementById('resource-category').value,
-                url: document.getElementById('resource-url').value,
-                size: document.getElementById('resource-size').value,
-                active: document.getElementById('resource-active').checked,
-                updatedAt: Date.now()
-            };
-
-            let success;
-            if (resourceId) {
-                // Update existing resource
-                success = await dataManager.updateResource(resourceId, resourceData);
-            } else {
-                // Add new resource
-                resourceData.createdAt = Date.now();
-                success = await dataManager.addResource(resourceData);
-            }
-
-            if (success) {
-                alert(resourceId ? 'Resource updated successfully' : 'Resource added successfully');
-                closeResourceModal();
-                loadResources();
-            } else {
-                alert('Failed to save resource');
-            }
-        });
-    }
-
-    // Close modals when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            e.target.style.display = 'none';
+        const fb = getFB();
+        let result;
+        try {
+            result = fb ? await fb.saveProgram(data) : (programId ? await dataManager.updateProgram(programId, data) : await dataManager.addProgram(data));
+        } catch(err) {
+            utils.showNotification('Error: ' + err.message, 'error'); return;
         }
+        if (result) {
+            utils.showNotification(programId ? 'Program updated!' : 'Program added!', 'success');
+            closeProgramModal(); loadPrograms();
+        } else {
+            utils.showNotification('Failed to save program', 'error');
+        }
+    });
+
+    // Resource form
+    document.getElementById('resource-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const resourceId = document.getElementById('resource-id').value;
+        const data = {
+            title:       document.getElementById('resource-title').value,
+            description: document.getElementById('resource-description').value,
+            type:        document.getElementById('resource-type').value,
+            category:    document.getElementById('resource-category').value,
+            size:        document.getElementById('resource-size').value,
+            active:      document.getElementById('resource-active').checked,
+            updatedAt:   Date.now()
+        };
+        if (resourceId) data.id = resourceId;
+        else data.createdAt = Date.now();
+
+        // File upload takes priority over URL field
+        const fileInput = document.getElementById('resource-file');
+        const urlInput  = document.getElementById('resource-url');
+        if (fileInput && fileInput.files[0]) {
+            data.file = fileInput.files[0];
+        } else if (urlInput) {
+            data.url = urlInput.value;
+        }
+
+        const saveBtn = document.querySelector('#resource-form + div .btn-primary') || document.getElementById('resource-save-btn');
+        if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+
+        const fb = getFB();
+        let result;
+        try {
+            result = fb ? await fb.saveResource(data) : (resourceId ? await dataManager.updateResource(resourceId, data) : await dataManager.addResource(data));
+        } catch(err) {
+            utils.showNotification('Error: ' + err.message, 'error');
+            if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Resource'; }
+            return;
+        }
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Resource'; }
+        if (result) {
+            utils.showNotification(resourceId ? 'Resource updated!' : 'Resource added!', 'success');
+            closeResourceModal(); loadResources();
+        } else {
+            utils.showNotification('Failed to save resource', 'error');
+        }
+    });
+
+    window.addEventListener('click', e => {
+        if (e.target.classList.contains('modal')) e.target.style.display = 'none';
     });
 });
