@@ -864,24 +864,24 @@ textarea {
 }
 
 .hero-spline .hero-text-inner {
-    max-width: 680px;
+    max-width: 960px;
     pointer-events: auto;
     text-align: left;
 }
 
 .hero-spline h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
     font-weight: 700;
     color: white;
-    line-height: 1.2;
-    margin-bottom: 20px;
+    line-height: 1.15;
+    margin-bottom: 24px;
 }
 
 .hero-spline .hero-subtitle {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     color: rgba(255,255,255,0.8);
-    max-width: 520px;
+    max-width: 900px;
     line-height: 1.7;
     margin-bottom: 32px;
 }
