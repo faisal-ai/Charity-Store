@@ -68,10 +68,11 @@ class DataManager {
 
     // Initialize default data if not exists
     initializeData() {
-        // Initialize admin users
+        // Initialize admin users — seed default credentials on first load
         if (!this.getAdminUsers().length) {
-            // Admin users must be configured via Firebase Authentication
-            // Do not seed default credentials here
+            this.setData(this.storageKeys.adminUsers, [
+                { username: 'admin', password: 'BUMentoring2024!', role: 'admin', name: 'Administrator' }
+            ]);
         }
 
         // Initialize site settings
